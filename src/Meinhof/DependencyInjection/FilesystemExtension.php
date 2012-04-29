@@ -75,7 +75,6 @@ class FilesystemExtension implements ExtensionInterface
         return $resources;
     }
 
-
     public function getNamespace()
     {
     	return 'meinhof';

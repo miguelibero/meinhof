@@ -99,6 +99,7 @@ class Meinhof
             if(!$post instanceof PostInterface){
                 continue;
             }
+            // render post content
             $ckey = $post->getContentTemplatingKey();
             if(!$tplpost->exists($ckey)){
                 throw new \InvalidArgumentException("Post template '${ckey}' does not exist.");
@@ -110,6 +111,7 @@ class Meinhof
             $params['post'] = $post;
             $content = $tplpost->render($ckey, $params);
 
+            // render post view
             $params['content'] = $content;
             $vkey = $post->getViewTemplatingKey();
             if($vkey){
@@ -128,10 +130,12 @@ class Meinhof
 
     public function dumpAssets()
     {
+        // load asset manager
         $manager = $this->container->get('assetic.asset_manager');
         if(!$manager instanceof AsseticLazyAssetManager){
             throw new \InvalidArgumentException("Need a lazy asset manager to dump the assets.");
         }
+
         // load formula loaders, done lazily to avoid circular dependencies
         $loaders = $this->container->getParameter('assetic.formula_loaders');
         foreach($loaders as $alias=>$id){
@@ -141,8 +145,10 @@ class Meinhof
             }
             $manager->setLoader($alias, $loader);
         }
+
         // load template resources
         $loader = $this->container->get('assetic.resource_loader');
+            $site = $this->container->get('site');
         foreach($site->getViews() as $view){
             $resource = $loader->getResource($view);
             $type = $loader->getResourceType($view);
@@ -151,6 +157,7 @@ class Meinhof
             }
             $manager->addResource($resource, $type);
         }
+
         // write output assets
         $writer = $this->container->get('assetic.asset_writer');
         $writer->writeManagerAssets($manager);

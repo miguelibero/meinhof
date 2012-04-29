@@ -4,7 +4,7 @@ namespace Meinhof\Templating\Storage;
 
 use Symfony\Component\Templating\Storage\Storage;
 
-class FrontMatterStorage extends Storage
+class FrontMatterStorage extends MatterStorage
 {
     protected $storage;
     protected $separator = "/(^|\n)-{3,}\n/";

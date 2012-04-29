@@ -9,30 +9,30 @@ class FilesystemConfiguration implements ConfigurationInterface
 {
     public function getConfigTreeBuilder()
     {
-    $treeBuilder = new TreeBuilder();
-    $rootNode = $treeBuilder->root('meinhof_site');
+        $treeBuilder = new TreeBuilder();
+        $rootNode = $treeBuilder->root('meinhof_site');
 
-    $rootNode
-        ->children()
-            ->arrayNode('globals')
-                ->useAttributeAsKey('key')
-                ->prototype('scalar')
+        $rootNode
+            ->children()
+                ->arrayNode('globals')
+                    ->useAttributeAsKey('key')
+                    ->prototype('scalar')
+                    ->end()
+                ->end()
+                ->arrayNode('paths')
+                    ->children()
+                        ->scalarNode('base')->end()
+                        ->scalarNode('posts')->end()
+                        ->scalarNode('views')->end()
+                        ->scalarNode('public')->end()
+                    ->end()
+                ->end()
+                ->arrayNode('pages')
+                    ->prototype('scalar')->end()
                 ->end()
             ->end()
-            ->arrayNode('paths')
-                ->children()
-                    ->scalarNode('base')->end()
-                    ->scalarNode('posts')->end()
-                    ->scalarNode('views')->end()
-                    ->scalarNode('public')->end()
-                ->end()
-            ->end()
-            ->arrayNode('pages')
-                ->prototype('scalar')->end()
-            ->end()
-        ->end()
-    ->end();
+        ->end();
 
-    return $treeBuilder;
+        return $treeBuilder;
     }
 }

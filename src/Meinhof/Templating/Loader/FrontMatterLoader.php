@@ -24,7 +24,7 @@ class FrontMatterLoader implements LoaderInterface
         $this->matter_separator = $separator;
     }
 
-    function load(TemplateReferenceInterface $template)
+    public function load(TemplateReferenceInterface $template)
     {
         $storage = $this->loader->load($template);
         if(!$storage instanceof Storage){
@@ -36,7 +36,7 @@ class FrontMatterLoader implements LoaderInterface
     /**
      * @{inheritdoc}
      */
-    function isFresh(TemplateReferenceInterface $template, $time)
+    public function isFresh(TemplateReferenceInterface $template, $time)
     {
         return $this->loader->isFresh($template, $time);
     }

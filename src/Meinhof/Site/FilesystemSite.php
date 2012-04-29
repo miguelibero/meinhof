@@ -3,18 +3,26 @@
 namespace Meinhof\Site;
 
 use Symfony\Component\Finder\Finder;
+
 use Meinhof\Post\PostInterface;
 use Meinhof\Post\FilesystemPost;
+use Symfony\Component\Config\Loader\LoaderInterface;
 
-class FilesystemSite implements SiteInterface
+class FilesystemSite extends AbstractSite
 {
     protected $paths = array();
     protected $globals;
+    protected $post_loader;
 
     public function __construct(array $paths, array $globals)
     {
         $this->paths = array_merge($this->paths, $paths);
         $this->globals = $globals;
+    }
+
+    public function setPostMatterLoader(LoaderInterface $loader)
+    {
+        $this->post_loader = $loader;
     }
 
     protected function getPath($name)
@@ -47,7 +55,10 @@ class FilesystemSite implements SiteInterface
                 $path = substr($path, strlen($posts_path));
                 $path = trim($path, '/');
             }
-            $posts[] = new FilesystemPost($path, $posts_path, $layouts_path);
+            $posts[] = FilesystemPost::fromArray(array(
+                'key'   => $path,
+                'paths' => $this->paths,
+            ), $this->post_loader);
         }
         return $posts;
     }

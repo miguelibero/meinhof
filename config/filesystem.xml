@@ -7,9 +7,11 @@
     <parameters>
         <parameter key="site.class"
             >Meinhof\Site\FilesystemSite</parameter>    
+            
         <parameter key="templating.loader.class"
             >Meinhof\Templating\Loader\FilesystemLoader</parameter>
-
+        <parameter key="templating.post.loader.class"
+            >Meinhof\Templating\Loader\FrontMatterLoader</parameter>
         <parameter key="templating.markdown.class"
             >Meinhof\Templating\MarkdownEngine</parameter>      
         <parameter key="templating.twig_loader.class"
@@ -18,11 +20,18 @@
             >Meinhof\Templating\TwigEngine</parameter>
         <parameter key="templating.twig.assetic_extension.class"
             >Assetic\Extension\Twig\AsseticExtension</parameter>
+        <parameter key="matter_loader.yaml.class"
+            >Meinhof\Config\Loader\YamlMatterLoader</parameter>
+        <parameter key="matter_loader.class"
+            >Meinhof\Config\Loader\TemplateMatterLoader</parameter>     
     </parameters>
     <services>
         <service id="site" class="%site.class%">
             <argument>%site.paths%</argument>
             <argument>%site.globals%</argument>
+            <call method="setPostMatterLoader">
+                <argument type="service" id="matter_loader.post"/>
+            </call>
         </service>
         <service id="templating.post.real_loader"
             class="%templating.loader.class%" public="false">
@@ -35,6 +44,13 @@
         <service id="templating.view.loader"
             class="%templating.loader.class%" public="false">
             <argument>%site.paths.views%</argument>
-        </service>        
+        </service>
+        <service id="matter_loader.yaml" class="%matter_loader.yaml.class%">
+        </service>
+        <service id="matter_loader.post" class="%matter_loader.class%">
+            <argument type="service" id="templating.name_parser"/>
+            <argument type="service" id="templating.post.loader"/>
+            <argument type="service" id="matter_loader.yaml"/>
+        </service>
     </services>
 </container>

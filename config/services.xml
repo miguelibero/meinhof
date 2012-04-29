@@ -20,7 +20,7 @@
         <parameter key="templating.class"
             >Symfony\Component\Templating\DelegatingEngine</parameter>       
         <parameter key="templating.name_parser.class"
-            >Symfony\Component\Templating\TemplateNameParser</parameter>       
+            >Symfony\Component\Templating\TemplateNameParser</parameter>                   
     </parameters>
     <services>
         <!-- configuration loader -->
@@ -57,6 +57,6 @@
         <service id="templating.post" class="%templating.class%">
         </service>
         <service id="templating.view" class="%templating.class%">
-        </service>        
+        </service>      
     </services>
 </container>
