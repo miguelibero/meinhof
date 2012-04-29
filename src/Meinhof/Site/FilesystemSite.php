@@ -1,18 +1,18 @@
 <?php
 
-namespace Meinhof\Configuration;
+namespace Meinhof\Site;
 
 use Symfony\Component\Finder\Finder;
+use Meinhof\Post\PostInterface;
+use Meinhof\Post\FilesystemPost;
 
-class FilesystemConfiguration implements ConfigurationInterface
+class FilesystemSite implements SiteInterface
 {
-    protected $base_dir;
     protected $paths = array();
     protected $globals;
 
-    public function __construct($base_dir, array $paths, array $globals)
+    public function __construct(array $paths, array $globals)
     {
-        $this->base_dir = $base_dir;
         $this->paths = array_merge($this->paths, $paths);
         $this->globals = $globals;
     }
@@ -24,23 +24,32 @@ class FilesystemConfiguration implements ConfigurationInterface
         }
         $path = $this->paths[$name];
         if(substr($path,0,1) !== '/'){
-            $path = $this->base_dir.'/'.$path;
+            if(!isset($this->paths['base'])){
+                throw new \InvalidArgumentException('No base path defined.');
+            }
+            $path = $this->paths['base'].'/'.$path;
         }
         return $path;
     }
 
     public function getPosts()
     {
-        // find all posts
+        $posts_path = $this->getPath('posts');
+        $layouts_path = $this->getPath('views');
         $finder = new Finder();
         $finder->files()
             ->ignoreVCS(true)
-            ->in($this->getPath('posts'));
-        $paths = array();
+            ->in($posts_path);
+        $posts = array();
         foreach($finder as $file){
-            $paths[] = $file->getRelativePathname();
+            $path = $file->getRealPath();
+            if(substr($path, 0, strlen($posts_path))){
+                $path = substr($path, strlen($posts_path));
+                $path = trim($path, '/');
+            }
+            $posts[] = new FilesystemPost($path, $posts_path, $layouts_path);
         }
-        return $paths;
+        return $posts;
     }
 
     public function getTemplates()
@@ -57,28 +66,9 @@ class FilesystemConfiguration implements ConfigurationInterface
         return $paths;
     }
 
-    public function getLayoutForPost($post)
+    public function savePost(PostInterface $post, $content)
     {
-        $finder = new Finder();
-        $finder->files()
-            ->name('post.*')
-            ->ignoreVCS(true)
-            ->in($this->getPath('views'));
-        foreach($finder as $file){
-            return $file->getRelativePathname();
-        }
-    }
-
-    public function getAsseticResourceForPost($post)
-    {
-        return null;
-    }
-
-    public function savePost($post, $content)
-    {
-        $parts = explode('.', $post);
-        $post = reset($parts);
-        $path = $this->getPath('site').'/'.$post.'.html';
+        $path = $this->getPath('site').'/'.$post->getSlug().'.html';
         file_put_contents($path, $content);
     }
 

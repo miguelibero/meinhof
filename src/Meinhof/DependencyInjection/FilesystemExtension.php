@@ -25,7 +25,8 @@ class FilesystemExtension implements ExtensionInterface
             'site'      => 'site',
             'public'    => 'public',
         ), $data['paths']);
-        
+
+        $data['paths']['base'] = $base_dir;        
         foreach($data['paths'] as $k=>$path){
             if(substr($path,0,1) !== '/'){
                 $path = $base_dir.'/'.$path;
@@ -33,8 +34,8 @@ class FilesystemExtension implements ExtensionInterface
             $path = realpath($path);
             $data['paths'][$k] = $path;
         }
+
         $prefix = 'configuration.';
-        $container->setParameter($prefix.'base_dir', $base_dir);
         $container->setParameter($prefix.'globals', $data['globals']); 
         $container->setParameter($prefix.'paths', $data['paths']); 
         foreach($data['paths'] as $name=>$path){

@@ -7,8 +7,11 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
 use Assetic\Factory\Resource\ResourceInterface as AsseticResourceInterface;
+use Assetic\Factory\LazyAssetManager;
 
 use Meinhof\DependencyInjection\ExtensionInterface;
+use Meinhof\Post\PostInterface;
+
 /**
  * Main class
  *
@@ -62,33 +65,51 @@ class Meinhof
 
     public function generatePosts()
     {
-        $config = $this->container->get('configuration');
-        $templating = $this->container->get('templating');
+        $site = $this->container->get('site');
+        $tplpost = $this->container->get('templating.post');
+        $tplview = $this->container->get('templating.view');
 
-        foreach($config->getPosts() as $post){
-            if(!$templating->exists($post)){
-                throw new \InvalidArgumentException("Post '${post}' does not exist.");
+        foreach($site->getPosts() as $post){
+            if(!$post instanceof PostInterface){
+                continue;
             }
-            if(!$templating->supports($post)){
-                throw new \InvalidArgumentException("Post '${post}' does not have a valid format.");   
+            $ckey = $post->getContentTemplatingKey();
+            if(!$tplpost->exists($ckey)){
+                throw new \InvalidArgumentException("Post template '${post}' does not exist.");
             }
-            $params = $config->getGlobals();
-            $content = $templating->render($post, $params);
+            if(!$tplpost->supports($ckey)){
+                throw new \InvalidArgumentException("Post template '${post}' does not have a valid format.");   
+            }
+            $params = $site->getGlobals();
+            $params = array_merge($params, $post->getGlobals());
+            $content = $tplpost->render($ckey, $params);
 
             $params['content'] = $params;
-            $layout = $config->getLayoutForPost($post);
-            $content = $templating->render($layout, $params);
+            $params['post'] = $post;
+            $vkey = $post->getViewTemplatingKey();
+            if($vkey){
+                if(!$tplview->exists($vkey)){
+                    throw new \InvalidArgumentException("View template '${vkey}' does not exist.");
+                }
+                if(!$tplview->supports($vkey)){
+                    throw new \InvalidArgumentException("View template '${vkey}' does not have a valid format.");
+                }            
+                $content = $tplview->render($vkey, $params);
+            }
 
-            $config->savePost($post, $content);
+            $site->savePost($post, $content);
         }        
     }
 
     public function dumpAssets()
     {
-        $config = $this->container->get('configuration');
+        $site = $this->container->get('site');
         $manager = $this->container->get('assetic.asset_manager');
+        if(!$manager instanceof LazyAssetManager){
+            throw new \InvalidArgumentException("Need a lazy asset manager to dump the assets.");
+        }
         $loader = $this->container->get('assetic.resource_loader');
-        foreach($config->getTemplates() as $tpl){
+        foreach($site->getTemplates() as $tpl){
             $resource = $loader->getResource($tpl);
             $type = $loader->getResourceType($tpl);
             if($resource instanceof AsseticResourceInterface){
