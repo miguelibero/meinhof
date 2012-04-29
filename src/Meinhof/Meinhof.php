@@ -5,8 +5,10 @@ namespace Meinhof;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
-use Meinhof\DependencyInjection\ExtensionInterface;
 
+use Assetic\Factory\Resource\ResourceInterface as AsseticResourceInterface;
+
+use Meinhof\DependencyInjection\ExtensionInterface;
 /**
  * Main class
  *
@@ -61,11 +63,9 @@ class Meinhof
     public function generatePosts()
     {
         $config = $this->container->get('configuration');
-        $posts = $config->getPosts();
-        
         $templating = $this->container->get('templating');
 
-        foreach($posts as $post){
+        foreach($config->getPosts() as $post){
             if(!$templating->exists($post)){
                 throw new \InvalidArgumentException("Post '${post}' does not exist.");
             }
@@ -85,8 +85,17 @@ class Meinhof
 
     public function dumpAssets()
     {
+        $config = $this->container->get('configuration');
+        $manager = $this->container->get('assetic.asset_manager');
+        $loader = $this->container->get('assetic.resource_loader');
+        foreach($config->getTemplates() as $tpl){
+            $resource = $loader->getResource($tpl);
+            $type = $loader->getResourceType($tpl);
+            if($resource instanceof AsseticResourceInterface){
+                $manager->addResource($resource, $type);
+            }
+        }
         $writer = $this->container->get('assetic.asset_writer');
-        $mng = $this->container->get('assetic.asset_manager');
-        $writer->writeManagerAssets($mng);
+        $writer->writeManagerAssets($manager);
     }
 }

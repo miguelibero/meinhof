@@ -43,6 +43,20 @@ class FilesystemConfiguration implements ConfigurationInterface
         return $paths;
     }
 
+    public function getTemplates()
+    {
+        // find all templates
+        $finder = new Finder();
+        $finder->files()
+            ->ignoreVCS(true)
+            ->in($this->getPath('views'));
+        $paths = array();
+        foreach($finder as $file){
+            $paths[] = $file->getRelativePathname();
+        }
+        return $paths;
+    }
+
     public function getLayoutForPost($post)
     {
         $finder = new Finder();
@@ -53,6 +67,11 @@ class FilesystemConfiguration implements ConfigurationInterface
         foreach($finder as $file){
             return $file->getRelativePathname();
         }
+    }
+
+    public function getAsseticResourceForPost($post)
+    {
+        return null;
     }
 
     public function savePost($post, $content)

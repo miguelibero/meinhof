@@ -20,10 +20,12 @@ class FilesystemExtension implements ExtensionInterface
         $base_dir = realpath($container->getParameter('key'));
 
         $data['paths'] = array_merge(array(
-            'posts' => 'posts',
-            'views' => 'views',
-            'site'  => 'site'
+            'posts'     => 'posts',
+            'views'     => 'views',
+            'site'      => 'site',
+            'public'    => 'public',
         ), $data['paths']);
+        
         foreach($data['paths'] as $k=>$path){
             if(substr($path,0,1) !== '/'){
                 $path = $base_dir.'/'.$path;

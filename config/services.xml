@@ -30,7 +30,8 @@
             >Assetic\Factory\AssetFactory</parameter>
         <parameter key="assetic.asset_writer.class"
             >Assetic\AssetWriter</parameter>            
-
+        <parameter key="assetic.resource_loader.class"
+            >Meinhof\Assetic\TemplateNameParserResourceLoader</parameter>
 
         <parameter key="templating.class"
             >Symfony\Component\Templating\DelegatingEngine</parameter>       
@@ -83,11 +84,21 @@
         <!-- assets -->
         <service id="assetic.asset_manager" class="%assetic.asset_manager.class%">
             <argument type="service" id="assetic.asset_factory"/>
+            <call method="setLoader">
+                <argument>twig</argument>
+                <argument type="service" id="assetic.formula_loader.twig"/>
+            </call>
+        </service>
+        <service id="assetic.resource_loader" class="%assetic.resource_loader.class%">
+            <argument type="service" id="templating.name_parser"/>
+            <call method="setTwigLoader">
+                <argument type="service" id="templating.twig_loader"/>
+            </call>
         </service>
         <service id="assetic.filter_manager" class="%assetic.filter_manager.class%">
         </service>        
         <service id="assetic.asset_factory" class="%assetic.asset_factory.class%">
-            <argument>%configuration.base_dir%/public</argument>
+            <argument>%configuration.paths.public%</argument>
             <call method="setAssetManager">
                 <argument type="service" id="assetic.asset_manager"/>
             </call>
@@ -95,9 +106,12 @@
                 <argument type="service" id="assetic.filter_manager"/>
             </call>            
         </service>
+        <service id="assetic.formula_loader.twig" class="Assetic\Extension\Twig\TwigFormulaLoader">
+            <argument type="service" id="templating.twig_environment"/>
+        </service>          
         <service id="assetic.asset_writer" class="%assetic.asset_writer.class%">
             <argument>%configuration.paths.site%</argument>
-        </service>           
+        </service>
 
         <!-- templating -->     
         <service id="templating.name_parser"

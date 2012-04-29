@@ -3,7 +3,7 @@
 {% block javascripts %}
 {{ parent() }}
 {% javascripts output='js/layout.js'
-    'public/js/layout.js'
+    'js/layout.js'
 %}
 <script src="{{ asset_url }}" type="text/javascript"></script>
 {% endjavascripts %}
@@ -12,7 +12,7 @@
 {% block stylesheets %}
 {{ parent() }}
 {% stylesheets output='css/layout.css'
-    'public/css/form.css'
+    'css/layout.css'
 %}
 <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
 {% endstylesheets %}
