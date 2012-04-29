@@ -14,6 +14,8 @@ use Meinhof\DependencyInjection\Compiler\TemplatingEnginePass;
 use Meinhof\DependencyInjection\Compiler\TwigExtensionPass;
 use Meinhof\DependencyInjection\Compiler\AsseticFilterPass;
 use Meinhof\DependencyInjection\Compiler\AsseticFormulaLoaderPass;
+use Meinhof\DependencyInjection\Compiler\AsseticResourceLoaderPass;
+
 use Meinhof\DependencyInjection\ExtensionInterface;
 use Meinhof\Post\PostInterface;
 
@@ -37,7 +39,8 @@ class Meinhof
         $this->container->addCompilerPass(new TemplatingEnginePass());
         $this->container->addCompilerPass(new TwigExtensionPass());
         $this->container->addCompilerPass(new AsseticFilterPass());
-        $this->container->addCompilerPass(new AsseticFormulaLoaderPass());
+        $this->container->addCompilerPass(new AsseticResourceLoaderPass());
+        $this->container->addCompilerPass(new AsseticFormulaLoaderPass());        
 
         $configdir = __DIR__.'/../../config';
         $loader = new XmlFileLoader($this->container, new FileLocator($configdir));
@@ -149,14 +152,10 @@ class Meinhof
 
         // load template resources
         $loader = $this->container->get('assetic.resource_loader');
-            $site = $this->container->get('site');
+        $site = $this->container->get('site');
+        
         foreach($site->getViews() as $view){
-            $resource = $loader->getResource($view);
-            $type = $loader->getResourceType($view);
-            if(!$resource instanceof AsseticResourceInterface){
-                throw new \InvalidArgumentException("Invalid view resource '${view}'.");
-            }
-            $manager->addResource($resource, $type);
+            $resource = $loader->load($view, $manager);
         }
 
         // write output assets
