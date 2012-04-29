@@ -2,3 +2,4 @@ meinhof:
     globals:
         test: lala
         test2: paco
+    paths: ~

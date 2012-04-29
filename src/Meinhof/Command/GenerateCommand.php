@@ -17,9 +17,9 @@ class GenerateCommand extends Command
     {
         $this
             ->setName('generate')
-            ->setDescription('Generates the html files based on a configuration directory')
+            ->setDescription('Generates the site structure')
             ->setDefinition(array(
-                new InputArgument('path', InputArgument::REQUIRED, 'base path of the site configuration'),
+                new InputArgument('key', InputArgument::REQUIRED, 'key of the site configuration'),
             ))            
             ->setHelp(<<<EOT
 <info>php meinhof.phar generate</info>
@@ -30,9 +30,9 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $dir = realpath($input->getArgument('path'));
+        $key = realpath($input->getArgument('key'));
 
-        $meinhof = new Meinhof($dir);
+        $meinhof = new Meinhof($key);
         $meinhof->generate();
     }
 }
