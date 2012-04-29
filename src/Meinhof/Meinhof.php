@@ -39,7 +39,8 @@ class Meinhof
         $this->container->addCompilerPass(new AsseticFilterPass());
         $this->container->addCompilerPass(new AsseticFormulaLoaderPass());
 
-        $loader = new XmlFileLoader($this->container, new FileLocator(__DIR__.'/../../config'));
+        $configdir = __DIR__.'/../../config';
+        $loader = new XmlFileLoader($this->container, new FileLocator($configdir));
         $loader->load('services.xml');
         $loader->load('templating.xml');
         $loader->load('assetic.xml');

@@ -45,7 +45,19 @@ class Compiler
         $finder = new Finder();
         $finder->files()
             ->ignoreVCS(true)
+            ->name('*')
+            ->in(__DIR__.'/../../config')
+        ;
+
+        foreach ($finder as $file) {
+            $this->addFile($phar, $file);
+        }
+
+        $finder = new Finder();
+        $finder->files()
+            ->ignoreVCS(true)
             ->name('*.php')
+            ->exclude('Tests')            
             ->notName('Compiler.php')
             ->notName('ClassLoader.php')
             ->in(__DIR__.'/..')
@@ -54,8 +66,8 @@ class Compiler
         foreach ($finder as $file) {
             $this->addFile($phar, $file);
         }
-        // $this->addFile($phar, new \SplFileInfo(__DIR__.'/Autoload/ClassLoader.php'), false);
 
+        
         $finder = new Finder();
         $finder->files()
             ->ignoreVCS(true)
@@ -64,6 +76,18 @@ class Compiler
             ->in(__DIR__.'/../../vendor/symfony/')
             ->in(__DIR__.'/../../vendor/twig/')
             ->in(__DIR__.'/../../vendor/dflydev/markdown/src/')
+            ->in(__DIR__.'/../../vendor/kriswallsmith/assetic/')
+        ;
+
+        foreach ($finder as $file) {
+            $this->addFile($phar, $file);
+        }
+
+        $finder = new Finder();
+        $finder->files()
+            ->ignoreVCS(true)
+            ->name('*')
+            ->in(__DIR__.'/../../vendor/symfony/dependency-injection/Symfony/Component/DependencyInjection/Loader/schema')
         ;
 
         foreach ($finder as $file) {
@@ -92,7 +116,6 @@ class Compiler
     private function addFile($phar, $file, $strip = true)
     {
         $path = str_replace(dirname(dirname(__DIR__)).DIRECTORY_SEPARATOR, '', $file->getRealPath());
-
         $content = file_get_contents($file);
         if ($strip) {
             $content = $this->stripWhitespace($content);
