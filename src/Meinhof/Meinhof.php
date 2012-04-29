@@ -128,7 +128,6 @@ class Meinhof
 
     public function dumpAssets()
     {
-        $site = $this->container->get('site');
         $manager = $this->container->get('assetic.asset_manager');
         if(!$manager instanceof AsseticLazyAssetManager){
             throw new \InvalidArgumentException("Need a lazy asset manager to dump the assets.");
@@ -152,6 +151,7 @@ class Meinhof
             }
             $manager->addResource($resource, $type);
         }
+        // write output assets
         $writer = $this->container->get('assetic.asset_writer');
         $writer->writeManagerAssets($manager);
     }
