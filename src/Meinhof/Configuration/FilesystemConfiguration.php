@@ -55,6 +55,14 @@ class FilesystemConfiguration implements ConfigurationInterface
         }
     }
 
+    public function savePost($post, $content)
+    {
+        $parts = explode('.', $post);
+        $post = reset($parts);
+        $path = $this->getPath('site').'/'.$post.'.html';
+        file_put_contents($path, $content);
+    }
+
     public function getGlobals()
     {
         return $this->globals;

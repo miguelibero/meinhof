@@ -54,6 +54,12 @@ class Meinhof
 
     public function generate()
     {
+        $this->generatePosts();
+        $this->dumpAssets();
+    }
+
+    public function generatePosts()
+    {
         $config = $this->container->get('configuration');
         $posts = $config->getPosts();
         
@@ -72,6 +78,15 @@ class Meinhof
             $params['content'] = $params;
             $layout = $config->getLayoutForPost($post);
             $content = $templating->render($layout, $params);
-        }
+
+            $config->savePost($post, $content);
+        }        
+    }
+
+    public function dumpAssets()
+    {
+        $writer = $this->container->get('assetic.asset_writer');
+        $mng = $this->container->get('assetic.asset_manager');
+        $writer->writeManagerAssets($mng);
     }
 }

@@ -10,4 +10,6 @@ interface ConfigurationInterface
     public function getGlobals();
 
     public function getLayoutForPost($post);
+
+    public function savePost($post, $content);
 }

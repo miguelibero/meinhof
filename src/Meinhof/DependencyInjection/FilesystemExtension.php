@@ -8,7 +8,6 @@ use Symfony\Component\Config\Definition\Processor;
 
 class FilesystemExtension implements ExtensionInterface
 {
-
 	/**
      * {@inheritDoc}
      */
@@ -22,7 +21,8 @@ class FilesystemExtension implements ExtensionInterface
 
         $data['paths'] = array_merge(array(
             'posts' => 'posts',
-            'views' => 'views'
+            'views' => 'views',
+            'site'  => 'site'
         ), $data['paths']);
         foreach($data['paths'] as $k=>$path){
             if(substr($path,0,1) !== '/'){
@@ -31,9 +31,13 @@ class FilesystemExtension implements ExtensionInterface
             $path = realpath($path);
             $data['paths'][$k] = $path;
         }
-        $container->setParameter('base_dir', $base_dir);
-        $container->setParameter('configuration.globals', $data['globals']); 
-        $container->setParameter('configuration.paths', $data['paths']); 
+        $prefix = 'configuration.';
+        $container->setParameter($prefix.'base_dir', $base_dir);
+        $container->setParameter($prefix.'globals', $data['globals']); 
+        $container->setParameter($prefix.'paths', $data['paths']); 
+        foreach($data['paths'] as $name=>$path){
+            $container->setParameter($prefix.'paths.'.$name, $path); 
+        }
     }
 
 

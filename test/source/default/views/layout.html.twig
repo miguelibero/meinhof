@@ -2,7 +2,7 @@
 
 {% block javascripts %}
 {{ parent() }}
-{% javascripts output='js/layout.js' filter='?yui_js'
+{% javascripts output='js/layout.js'
     'public/js/layout.js'
 %}
 <script src="{{ asset_url }}" type="text/javascript"></script>
@@ -11,7 +11,7 @@
 
 {% block stylesheets %}
 {{ parent() }}
-{% stylesheets output='css/layout.css' filter='cssrewrite'
+{% stylesheets output='css/layout.css'
     'public/css/form.css'
 %}
 <link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
