@@ -5,12 +5,19 @@
         "psr-0": { "": "src/" }
     },
     "require": {
-        "php":              	">=5.3.2",
-        "symfony/console":      "2.1.*",
-        "symfony/finder":       "2.1.*",
-        "symfony/process":      "2.1.*",
-        "symfony/yaml":     	"2.1.*",
-        "twig/twig":        	"1.8.x-dev",
-        "dflydev/markdown": 	"1.0.x-dev"
+        "php":                          ">=5.3.2",
+        "symfony/dependency-injection": "2.1.*",
+        "symfony/config":               "2.1.*",
+        "symfony/console":              "2.1.*",
+        "symfony/finder":               "2.1.*",
+        "symfony/process":              "2.1.*",
+        "symfony/templating":           "2.1.*",
+        "symfony/translation":          "2.1.*"
+    },
+    "suggest": {
+        "symfony/yaml":             "2.1.*",        
+        "twig/twig":                "1.8.*",
+        "kriswallsmith/assetic":    "1.1.*",
+        "dflydev/markdown":         "1.0.*"
     }
 }

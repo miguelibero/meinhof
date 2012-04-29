@@ -1,0 +1,27 @@
+{% extends "base.html.twig" %}
+
+{% block javascripts %}
+{{ parent() }}
+{% javascripts output='js/layout.js' filter='?yui_js'
+    'public/js/layout.js'
+%}
+<script src="{{ asset_url }}" type="text/javascript"></script>
+{% endjavascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+{% stylesheets output='css/layout.css' filter='cssrewrite'
+    'public/css/form.css'
+%}
+<link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
+{% endstylesheets %}
+{% endblock %}
+
+{% block main %}
+<h1>Test blog</h1>
+<div id="content">
+{% block content %}
+{% endblock %}
+</div>
+{% endblock %}
