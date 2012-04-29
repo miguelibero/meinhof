@@ -1,0 +1,40 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="site.class"
+            >Meinhof\Site\FilesystemSite</parameter>    
+        <parameter key="templating.loader.class"
+            >Meinhof\Templating\Loader\FilesystemLoader</parameter>
+
+        <parameter key="templating.markdown.class"
+            >Meinhof\Templating\MarkdownEngine</parameter>      
+        <parameter key="templating.twig_loader.class"
+            >\Twig_Loader_Filesystem</parameter>             
+        <parameter key="templating.twig.class"
+            >Meinhof\Templating\TwigEngine</parameter>
+        <parameter key="templating.twig.assetic_extension.class"
+            >Assetic\Extension\Twig\AsseticExtension</parameter>
+    </parameters>
+    <services>
+        <service id="site" class="%site.class%">
+            <argument>%site.paths%</argument>
+            <argument>%site.globals%</argument>
+        </service>
+        <service id="templating.post.real_loader"
+            class="%templating.loader.class%" public="false">
+            <argument>%site.paths.posts%</argument>
+        </service>
+        <service id="templating.post.loader"
+            class="%templating.post.loader.class%" public="false">
+            <argument type="service" id="templating.post.real_loader"/>
+        </service>
+        <service id="templating.view.loader"
+            class="%templating.loader.class%" public="false">
+            <argument>%site.paths.views%</argument>
+        </service>        
+    </services>
+</container>

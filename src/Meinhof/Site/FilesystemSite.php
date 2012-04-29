@@ -52,7 +52,7 @@ class FilesystemSite implements SiteInterface
         return $posts;
     }
 
-    public function getTemplates()
+    public function getViews()
     {
         // find all templates
         $finder = new Finder();

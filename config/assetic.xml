@@ -1,0 +1,60 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="assetic.asset_manager.class"
+            >Assetic\Factory\LazyAssetManager</parameter>
+        <parameter key="assetic.filter_manager.class"
+            >Assetic\FilterManager</parameter>
+        <parameter key="assetic.asset_factory.class"
+            >Assetic\Factory\AssetFactory</parameter>
+        <parameter key="assetic.asset_writer.class"
+            >Assetic\AssetWriter</parameter>            
+        <parameter key="assetic.resource_loader.class"
+            >Meinhof\Assetic\TemplateNameParserResourceLoader</parameter>
+        
+        <parameter key="assetic.formula_loader.twig.class"
+            >Assetic\Extension\Twig\TwigFormulaLoader</parameter>
+        <parameter key="templating.twig.assetic_extension.class"
+            >Assetic\Extension\Twig\AsseticExtension</parameter>
+    </parameters>
+    <services>
+        <service id="assetic.asset_manager" class="%assetic.asset_manager.class%">
+            <argument type="service" id="assetic.asset_factory"/>
+        </service>
+        <service id="assetic.resource_loader" class="%assetic.resource_loader.class%">
+            <argument type="service" id="templating.name_parser"/>
+            <call method="setTwigLoader">
+                <argument type="service" id="templating.view.twig_loader"/>
+            </call>
+        </service>
+        <service id="assetic.filter_manager" class="%assetic.filter_manager.class%">
+        </service>        
+        <service id="assetic.asset_factory" class="%assetic.asset_factory.class%">
+            <argument>%site.paths.public%</argument>
+            <call method="setAssetManager">
+                <argument type="service" id="assetic.asset_manager"/>
+            </call>
+            <call method="setFilterManager">
+                <argument type="service" id="assetic.filter_manager"/>
+            </call>            
+        </service>          
+        <service id="assetic.asset_writer" class="%assetic.asset_writer.class%">
+            <argument>%site.paths.site%</argument>
+        </service>
+
+        <!-- twig support -->
+        <service id="assetic.formula_loader.twig" class="%assetic.formula_loader.twig.class%">
+            <argument type="service" id="twig_environment.view"/>
+            <tag name="assetic.formula_loader" type="twig"/>
+        </service>
+        <service id="templating.twig.assetic_extension"
+            class="%templating.twig.assetic_extension.class%" public="false">
+            <argument type="service" id="assetic.asset_factory"/>
+            <tag name="twig.extension"/>
+        </service>
+    </services>
+</container>

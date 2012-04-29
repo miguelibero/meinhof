@@ -7,8 +7,13 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
 use Assetic\Factory\Resource\ResourceInterface as AsseticResourceInterface;
-use Assetic\Factory\LazyAssetManager;
+use Assetic\Factory\LazyAssetManager as AsseticLazyAssetManager;
+use Assetic\Factory\Loader\FormulaLoaderInterface as AsseticFormulaLoaderInterface;
 
+use Meinhof\DependencyInjection\Compiler\TemplatingEnginePass;
+use Meinhof\DependencyInjection\Compiler\TwigExtensionPass;
+use Meinhof\DependencyInjection\Compiler\AsseticFilterPass;
+use Meinhof\DependencyInjection\Compiler\AsseticFormulaLoaderPass;
 use Meinhof\DependencyInjection\ExtensionInterface;
 use Meinhof\Post\PostInterface;
 
@@ -27,8 +32,17 @@ class Meinhof
     {
         // load the container
         $this->container = new ContainerBuilder();
+
+        // setup container compiler passes
+        $this->container->addCompilerPass(new TemplatingEnginePass());
+        $this->container->addCompilerPass(new TwigExtensionPass());
+        $this->container->addCompilerPass(new AsseticFilterPass());
+        $this->container->addCompilerPass(new AsseticFormulaLoaderPass());
+
         $loader = new XmlFileLoader($this->container, new FileLocator(__DIR__.'/../../config'));
         $loader->load('services.xml');
+        $loader->load('templating.xml');
+        $loader->load('assetic.xml');
 
         // set the key as a parameter
         $this->container->setParameter('key', $key);
@@ -87,10 +101,10 @@ class Meinhof
             }
             $ckey = $post->getContentTemplatingKey();
             if(!$tplpost->exists($ckey)){
-                throw new \InvalidArgumentException("Post template '${post}' does not exist.");
+                throw new \InvalidArgumentException("Post template '${ckey}' does not exist.");
             }
             if(!$tplpost->supports($ckey)){
-                throw new \InvalidArgumentException("Post template '${post}' does not have a valid format.");   
+                throw new \InvalidArgumentException("Post template '${ckey}' does not have a valid format.");   
             }
             $params = $globals;
             $params['post'] = $post;
@@ -116,16 +130,27 @@ class Meinhof
     {
         $site = $this->container->get('site');
         $manager = $this->container->get('assetic.asset_manager');
-        if(!$manager instanceof LazyAssetManager){
+        if(!$manager instanceof AsseticLazyAssetManager){
             throw new \InvalidArgumentException("Need a lazy asset manager to dump the assets.");
         }
-        $loader = $this->container->get('assetic.resource_loader');
-        foreach($site->getTemplates() as $tpl){
-            $resource = $loader->getResource($tpl);
-            $type = $loader->getResourceType($tpl);
-            if($resource instanceof AsseticResourceInterface){
-                $manager->addResource($resource, $type);
+        // load formula loaders, done lazily to avoid circular dependencies
+        $loaders = $this->container->getParameter('assetic.formula_loaders');
+        foreach($loaders as $alias=>$id){
+            $loader = $this->container->get($id);
+            if(!$loader instanceof AsseticFormulaLoaderInterface){
+                throw new \InvalidArgumentException("Invalid assetic formula loader '${alias}'.");
             }
+            $manager->setLoader($alias, $loader);
+        }
+        // load template resources
+        $loader = $this->container->get('assetic.resource_loader');
+        foreach($site->getViews() as $view){
+            $resource = $loader->getResource($view);
+            $type = $loader->getResourceType($view);
+            if(!$resource instanceof AsseticResourceInterface){
+                throw new \InvalidArgumentException("Invalid view resource '${view}'.");
+            }
+            $manager->addResource($resource, $type);
         }
         $writer = $this->container->get('assetic.asset_writer');
         $writer->writeManagerAssets($manager);

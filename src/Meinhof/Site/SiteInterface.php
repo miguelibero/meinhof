@@ -12,9 +12,9 @@ interface SiteInterface
     public function getPosts();
 
     /**
-     * @return array of templating keys
+     * @return array of view keys
      */
-    public function getTemplates();
+    public function getViews();
 
     /**
      * @return array of key values to replace in the templates

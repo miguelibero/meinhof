@@ -1,0 +1,51 @@
+<?xml version="1.0" ?>
+
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="templating.post.loader.class"
+            >Meinhof\Templating\Loader\FrontMatterLoader</parameter>
+        <parameter key="templating.markdown.class"
+            >Meinhof\Templating\MarkdownEngine</parameter>      
+        <parameter key="templating.twig_loader.class"
+            >\Twig_Loader_Filesystem</parameter>             
+        <parameter key="templating.twig.class"
+            >Meinhof\Templating\TwigEngine</parameter>
+        <parameter key="templating.twig.assetic_extension.class"
+            >Assetic\Extension\Twig\AsseticExtension</parameter>
+    </parameters>
+    <services>
+        <service id="templating.post.markdown"
+            class="%templating.markdown.class%" public="false">
+            <argument type="service" id="templating.name_parser"/>
+            <argument type="service" id="templating.post.loader"/>
+            <tag name="templating.engine" type="post" />
+        </service>
+        <service id="templating.post.twig_loader" class="%templating.twig_loader.class%" public="false">
+            <argument>%site.paths.posts%</argument>
+        </service>
+        <service id="templating.view.twig_loader" class="%templating.twig_loader.class%" public="false">
+            <argument>%site.paths.views%</argument>
+        </service>        
+        <service id="twig_environment.post" class="\Twig_Environment" public="false">
+            <argument type="service" id="templating.post.twig_loader"/>
+        </service>
+        <service id="twig_environment.view" class="\Twig_Environment" public="false">
+            <argument type="service" id="templating.view.twig_loader"/>
+        </service>       
+        <service id="templating.post.twig"
+            class="%templating.twig.class%" public="false">
+            <argument type="service" id="twig_environment.post"/>
+            <argument type="service" id="templating.name_parser"/>
+            <tag name="templating.engine" type="post" />
+        </service>
+        <service id="templating.view.twig"
+            class="%templating.twig.class%" public="false">
+            <argument type="service" id="twig_environment.view"/>
+            <argument type="service" id="templating.name_parser"/>
+            <tag name="templating.engine" type="view" />
+        </service>   
+    </services>
+</container>

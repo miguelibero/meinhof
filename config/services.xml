@@ -1,5 +1,5 @@
 <?xml version="1.0" ?>
-
+<!-- basic services -->
 <container xmlns="http://symfony.com/schema/dic/services"
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
@@ -15,40 +15,12 @@
             >Symfony\Component\DependencyInjection\Loader\XmlFileLoader</parameter>                                  
         <parameter key="config_loader.yaml.class"
             >Symfony\Component\DependencyInjection\Loader\YamlFileLoader</parameter>
-
         <parameter key="extension.class"
-            >Meinhof\DependencyInjection\FilesystemExtension</parameter>
-
-        <parameter key="site.class"
-            >Meinhof\Site\FilesystemSite</parameter>
-
-        <parameter key="assetic.asset_manager.class"
-            >Assetic\Factory\LazyAssetManager</parameter>
-        <parameter key="assetic.filter_manager.class"
-            >Assetic\FilterManager</parameter>
-        <parameter key="assetic.asset_factory.class"
-            >Assetic\Factory\AssetFactory</parameter>
-        <parameter key="assetic.asset_writer.class"
-            >Assetic\AssetWriter</parameter>            
-        <parameter key="assetic.resource_loader.class"
-            >Meinhof\Assetic\TemplateNameParserResourceLoader</parameter>
-
+            >Meinhof\DependencyInjection\FilesystemExtension</parameter>      
         <parameter key="templating.class"
             >Symfony\Component\Templating\DelegatingEngine</parameter>       
         <parameter key="templating.name_parser.class"
             >Symfony\Component\Templating\TemplateNameParser</parameter>       
-        <parameter key="templating.loader.class"
-            >Meinhof\Templating\Loader\FilesystemLoader</parameter>
-        <parameter key="templating.post.loader.class"
-            >Meinhof\Templating\Loader\FrontMatterLoader</parameter>
-        <parameter key="templating.markdown.class"
-            >Meinhof\Templating\MarkdownEngine</parameter>      
-        <parameter key="templating.twig_loader.class"
-            >\Twig_Loader_Filesystem</parameter>             
-        <parameter key="templating.twig.class"
-            >Meinhof\Templating\TwigEngine</parameter>
-        <parameter key="templating.twig.assetic_extension.class"
-            >Assetic\Extension\Twig\AsseticExtension</parameter>
     </parameters>
     <services>
         <!-- configuration loader -->
@@ -77,106 +49,14 @@
 
         <service id="extension" class="%extension.class%">
         </service>
-        <service id="site" class="%site.class%">
-            <argument>%site.paths%</argument>
-            <argument>%site.globals%</argument>
-        </service>
-
-        <!-- assets -->
-        <service id="assetic.asset_manager" class="%assetic.asset_manager.class%">
-            <argument type="service" id="assetic.asset_factory"/>
-            <call method="setLoader">
-                <argument>twig</argument>
-                <argument type="service" id="assetic.formula_loader.twig"/>
-            </call>
-        </service>
-        <service id="assetic.resource_loader" class="%assetic.resource_loader.class%">
-            <argument type="service" id="templating.name_parser"/>
-            <call method="setTwigLoader">
-                <argument type="service" id="templating.view.twig_loader"/>
-            </call>
-        </service>
-        <service id="assetic.filter_manager" class="%assetic.filter_manager.class%">
-        </service>        
-        <service id="assetic.asset_factory" class="%assetic.asset_factory.class%">
-            <argument>%site.paths.public%</argument>
-            <call method="setAssetManager">
-                <argument type="service" id="assetic.asset_manager"/>
-            </call>
-            <call method="setFilterManager">
-                <argument type="service" id="assetic.filter_manager"/>
-            </call>            
-        </service>
-        <service id="assetic.formula_loader.twig" class="Assetic\Extension\Twig\TwigFormulaLoader">
-            <argument type="service" id="templating.view.twig_environment"/>
-        </service>          
-        <service id="assetic.asset_writer" class="%assetic.asset_writer.class%">
-            <argument>%site.paths.site%</argument>
-        </service>
 
         <!-- templating -->     
         <service id="templating.name_parser"
             class="%templating.name_parser.class%" public="false">
-        </service>
-        <service id="templating.post.real_loader"
-            class="%templating.loader.class%" public="false">
-            <argument>%site.paths.posts%</argument>
-        </service>
-        <service id="templating.post.loader"
-            class="%templating.post.loader.class%" public="false">
-            <argument type="service" id="templating.post.real_loader"/>
-        </service>
-        <service id="templating.view.loader"
-            class="%templating.loader.class%" public="false">
-            <argument>%site.paths.views%</argument>
         </service>                  
-
-        <service id="templating.post.markdown"
-            class="%templating.markdown.class%" public="false">
-            <argument type="service" id="templating.name_parser"/>
-            <argument type="service" id="templating.post.loader"/>
-        </service>
-
-        <service id="templating.twig.assetic_extension"
-            class="%templating.twig.assetic_extension.class%" public="false">
-            <argument type="service" id="assetic.asset_factory"/>
-        </service>        
-
-        <service id="templating.post.twig_loader" class="%templating.twig_loader.class%" public="false">
-            <argument>%site.paths.posts%</argument>
-        </service>
-        <service id="templating.view.twig_loader" class="%templating.twig_loader.class%" public="false">
-            <argument>%site.paths.views%</argument>
-        </service>        
-        <service id="templating.post.twig_environment" class="\Twig_Environment" public="false">
-            <argument type="service" id="templating.post.twig_loader"/>
-        </service>
-        <service id="templating.view.twig_environment" class="\Twig_Environment" public="false">
-            <argument type="service" id="templating.view.twig_loader"/>
-            <call method="addExtension">
-                <argument type="service" id="templating.twig.assetic_extension"/>
-            </call>
-        </service>        
-        <service id="templating.post.twig"
-            class="%templating.twig.class%" public="false">
-            <argument type="service" id="templating.post.twig_environment"/>
-            <argument type="service" id="templating.name_parser"/>
-        </service>
-        <service id="templating.view.twig"
-            class="%templating.twig.class%" public="false">
-            <argument type="service" id="templating.view.twig_environment"/>
-            <argument type="service" id="templating.name_parser"/>
-        </service>                   
         <service id="templating.post" class="%templating.class%">
-            <argument type="collection">             
-                <argument type="service" id="templating.post.markdown" />
-                <argument type="service" id="templating.post.twig" />            
-            </argument>
         </service>
         <service id="templating.view" class="%templating.class%">
-            <argument type="collection">
-                <argument type="service" id="templating.view.twig" />
-            </argument>
         </service>        
     </services>
 </container>
