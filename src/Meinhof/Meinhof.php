@@ -60,16 +60,28 @@ class Meinhof
     public function generate()
     {
         $this->generatePosts();
+        $this->generatePages();
         $this->dumpAssets();
+    }
+
+    public function generatePages()
+    {
+        $site = $this->container->get('site');
+        $posts = $site->getPosts();
+        $tplview = $this->container->get('templating.view');
     }
 
     public function generatePosts()
     {
         $site = $this->container->get('site');
+        $posts = $site->getPosts();
         $tplpost = $this->container->get('templating.post');
         $tplview = $this->container->get('templating.view');
 
-        foreach($site->getPosts() as $post){
+        $globals = $site->getGlobals();
+        $globals['posts'] = $posts;
+
+        foreach($posts as $post){
             if(!$post instanceof PostInterface){
                 continue;
             }
@@ -80,12 +92,11 @@ class Meinhof
             if(!$tplpost->supports($ckey)){
                 throw new \InvalidArgumentException("Post template '${post}' does not have a valid format.");   
             }
-            $params = $site->getGlobals();
-            $params = array_merge($params, $post->getGlobals());
+            $params = $globals;
+            $params['post'] = $post;
             $content = $tplpost->render($ckey, $params);
 
-            $params['content'] = $params;
-            $params['post'] = $post;
+            $params['content'] = $content;
             $vkey = $post->getViewTemplatingKey();
             if($vkey){
                 if(!$tplview->exists($vkey)){
@@ -98,7 +109,7 @@ class Meinhof
             }
 
             $site->savePost($post, $content);
-        }        
+        }
     }
 
     public function dumpAssets()

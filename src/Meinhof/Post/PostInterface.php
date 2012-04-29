@@ -20,9 +20,9 @@ interface PostInterface
     public function getSlug();
 
     /**
-     * @return array of globals
+     * @return array of additional post info
      */
-    public function getGlobals();
+    public function getInfo();
 
     /**
      * @return string templating key for the post content

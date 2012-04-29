@@ -18,10 +18,13 @@
 {% endstylesheets %}
 {% endblock %}
 
-{% block main %}
-<h1>Test blog</h1>
+{% block body %}
+<div id="header">
+    <h1>{{ site_name }}</h1>
+    <div class="slogan">{{ site_slogan }}</div>
+</div>
 <div id="content">
-{% block content %}
-{% endblock %}
+    {% block content %}
+    {% endblock %}
 </div>
 {% endblock %}

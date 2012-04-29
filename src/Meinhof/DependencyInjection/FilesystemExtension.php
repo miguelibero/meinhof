@@ -15,27 +15,14 @@ class FilesystemExtension implements ExtensionInterface
     {
         $configuration = new FilesystemConfiguration();
         $processor = new Processor();
-        $data = $processor->processConfiguration($configuration, $configs); 
-    
-        $base_dir = realpath($container->getParameter('key'));
+        $data = $processor->processConfiguration($configuration, $configs);     
+        $base_path = realpath($container->getParameter('key'));
 
-        $data['paths'] = array_merge(array(
-            'posts'     => 'posts',
-            'views'     => 'views',
-            'site'      => 'site',
-            'public'    => 'public',
-        ), $data['paths']);
-
-        $data['paths']['base'] = $base_dir;        
-        foreach($data['paths'] as $k=>$path){
-            if(substr($path,0,1) !== '/'){
-                $path = $base_dir.'/'.$path;
-            }
-            $path = realpath($path);
-            $data['paths'][$k] = $path;
+        if(!isset($data['paths']) || !is_array($data['paths'])){
+            $data['paths'] = array();
         }
-
-        $prefix = 'configuration.';
+        $data['paths'] = $this->fixConfigurationPaths($data['paths'], $base_path);
+        $prefix = 'site.';
         $container->setParameter($prefix.'globals', $data['globals']); 
         $container->setParameter($prefix.'paths', $data['paths']); 
         foreach($data['paths'] as $name=>$path){
@@ -43,7 +30,24 @@ class FilesystemExtension implements ExtensionInterface
         }
     }
 
+    protected function fixConfigurationPaths(array $paths, $base)
+    {
+        $paths = array_merge(array(
+            'posts'     => 'posts',
+            'views'     => 'views',
+            'site'      => 'site',
+            'public'    => 'public',
+            'base'      => $base
+        ), $paths);
 
+        foreach($paths as $k=>$path){
+            if(substr($path,0,1) !== '/'){
+                $path = $base.'/'.$path;
+            }
+            $paths[$k] = realpath($path);
+        }
+        return $paths;
+    }
 
     public function getConfigurationResources($key)
     {

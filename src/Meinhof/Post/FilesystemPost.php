@@ -9,7 +9,7 @@ class FilesystemPost implements PostInterface
     protected $key;
     protected $posts_path;
     protected $views_path;
-    protected $globals = array();
+    protected $info = array();
 
     public function __construct($key, $posts_path, $views_path)
     {
@@ -49,9 +49,9 @@ class FilesystemPost implements PostInterface
         return reset($parts);
     }
 
-    public function getGlobals()
+    public function getInfo()
     {
-        return $this->globals;
+        return $this->info;
     }
 
     public function getContentTemplatingKey()

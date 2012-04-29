@@ -1,6 +1,6 @@
 <?php
 
-namespace Meinhof\Loader;
+namespace Meinhof\Templating\Loader;
 
 use Symfony\Component\Templating\Loader\FilesystemLoader as BaseFilesystemLoader;
 use Symfony\Component\Templating\Storage\Storage;

@@ -38,7 +38,9 @@
         <parameter key="templating.name_parser.class"
             >Symfony\Component\Templating\TemplateNameParser</parameter>       
         <parameter key="templating.loader.class"
-            >Meinhof\Loader\FilesystemLoader</parameter>
+            >Meinhof\Templating\Loader\FilesystemLoader</parameter>
+        <parameter key="templating.post.loader.class"
+            >Meinhof\Templating\Loader\FrontMatterLoader</parameter>
         <parameter key="templating.markdown.class"
             >Meinhof\Templating\MarkdownEngine</parameter>      
         <parameter key="templating.twig_loader.class"
@@ -76,8 +78,8 @@
         <service id="extension" class="%extension.class%">
         </service>
         <service id="site" class="%site.class%">
-            <argument>%configuration.paths%</argument>
-            <argument>%configuration.globals%</argument>
+            <argument>%site.paths%</argument>
+            <argument>%site.globals%</argument>
         </service>
 
         <!-- assets -->
@@ -97,7 +99,7 @@
         <service id="assetic.filter_manager" class="%assetic.filter_manager.class%">
         </service>        
         <service id="assetic.asset_factory" class="%assetic.asset_factory.class%">
-            <argument>%configuration.paths.public%</argument>
+            <argument>%site.paths.public%</argument>
             <call method="setAssetManager">
                 <argument type="service" id="assetic.asset_manager"/>
             </call>
@@ -109,20 +111,24 @@
             <argument type="service" id="templating.view.twig_environment"/>
         </service>          
         <service id="assetic.asset_writer" class="%assetic.asset_writer.class%">
-            <argument>%configuration.paths.site%</argument>
+            <argument>%site.paths.site%</argument>
         </service>
 
         <!-- templating -->     
         <service id="templating.name_parser"
             class="%templating.name_parser.class%" public="false">
         </service>
-        <service id="templating.post.loader"
+        <service id="templating.post.real_loader"
             class="%templating.loader.class%" public="false">
-            <argument>%configuration.paths.posts%</argument>
+            <argument>%site.paths.posts%</argument>
+        </service>
+        <service id="templating.post.loader"
+            class="%templating.post.loader.class%" public="false">
+            <argument type="service" id="templating.post.real_loader"/>
         </service>
         <service id="templating.view.loader"
             class="%templating.loader.class%" public="false">
-            <argument>%configuration.paths.views%</argument>
+            <argument>%site.paths.views%</argument>
         </service>                  
 
         <service id="templating.post.markdown"
@@ -137,10 +143,10 @@
         </service>        
 
         <service id="templating.post.twig_loader" class="%templating.twig_loader.class%" public="false">
-            <argument>%configuration.paths.posts%</argument>
+            <argument>%site.paths.posts%</argument>
         </service>
         <service id="templating.view.twig_loader" class="%templating.twig_loader.class%" public="false">
-            <argument>%configuration.paths.views%</argument>
+            <argument>%site.paths.views%</argument>
         </service>        
         <service id="templating.post.twig_environment" class="\Twig_Environment" public="false">
             <argument type="service" id="templating.post.twig_loader"/>
