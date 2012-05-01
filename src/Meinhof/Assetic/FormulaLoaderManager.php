@@ -11,7 +11,18 @@ class FormulaLoaderManager implements FormulaLoaderManagerInterface
 
     public function __construct(array $loaders=array())
     {
-        $this->loaders = $loaders;
+        $this->setLoaders($loaders);
+    }
+
+    protected function setLoaders(array $loaders)
+    {
+        $this->loaders = array();
+        foreach($loaders as $type=>$loader){
+            if(!$loader instanceof FormulaLoaderInterface){
+                throw new \InvalidArgumentException("Not a valid formula loader with key '${type}'.");
+            }
+            $this->setLoader($type, $loader);
+        }
     }
 
     public function setLoader($type, FormulaLoaderInterface $loader)

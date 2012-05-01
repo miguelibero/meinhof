@@ -11,6 +11,7 @@ use Meinhof\Assetic\DelegatingResourceLoader;
 class DelegatingResourceLoaderTest extends \PHPUnit_Framework_TestCase
 {
     protected $loader;
+    protected $manager;
 
     public function setUp()
     {
@@ -39,9 +40,38 @@ class DelegatingResourceLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->loader instanceof ResourceLoaderInterface);
     }
 
+    /**
+     * @expectedException \InvalidArgumentException
+     */
+    public function testLoadingWithBadParser()
+    {
+        $parser = $this->getMock('Symfony\\Component\\Templating\\TemplateNameParserInterface');
+
+        $parser->expects($this->any())
+            ->method('parse')
+            ->will($this->returnValue(null));
+
+        $loader = new DelegatingResourceLoader($parser);
+        $loader->load('test', $this->manager);
+    }    
+
+    /**
+     * @expectedException \InvalidArgumentException
+     */
     public function testLoadingWithoutLoader()
     {
-        $this->setExpectedException('InvalidArgumentException');
         $this->loader->load('test.twig', $this->manager);
-    }    
+    }
+
+    public function testLoadingWithLoader()
+    {
+        $loader = $this->getMock('Meinhof\\Assetic\\ResourceLoaderInterface');
+        $loader->expects($this->once())
+            ->method('load')
+            ->with($this->equalTo('test.twig'), $this->equalTo($this->manager))
+            ->will($this->returnValue('result'));
+
+        $this->loader->setLoader('twig', $loader);
+        $this->assertEquals('result', $this->loader->load('test.twig', $this->manager));
+    } 
 }
