@@ -48,7 +48,7 @@ class DelegatingResourceLoader implements ResourceLoaderInterface
 
     public function load($name, LazyAssetManager $mng)
     {
-        $type = $this->getResourceType($name);;
+        $type = $this->getResourceType($name);
         $loader = $this->getLoader($type);
         return $loader->load($name, $mng);
     }

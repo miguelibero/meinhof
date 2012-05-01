@@ -8,30 +8,36 @@ use Assetic\Factory\AssetFactory;
 use Assetic\Factory\LazyAssetManager;
 use Assetic\Factory\Loader\FormulaLoaderInterface;
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 use Meinhof\Site\SiteInterface;
 use Meinhof\Assetic\ResourceLoaderInterface;
+use Meinhof\Assetic\FormulaLoaderManagerInterface;
 
-class GenerateAssetsAction implements ActionInterface
+class GenerateAssetsAction extends OutputAction
 {
     protected $site;
     protected $factory;
     protected $writer;
     protected $resource_loader;
-    protected $formula_loaders = array();
+    protected $formula_loader;
+    protected $output;
 
-    public function __construct(SiteInterface $site, AssetFactory $factory, AssetWriter $writer,
-        ResourceLoaderInterface $resource_loader, array $formula_loaders=array())
+    public function __construct(SiteInterface $site, AssetFactory $factory,
+        AssetWriter $writer, ResourceLoaderInterface $resource_loader,
+        FormulaLoaderManagerInterface $formula_loader_manager, OutputInterface $output=null)
     {
         $this->site = $site;
         $this->factory = $factory;
         $this->writer = $writer;
         $this->resource_loader = $resource_loader;
-        $this->formula_loaders = $formula_loaders;
+        $this->formula_loader_manager = $formula_loader_manager;
+        $this->output = $output;
     }
 
-    public function setFormulaLoader($type, FormulaLoaderInterface $loader)
+    protected function getOutput()
     {
-        $this->formula_loaders[$type] = $loader;
+        return $this->output;
     }
 
     public function getEventName()
@@ -46,11 +52,13 @@ class GenerateAssetsAction implements ActionInterface
 
     public function take()
     {
+        $this->writeOutputLine("generating assets...", 2);
+
         $manager = new LazyAssetManager($this->factory);
 
         // load formula loaders, done lazily to avoid circular dependencies
-        foreach($this->formula_loaders as $type=>$loader){
-            $manager->setLoader($type, $loader);
+        foreach($this->formula_loader_manager->getTypes() as $type){
+            $manager->setLoader($type, $this->formula_loader_manager->getLoader($type));
         }
 
         // load template resources
@@ -60,5 +68,7 @@ class GenerateAssetsAction implements ActionInterface
 
         // write output assets
         $this->writer->writeManagerAssets($manager);
+
+        $this->writeOutputLine("done", 2);
     }
 }

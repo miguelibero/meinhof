@@ -32,7 +32,7 @@ EOT
     {
         $key = realpath($input->getArgument('key'));
 
-        $meinhof = new Meinhof($key);
+        $meinhof = new Meinhof($key, $input, $output);
         $meinhof->generate();
     }
 }

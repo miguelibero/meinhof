@@ -2,22 +2,32 @@
 
 namespace Meinhof\Action;
 
+use Symfony\Component\Console\Output\OutputInterface;
+
 use Symfony\Component\Templating\EngineInterface;
 
 use Meinhof\Post\PostInterface;
 use Meinhof\Site\SiteInterface;
 
-class GeneratePostsAction implements ActionInterface
+class GeneratePostsAction extends OutputAction
 {
     protected $site;
     protected $templating_post;
     protected $templating_view;
+    protected $output;
 
-    public function __construct(SiteInterface $site, EngineInterface $templating_post, EngineInterface $templating_view)
+    public function __construct(SiteInterface $site, EngineInterface $templating_post,
+        EngineInterface $templating_view, OutputInterface $output=null)
     {
         $this->site = $site;
         $this->templating_post = $templating_post;
         $this->templating_view = $templating_view;
+        $this->output = $output;
+    }
+
+    protected function getOutput()
+    {
+        return $this->output;
     }
 
     public function getEventName()
@@ -28,7 +38,7 @@ class GeneratePostsAction implements ActionInterface
     public function getName()
     {
         return 'posts';
-    }    
+    }
 
     public function take()
     {
@@ -36,6 +46,8 @@ class GeneratePostsAction implements ActionInterface
 
         $globals = $this->site->getGlobals();
         $globals['posts'] = $posts;
+
+        $this->writeOutputLine(sprintf("generating %d posts...", count($posts)), 2);
 
         foreach($posts as $post){
             if(!$post instanceof PostInterface){
@@ -67,6 +79,9 @@ class GeneratePostsAction implements ActionInterface
             }
 
             $this->site->savePost($post, $content);
+            $this->writeOutput(sprintf(".", count($posts)), 1);
         }
+        $this->writeOutputLine("", 1);
+        $this->writeOutputLine("done", 2);
     }
 }

@@ -96,6 +96,7 @@
             <argument type="service" id="site"/>
             <argument type="service" id="templating.post"/>
             <argument type="service" id="templating.view"/>
+            <argument type="service" id="output"/>
             <tag name="event_listener" event="generate" method="take"/>
         </service>
     </services>

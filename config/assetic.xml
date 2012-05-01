@@ -13,13 +13,16 @@
             >Assetic\Factory\AssetFactory</parameter>
         <parameter key="assetic.asset_writer.class"
             >Assetic\AssetWriter</parameter>            
-        <parameter key="assetic.resource_loader.twig.class"
-            >Meinhof\Assetic\TwigResourceLoader</parameter>
         <parameter key="assetic.resource_loader.class"
             >Meinhof\Assetic\DelegatingResourceLoader</parameter>
+        <parameter key="assetic.formula_loader_manager.class"
+            >Meinhof\Assetic\FormulaLoaderManager</parameter>            
+
         <parameter key="action.generate_assets.class"
             >Meinhof\Action\GenerateAssetsAction</parameter>            
         
+        <parameter key="assetic.resource_loader.twig.class"
+            >Meinhof\Assetic\TwigResourceLoader</parameter>        
         <parameter key="assetic.formula_loader.twig.class"
             >Assetic\Extension\Twig\TwigFormulaLoader</parameter>
         <parameter key="templating.twig.assetic_extension.class"
@@ -32,6 +35,8 @@
         <service id="assetic.resource_loader" class="%assetic.resource_loader.class%">
             <argument type="service" id="templating.name_parser"/>
         </service>
+        <service id="assetic.formula_loader_manager" class="%assetic.formula_loader_manager.class%">
+        </service>        
         <service id="assetic.filter_manager" class="%assetic.filter_manager.class%">
         </service>        
         <service id="assetic.asset_factory" class="%assetic.asset_factory.class%">
@@ -50,7 +55,9 @@
             <argument type="service" id="site"/>
             <argument type="service" id="assetic.asset_factory"/>
             <argument type="service" id="assetic.asset_writer"/>
-            <argument type="service" id="assetic.resource_loader"/>            
+            <argument type="service" id="assetic.resource_loader"/>    
+            <argument type="service" id="assetic.formula_loader_manager"/>            
+            <argument type="service" id="output"/>
             <tag name="event_listener" event="generate" method="take" priority="0"/>
         </service>
 

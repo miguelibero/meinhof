@@ -10,10 +10,13 @@ class AsseticFormulaLoaderPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $def = $container->getDefinition('action.generate_assets');
+        if(!$container->hasDefinition('assetic.formula_loader_manager')){
+            return;
+        }
+        $def = $container->getDefinition('assetic.formula_loader_manager');
         foreach ($container->findTaggedServiceIds('assetic.formula_loader') as $id => $attributes) {
             $type = $this->getTypeFromAttributes($attributes);
-            $def->addMethodCall('setFormulaLoader', array($type, new Reference($id)));
+            $def->addMethodCall('setLoader', array($type, new Reference($id)));
         }
     }
 

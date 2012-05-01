@@ -5,6 +5,10 @@ namespace Meinhof;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
+
+use Symfony\Component\Console\Input\InputInterface;
+use Symfony\Component\Console\Output\OutputInterface;
+
 use Symfony\Component\Config\FileLocator;
 
 use Meinhof\DependencyInjection\Compiler\TemplatingEnginePass;
@@ -19,9 +23,16 @@ class Meinhof
 
     protected $container;
 
-    public function __construct($key)
+    public function __construct($key, InputInterface $input = null, OutputInterface $output = null)
     {
         $this->container = $this->buildContainer($key);
+
+        if($input){
+            $this->container->set('input', $input);
+        }
+        if($output){
+            $this->container->set('output', $output);
+        }
 
         // freeze the container
         $this->container->compile();
