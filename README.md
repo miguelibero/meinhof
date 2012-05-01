@@ -15,6 +15,7 @@ Working
 * markdown post contents
 * assetic assets
 * yaml front matter (like in [jekyl](https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter))
+* Dependency injection and composer autoload from site config directory
 
 TODO
 ----
@@ -23,16 +24,14 @@ TODO
 * Add category support
 * Add translator support
 * Add documentation
-* Add additional dependency injection from site config
 
 Installation
 ------------
 
-    $ git clone 
+    $ git clone git://github.com/miguelibero/meinhof.git
     $ curl -s http://getcomposer.org/installer | php
     $ php composer.phar install
-    $ ./bin/compile
-    $ php meinhof.phar generate test/source/default
+    $ ./bin/meinhof generate test/source/default
 
 Now the generated site should be in `test/source/default/site`.
 

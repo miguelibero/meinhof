@@ -25,14 +25,17 @@ class Meinhof
 
     public function __construct($key, InputInterface $input = null, OutputInterface $output = null)
     {
+        // load libraries defined in site configuration
+        $autoload = realpath($key.'/vendor/autoload.php');
+        if(is_readable($autoload)){
+            require_once($autoload);
+        }
+
         $this->container = $this->buildContainer($key);
 
-        if($input){
-            $this->container->set('input', $input);
-        }
-        if($output){
-            $this->container->set('output', $output);
-        }
+        // load input and output
+        $this->container->set('input', $input);
+        $this->container->set('output', $output);
 
         // freeze the container
         $this->container->compile();
