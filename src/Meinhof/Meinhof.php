@@ -56,7 +56,7 @@ class Meinhof
         $container->setParameter('key', $key);
 
         // load base services
-        $configdirs = array(__DIR__.'/../../config', $key.'/config');
+        $configdirs = array(__DIR__.'/../../config', $key, $key.'/config');
         $loader = new XmlFileLoader($container, new FileLocator($configdirs));
         $loader->load('services.xml');
 
