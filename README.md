@@ -1,6 +1,8 @@
 Meinhof
 =======
 
+[![Build Status](https://secure.travis-ci.org/miguelibero/meinhof.png?branch=master)](http://travis-ci.org/miguelibero/meinhof)
+
 Meinhof is a minimal static html site generator, much like [jekyll](https://github.com/mojombo/jekyll).
 
 The difference is that it is written in PHP 5.3 using [symfony components](http://symfony.com/components).
