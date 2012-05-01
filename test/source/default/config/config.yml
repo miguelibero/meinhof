@@ -1,7 +1,4 @@
-meinhof:
+site:
     globals:
         site_name: Test blog
         site_slogan: this is the meinhof test blog
-    pages:
-        - index
-        - archive

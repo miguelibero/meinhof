@@ -15,12 +15,25 @@
             >Symfony\Component\DependencyInjection\Loader\XmlFileLoader</parameter>                                  
         <parameter key="config_loader.yaml.class"
             >Symfony\Component\DependencyInjection\Loader\YamlFileLoader</parameter>
-        <parameter key="extension.class"
-            >Meinhof\DependencyInjection\FilesystemExtension</parameter>      
+        <parameter key="extension.site.class"
+            >Meinhof\DependencyInjection\SiteExtension</parameter>
+        <parameter key="extension.filesystem.class"
+            >Meinhof\DependencyInjection\FilesystemExtension</parameter>
+        <parameter key="extension.assetic.class"
+            >Meinhof\DependencyInjection\AsseticExtension</parameter>
+        <parameter key="extension.twig.class"
+            >Meinhof\DependencyInjection\TwigExtension</parameter>
+        <parameter key="extension.markdown.class"
+            >Meinhof\DependencyInjection\MarkdownExtension</parameter>            
         <parameter key="templating.class"
             >Symfony\Component\Templating\DelegatingEngine</parameter>       
         <parameter key="templating.name_parser.class"
-            >Symfony\Component\Templating\TemplateNameParser</parameter>                   
+            >Symfony\Component\Templating\TemplateNameParser</parameter>
+        <parameter key="event_dispatcher.class"
+            >Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher</parameter>
+
+        <parameter key="action.generate_posts.class"
+            >Meinhof\Action\GeneratePostsAction</parameter>                
     </parameters>
     <services>
         <!-- configuration loader -->
@@ -47,16 +60,43 @@
             <argument type="service" id="config_loader.resolver"/>
         </service>
 
-        <service id="extension" class="%extension.class%">
+        <!-- extension base -->
+        <service id="extension.site" class="%extension.site.class%">
+            <tag name="extension"/>
         </service>
+        <service id="extension.filesystem" class="%extension.filesystem.class%">
+            <argument>%key%</argument>
+            <argument type="service" id="config_loader" />
+            <tag name="extension"/>
+        </service>
+        <service id="extension.twig" class="%extension.twig.class%">
+            <tag name="extension"/>
+        </service>
+        <service id="extension.assetic" class="%extension.assetic.class%">
+            <tag name="extension"/>
+        </service>        
+        <service id="extension.markdown" class="%extension.markdown.class%">
+            <tag name="extension"/>
+        </service>        
 
-        <!-- templating -->     
+        <!-- templating base -->     
         <service id="templating.name_parser"
             class="%templating.name_parser.class%" public="false">
         </service>                  
         <service id="templating.post" class="%templating.class%">
         </service>
         <service id="templating.view" class="%templating.class%">
-        </service>      
+        </service>
+
+        <!-- event dispatcher base -->
+        <service id="event_dispatcher" class="%event_dispatcher.class%">
+            <argument type="service" id="service_container"/>
+        </service>
+        <service id="action.generate_posts" class="%action.generate_posts.class%">
+            <argument type="service" id="site"/>
+            <argument type="service" id="templating.post"/>
+            <argument type="service" id="templating.view"/>
+            <tag name="event_listener" event="generate" method="take"/>
+        </service>
     </services>
 </container>

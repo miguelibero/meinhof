@@ -10,6 +10,9 @@ class AsseticFilterPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
+        if(!$container->hasDefinition('assetic.filter_manager')){
+            return;
+        }
         $def = $container->getDefinition('assetic.filter_manager');
         foreach ($container->findTaggedServiceIds('assetic.filter') as $id => $attributes) {
             $alias = $this->getAliasFromAttributes($attributes);

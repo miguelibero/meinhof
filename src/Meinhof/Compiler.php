@@ -74,9 +74,6 @@ class Compiler
             ->name('*.php')
             ->exclude('Tests')
             ->in(__DIR__.'/../../vendor/symfony/')
-            ->in(__DIR__.'/../../vendor/twig/')
-            ->in(__DIR__.'/../../vendor/dflydev/markdown/src/')
-            ->in(__DIR__.'/../../vendor/kriswallsmith/assetic/')
         ;
 
         foreach ($finder as $file) {

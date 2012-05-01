@@ -17,6 +17,8 @@
             >Meinhof\Assetic\TwigResourceLoader</parameter>
         <parameter key="assetic.resource_loader.class"
             >Meinhof\Assetic\DelegatingResourceLoader</parameter>
+        <parameter key="action.generate_assets.class"
+            >Meinhof\Action\GenerateAssetsAction</parameter>            
         
         <parameter key="assetic.formula_loader.twig.class"
             >Assetic\Extension\Twig\TwigFormulaLoader</parameter>
@@ -33,7 +35,7 @@
         <service id="assetic.filter_manager" class="%assetic.filter_manager.class%">
         </service>        
         <service id="assetic.asset_factory" class="%assetic.asset_factory.class%">
-            <argument>%site.paths.public%</argument>
+            <argument>%assetic.paths.read_from%</argument>
             <call method="setAssetManager">
                 <argument type="service" id="assetic.asset_manager"/>
             </call>
@@ -42,7 +44,14 @@
             </call>            
         </service>          
         <service id="assetic.asset_writer" class="%assetic.asset_writer.class%">
-            <argument>%site.paths.site%</argument>
+            <argument>%assetic.paths.write_to%</argument>
+        </service>
+        <service id="action.generate_assets" class="%action.generate_assets.class%">
+            <argument type="service" id="site"/>
+            <argument type="service" id="assetic.asset_factory"/>
+            <argument type="service" id="assetic.asset_writer"/>
+            <argument type="service" id="assetic.resource_loader"/>            
+            <tag name="event_listener" event="generate" method="take" priority="0"/>
         </service>
 
         <!-- twig support -->

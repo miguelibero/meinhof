@@ -21,6 +21,7 @@ TODO
 * Add tests (!)
 * Add page support
 * Add category support
+* Add translator support
 * Add documentation
 * Add additional dependency injection from site config
 
