@@ -16,6 +16,11 @@ class MarkdownExtension implements ExtensionInterface
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        if(!class_exists('dflydev\\markdown\\MarkdownParser')){
+            // do not load if library not present
+            return;
+        }
+
         // load configuration
         $configuration = new TwigConfiguration();
         $processor = new Processor();

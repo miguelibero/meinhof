@@ -18,6 +18,11 @@ class TwigExtension implements ExtensionInterface
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        if(!class_exists('Twig_Environment')){
+            // do not load if library not present
+            return;
+        }
+
         // load compiler
         $container->addCompilerPass(new TwigExtensionPass());
 

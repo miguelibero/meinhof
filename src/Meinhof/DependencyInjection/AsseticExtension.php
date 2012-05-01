@@ -20,6 +20,11 @@ class AsseticExtension implements ExtensionInterface
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        if(!class_exists('Assetic\\AssetManager')){
+            // do not load if library not present
+            return;
+        }
+
         // load compilers
         $container->addCompilerPass(new AsseticFilterPass());
         $container->addCompilerPass(new AsseticResourceLoaderPass());
