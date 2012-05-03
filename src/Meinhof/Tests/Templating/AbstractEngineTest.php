@@ -6,8 +6,6 @@ use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Component\Templating\Storage\Storage;
 
-use Meinhof\Templating\Engine;
-
 class AbstractEngineTest extends \PHPUnit_Framework_TestCase
 {
     protected $engine;
