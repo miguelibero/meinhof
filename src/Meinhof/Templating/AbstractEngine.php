@@ -6,8 +6,9 @@ use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Templating\Storage\Storage;
 use Symfony\Component\Templating\Loader\LoaderInterface;
 use Symfony\Component\Templating\TemplateNameParserInterface;
+use Symfony\Component\Templating\TemplateReferenceInterface;
 
-abstract class Engine implements EngineInterface
+abstract class AbstractEngine implements EngineInterface
 {
     protected $loader;
     protected $parser;
@@ -45,8 +46,8 @@ abstract class Engine implements EngineInterface
         $this->current = $key;
 
         // render
-        if (false === $content = $this->parse($storage, $parameters)) {
-            throw new \RuntimeException(sprintf('The template "%s" cannot be rendered.', $this->parser->parse($name)));
+        if (!$storage instanceof Storage || false === $content = $this->parse($storage, $parameters)) {
+            throw new \RuntimeException(sprintf('The template "%s" cannot be rendered.', $name));
         }
 
         return $content;
@@ -65,10 +66,9 @@ abstract class Engine implements EngineInterface
     {
         try {
             $this->load($name);
-        } catch (\InvalidArgumentException $e) {
+        } catch (\Exception $e) {
             return false;
         }
-
         return true;
     }
 
@@ -113,6 +113,10 @@ abstract class Engine implements EngineInterface
     {
         $template = $this->parser->parse($name);
 
+        if(!$template instanceof TemplateReferenceInterface){
+            throw new \RuntimeException(sprintf('The template "%s" could not be parsed.', $name));
+        }
+
         $key = $template->getLogicalName();
         if (isset($this->cache[$key])) {
             return $this->cache[$key];
@@ -120,8 +124,8 @@ abstract class Engine implements EngineInterface
 
         $storage = $this->loader->load($template);
 
-        if (false === $storage) {
-            throw new \InvalidArgumentException(sprintf('The template "%s" does not exist.', $template));
+        if (!$storage instanceof Storage) {
+            throw new \RuntimeException(sprintf('The template "%s" could not be loaded.', $name));
         }
 
         return $this->cache[$key] = $storage;

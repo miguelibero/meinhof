@@ -6,7 +6,7 @@ use Symfony\Component\Templating\Storage\Storage;
 
 use dflydev\markdown\MarkdownExtraParser;
 
-class MarkdownEngine extends Engine
+class MarkdownEngine extends AbstractEngine
 {
     protected function getName()
     {
