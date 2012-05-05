@@ -12,13 +12,18 @@ class DelegatingResourceLoaderTest extends \PHPUnit_Framework_TestCase
 {
     protected $loader;
     protected $manager;
+    protected $template;
 
     public function setUp()
     {
         $parser = $this->getMock('Symfony\\Component\\Templating\\TemplateNameParserInterface');
-        $template = $this->getMock('Symfony\\Component\\Templating\\TemplateReferenceInterface');
+        $this->template = $this->getMock('Symfony\\Component\\Templating\\TemplateReferenceInterface');
 
-        $template->expects($this->any())
+        $this->manager = $this->getMockBuilder('Assetic\\Factory\\LazyAssetManager')
+            ->disableOriginalConstructor()
+            ->getMock();
+
+        $this->template->expects($this->any())
             ->method('get')
             ->with($this->equalTo('engine'))
             ->will($this->returnValue('twig'));
@@ -26,13 +31,14 @@ class DelegatingResourceLoaderTest extends \PHPUnit_Framework_TestCase
         $parser->expects($this->any())
             ->method('parse')
             ->with($this->equalTo('test.twig'))
-            ->will($this->returnValue($template));
+            ->will($this->returnCallback(array($this, 'getTemplate')));
 
         $this->loader = new DelegatingResourceLoader($parser);
+    }
 
-        $this->manager = $this->getMockBuilder('Assetic\\Factory\\LazyAssetManager')
-            ->disableOriginalConstructor()
-            ->getMock();
+    public function getTemplate()
+    {
+        return $this->template;
     }
 
     public function testImplementation()
@@ -45,14 +51,8 @@ class DelegatingResourceLoaderTest extends \PHPUnit_Framework_TestCase
      */
     public function testLoadingWithBadParser()
     {
-        $parser = $this->getMock('Symfony\\Component\\Templating\\TemplateNameParserInterface');
-
-        $parser->expects($this->any())
-            ->method('parse')
-            ->will($this->returnValue(null));
-
-        $loader = new DelegatingResourceLoader($parser);
-        $loader->load('test', $this->manager);
+        $this->template = null;
+        $this->loader->load('test.twig', $this->manager);
     }    
 
     /**
