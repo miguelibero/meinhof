@@ -46,7 +46,7 @@ class Compiler
         $finder->files()
             ->ignoreVCS(true)
             ->name('*')
-            ->in(__DIR__.'/../../config')
+            ->in(__DIR__.'/Resources')
         ;
 
         foreach ($finder as $file) {

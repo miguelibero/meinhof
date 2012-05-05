@@ -9,7 +9,7 @@ use Symfony\Component\Templating\EngineInterface;
 use Meinhof\Post\PostInterface;
 use Meinhof\Site\SiteInterface;
 
-class GeneratePostsAction extends OutputAction
+class UpdatePostsAction extends OutputAction
 {
     protected $site;
     protected $templating_post;
@@ -30,16 +30,6 @@ class GeneratePostsAction extends OutputAction
         return $this->output;
     }
 
-    public function getEventName()
-    {
-        return 'generate';
-    }
-
-    public function getName()
-    {
-        return 'posts';
-    }
-
     public function take()
     {
         $posts = $this->site->getPosts();
@@ -47,7 +37,7 @@ class GeneratePostsAction extends OutputAction
         $globals = $this->site->getGlobals();
         $globals['posts'] = $posts;
 
-        $this->writeOutputLine(sprintf("generating %d posts...", count($posts)), 2);
+        $this->writeOutputLine(sprintf("updating %d posts...", count($posts)), 2);
 
         foreach($posts as $post){
             if(!$post instanceof PostInterface){

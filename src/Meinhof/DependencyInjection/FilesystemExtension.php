@@ -14,11 +14,11 @@ class FilesystemExtension implements ExtensionInterface
 {
     protected $base_path;
 
-    public function __construct($key, LoaderInterface $loader)
+    public function __construct($dir, LoaderInterface $loader)
     {
-        $this->base_path = realpath($key);
+        $this->base_path = $dir;
         // load the site configuration files
-        foreach($this->getConfigurationResources($key) as $resource){
+        foreach($this->getConfigurationResources($dir) as $resource){
             if($loader->supports($resource)){
                 $loader->load($resource);
             }
@@ -51,7 +51,7 @@ class FilesystemExtension implements ExtensionInterface
         $container->setParameter('assetic.paths.write_to', $data['paths']['site']);
 
         // load filesystem services
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../../../config'));
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('filesystem.xml');       
     }
 
@@ -74,15 +74,20 @@ class FilesystemExtension implements ExtensionInterface
         return $paths;
     }
 
-    public function getConfigurationResources($key)
+    public function getConfigurationResources($dir)
     {
+        $resources = array();
+        $dir = $dir.'/config';
+
+        if(!is_readable($dir) || !is_dir($dir)){
+            return $resources;
+        }
+
         // find the configuration files
         $finder = new Finder();
         $finder->files()
             ->ignoreVCS(true)
-            ->in($key.'/config');
-
-        $resources = array();
+            ->in($dir);
 
         foreach($finder as $file){
             $resources[] = $file->getRealPath();

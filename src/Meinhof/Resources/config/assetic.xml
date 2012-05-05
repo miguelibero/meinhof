@@ -18,8 +18,8 @@
         <parameter key="assetic.formula_loader_manager.class"
             >Meinhof\Assetic\FormulaLoaderManager</parameter>            
 
-        <parameter key="action.generate_assets.class"
-            >Meinhof\Action\GenerateAssetsAction</parameter>            
+        <parameter key="action.update_assets.class"
+            >Meinhof\Action\UpdateAssetsAction</parameter>            
         
         <parameter key="assetic.resource_loader.twig.class"
             >Meinhof\Assetic\TwigResourceLoader</parameter>        
@@ -51,14 +51,14 @@
         <service id="assetic.asset_writer" class="%assetic.asset_writer.class%">
             <argument>%assetic.paths.write_to%</argument>
         </service>
-        <service id="action.generate_assets" class="%action.generate_assets.class%">
+        <service id="action.update_assets" class="%action.update_assets.class%">
             <argument type="service" id="site"/>
             <argument type="service" id="assetic.asset_factory"/>
             <argument type="service" id="assetic.asset_writer"/>
             <argument type="service" id="assetic.resource_loader"/>    
             <argument type="service" id="assetic.formula_loader_manager"/>            
             <argument type="service" id="output"/>
-            <tag name="event_listener" event="generate" method="take" priority="0"/>
+            <tag name="event_listener" event="update" method="take" priority="0"/>
         </service>
 
         <!-- twig support -->

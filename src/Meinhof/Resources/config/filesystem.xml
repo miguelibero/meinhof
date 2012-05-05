@@ -24,9 +24,10 @@
             >Meinhof\Config\Loader\YamlMatterLoader</parameter>
         <parameter key="matter_loader.class"
             >Meinhof\Config\Loader\TemplateMatterLoader</parameter>
-
         <parameter key="templating.twig_loader.class"
-            >\Twig_Loader_Filesystem</parameter>    
+            >\Twig_Loader_Filesystem</parameter>
+        <parameter key="site_generator.class"
+            >Meinhof\Generator\SimpleSkeletonGenerator</parameter>
     </parameters>
     <services>
         <service id="site" class="%site.class%">
@@ -55,6 +56,9 @@
             <argument type="service" id="templating.post.loader"/>
             <argument type="service" id="matter_loader.yaml"/>
         </service>
+        <service id="site_generator" class="%site_generator.class%">
+            <argument>Resources/skeleton/filesystem</argument>
+        </service>        
 
         <!-- twig -->
         <service id="templating.post.twig_loader" class="%templating.twig_loader.class%" public="false">

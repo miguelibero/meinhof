@@ -1,0 +1,30 @@
+{% extends "base.html.twig" %}
+
+{% block javascripts %}
+{{ parent() }}
+{% javascripts output='js/layout.js'
+    'js/layout.js'
+%}
+<script src="{{ asset_url }}" type="text/javascript"></script>
+{% endjavascripts %}
+{% endblock %}
+
+{% block stylesheets %}
+{{ parent() }}
+{% stylesheets output='css/layout.css'
+    'css/layout.css'
+%}
+<link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
+{% endstylesheets %}
+{% endblock %}
+
+{% block body %}
+<div id="header">
+    <h1>{{ site_name }}</h1>
+    <div class="slogan">{{ site_slogan }}</div>
+</div>
+<div id="content">
+    {% block content %}
+    {% endblock %}
+</div>
+{% endblock %}

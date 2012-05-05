@@ -14,7 +14,7 @@ use Meinhof\Site\SiteInterface;
 use Meinhof\Assetic\ResourceLoaderInterface;
 use Meinhof\Assetic\FormulaLoaderManagerInterface;
 
-class GenerateAssetsAction extends OutputAction
+class UpdateAssetsAction extends OutputAction
 {
     protected $site;
     protected $factory;
@@ -40,19 +40,9 @@ class GenerateAssetsAction extends OutputAction
         return $this->output;
     }
 
-    public function getEventName()
-    {
-        return 'generate';
-    }
-
-    public function getName()
-    {
-        return 'assets';
-    }
-
     public function take()
     {
-        $this->writeOutputLine("generating assets...", 2);
+        $this->writeOutputLine("updating assets...", 2);
 
         $manager = new LazyAssetManager($this->factory);
 

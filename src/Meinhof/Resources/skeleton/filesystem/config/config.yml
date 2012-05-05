@@ -1,0 +1,3 @@
+site:
+    globals:
+        site_name: %%site-name%%

@@ -23,15 +23,15 @@ class Meinhof
 
     protected $container;
 
-    public function __construct($key, InputInterface $input = null, OutputInterface $output = null)
+    public function __construct($dir, InputInterface $input = null, OutputInterface $output = null)
     {
         // load libraries defined in site configuration
-        $autoload = realpath($key.'/vendor/autoload.php');
+        $autoload = realpath($dir.'/vendor/autoload.php');
         if(is_readable($autoload)){
             require_once($autoload);
         }
 
-        $this->container = $this->buildContainer($key);
+        $this->container = $this->buildContainer($dir);
 
         // load input and output
         $this->container->set('input', $input);
@@ -43,7 +43,7 @@ class Meinhof
         $this->dispatchEvent('load');
     }
 
-    protected function buildContainer($key)
+    protected function buildContainer($dir)
     {
         // load the container
         $container = new ContainerBuilder();
@@ -53,10 +53,10 @@ class Meinhof
         $container->addCompilerPass(new TemplatingEnginePass());
        
         // set the key as a parameter
-        $container->setParameter('key', $key);
+        $container->setParameter('base_dir', $dir);
 
         // load base services
-        $configdirs = array(__DIR__.'/../../config', $key, $key.'/config');
+        $configdirs = array(__DIR__.'/Resources/config', $dir, $dir.'/config');
         $loader = new XmlFileLoader($container, new FileLocator($configdirs));
         $loader->load('services.xml');
 
@@ -87,9 +87,13 @@ class Meinhof
         $this->dispatchEvent('init');
     }    
 
-    public function generate()
+    public function update()
     {
-        $this->dispatchEvent('generate');
+        $dir = $this->container->getParameter('base_dir');
+        if(!is_dir($dir) || !is_readable($dir)){
+            throw new \InvalidArgumentException("'${dir}' is not a valid readable directory.");
+        }
+        $this->dispatchEvent('update');
     }
 
 }

@@ -6,9 +6,6 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-/**
- * @author Jordi Boggiano <j.boggiano@seld.be>
- */
 class AboutCommand extends Command
 {
     protected function configure()
@@ -29,6 +26,8 @@ EOT
 <info>Meinhof - PHP static blog generator</info>
 <comment>Meinhof is a static blog generator similar to jekyll
 See http://github.com/miguelibero/meinhof for more information.</comment>
+
+http://github.com/miguelibero/meinhof
 EOT
         );
 

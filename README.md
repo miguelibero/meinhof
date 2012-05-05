@@ -38,3 +38,9 @@ Installation
 Now the generated site should be in `test/source/default/site`.
 
 See this example for additional configuration until I write the documentation.
+
+Thanks
+------
+
+Fabien Potencier for creating symfony. Nils Adermann and Jordi Boggiano for
+creating composer and the packagist repo. Rasmus Lerdorf for creating php.
