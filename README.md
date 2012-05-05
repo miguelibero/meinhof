@@ -33,11 +33,11 @@ Installation
     $ git clone git://github.com/miguelibero/meinhof.git
     $ curl -s http://getcomposer.org/installer | php
     $ php composer.phar install
-    $ ./bin/meinhof generate test/source/default
+    $ ./bin/compile
+    $ ./meinhof.phar init /tmp/meinhof_site
 
-Now the generated site should be in `test/source/default/site`.
-
-See this example for additional configuration until I write the documentation.
+After answering the questions a new site configuration will be created,
+the generated html files should be in the site directory
 
 Thanks
 ------

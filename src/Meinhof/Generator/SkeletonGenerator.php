@@ -17,14 +17,30 @@ abstract class SkeletonGenerator implements GeneratorInterface
 
     protected function fixSkeletonPath($skeleton)
     {
-        if(substr($skeleton,0,1) !== '/' && !parse_url($skeleton, PHP_URL_SCHEME)){
+        if(!$this->isAbsolutePath($skeleton)){
             $skeleton = __DIR__.'/../'.$skeleton;
         }
         if(!is_readable($skeleton) || !is_dir($skeleton)){
             throw new \RuntimeException("Skeleton path '${skeleton}' is not a readable directory.");
-        }        
-        return realpath($skeleton);        
+        } 
+        return $skeleton;        
     }
+
+    private function isAbsolutePath($file)
+    {
+        $protocol = strpos($file, "://");
+        $file = substr($file, $protocol + ($protocol ? 3 : 0));
+
+        if ($file[0] == '/' || $file[0] == '\\'
+            || (strlen($file) > 3 && ctype_alpha($file[0])
+                && $file[1] == ':'
+                && ($file[2] == '\\' || $file[2] == '/')
+            )
+        ) {
+            return true;
+        }
+        return false;
+    }    
 
     protected function getSkeletonPath()
     {
@@ -42,11 +58,7 @@ abstract class SkeletonGenerator implements GeneratorInterface
 
         $k = mb_strlen($this->skeleton)+1;
         foreach($finder as $file){
-            $path = $file->getRealPath();
-            if(mb_substr($path,0,$k) === $this->skeleton."/"){
-                $path = mb_substr($path, $k);
-            }
-            $paths[] = $path;
+            $paths[] = $file->getRelativePathname();
         }
         return $paths;
     }

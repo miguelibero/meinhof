@@ -6,6 +6,7 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
+use Symfony\Component\Process\Process;
 
 class InitCommand extends MeinhofCommand
 {
@@ -33,6 +34,43 @@ EOT
     {
         parent::execute($input, $output);
         $this->getMeinhof()->init();
+
+        $dir = $input->getArgument('dir');
+        $this->installComposer($dir, $output);
+
+        if($input->getOption('update')){
+            $update = new UpdateCommand();
+            $update->execute($input, $output);
+        }
+    }
+
+    protected function installComposer($dir, OutputInterface $output)
+    {
+        if(!file_exists($dir.'/composer.json')){
+            return;
+        }
+        $write_output = function ($type, $buffer) use ($output) {
+            if ('err' === $type) {
+                $buffer = '<error>'.$buffer.'</error>';
+            }
+            $prefix = '<info>[composer]</info> ';
+            $buffer = str_replace("\n","\n".$prefix, $buffer);
+            $output->write($buffer);
+        };
+
+        $output->writeln('downloading composer...');
+        $process = new Process('curl -s http://getcomposer.org/installer | php', $dir);
+        $process->run($write_output);
+        if (!$process->isSuccessful()) {
+            throw new RuntimeException($process->getErrorOutput());
+        }
+
+        $output->writeln('downloading composer dependencies...');
+        $process = new Process('php composer.phar install', $dir);
+        $process->run($write_output);
+        if (!$process->isSuccessful()) {
+            throw new RuntimeException($process->getErrorOutput());
+        }        
     }
 
     protected function interact(InputInterface $input, OutputInterface $output)
@@ -80,8 +118,8 @@ EOT
             $input->getOption('categories')), $input->getOption('categories'));
         $input->setOption('categories', $categories);        
 
-        $empty = !$dialog->askConfirmation($output, $dialog->getQuestion('Do you want to update the site after the init', 'yes', '?'), true);
-
+        $update = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want to update the site after the init', 'yes', '?'), true);
+        $input->setOption('update', $update);        
     }
 
 }

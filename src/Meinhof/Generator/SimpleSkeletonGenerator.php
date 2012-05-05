@@ -17,7 +17,7 @@ class SimpleSkeletonGenerator extends TemplatingEngineGenerator
         $parser = new FixedTemplateNameParser('simple');
         $loader = new FilesystemLoader(array($skeleton));
         $engine = new SimpleEngine($parser, $loader);
-
+        
         parent::__construct($skeleton, $engine);
     }
 
