@@ -6,10 +6,10 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Component\Templating\EngineInterface;
 
-use Meinhof\Model\Post\PostInterface;
+use Meinhof\Model\Page\PageInterface;
 use Meinhof\Model\Site\SiteInterface;
 
-class UpdatePostsAction extends OutputAction
+class UpdatePagesAction extends OutputAction
 {
     protected $site;
     protected $templating;
@@ -29,23 +29,23 @@ class UpdatePostsAction extends OutputAction
 
     public function take()
     {
-        $posts = $this->site->getPosts();
-
+        $pages = $this->site->getPages();
         $globals = $this->site->getGlobals();
-        $globals['posts'] = $posts;
+        $globals['pages'] = $pages;
+        $globals['posts'] = $this->site->getPosts();
+        $globals['categories'] = $this->site->getCategories();
 
-        $this->writeOutputLine(sprintf("updating %d posts...", count($posts)), 2);
+        $this->writeOutputLine(sprintf("updating %d pages...", count($pages)), 2);
 
-        foreach($posts as $post){
-            if(!$post instanceof PostInterface){
-                throw new \RuntimeException("Site returned invalid post.");
+        foreach($pages as $page){
+            if(!$page instanceof PageInterface){
+                throw new \RuntimeException("Site returned invalid page.");
             }
             $params = $globals;
-            $params['post'] = $post;
+            $params['page'] = $page;
 
-            // render post view
-            $key = $post->getViewTemplatingKey();
-
+            // render page view
+            $key = $page->getViewTemplatingKey();
             if(!$this->templating->exists($key)){
                 throw new \InvalidArgumentException("View template '${vkey}' does not exist.");
             }
@@ -53,8 +53,8 @@ class UpdatePostsAction extends OutputAction
                 throw new \InvalidArgumentException("View template '${vkey}' does not have a valid format.");
             }            
             $content = $this->templating->render($key, $params);
-            
-            $this->site->savePost($post, $content);
+
+            $this->site->savePage($page, $content);
             $this->writeOutput(".", 1);
         }
         $this->writeOutputLine("", 1);

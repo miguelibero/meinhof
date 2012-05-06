@@ -1,6 +1,6 @@
 <?php
 
-namespace Meinhof\Post;
+namespace Meinhof\Model\Post;
 
 interface PostInterface
 {
@@ -15,7 +15,7 @@ interface PostInterface
     public function getUpdated();
 
     /**
-     * @return strin the slug of the post
+     * @return string the slug of the post
      */
     public function getSlug();
 
@@ -25,9 +25,14 @@ interface PostInterface
     public function getInfo();
 
     /**
-     * @return string templating key for the post content
+     * @return string the post content
      */
-    public function getContentTemplatingKey();
+    public function getContent();
+
+    /**
+     * @return string the post excerpt
+     */
+    public function getExcerpt();
 
     /**
      * @return string templating key for the post view

@@ -5,24 +5,29 @@ namespace Meinhof\DependencyInjection;
 use Symfony\Component\Finder\Finder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 
-class FilesystemExtension implements ExtensionInterface
+class FilesystemExtension implements PreloadingExtensionInterface
 {
     protected $base_path;
+    protected $loader;
 
     public function __construct($dir, LoaderInterface $loader)
     {
         $this->base_path = $dir;
+        $this->loader = $loader;
+    }
+
+    public function preload()
+    {
         // load the site configuration files
-        foreach($this->getConfigurationResources($dir) as $resource){
-            if($loader->supports($resource)){
-                $loader->load($resource);
+        foreach($this->getConfigurationResources($this->base_path) as $resource){
+            if($this->loader->supports($resource)){
+                $this->loader->load($resource);
             }
-        }
+        }        
     }
 
 	/**
@@ -43,6 +48,8 @@ class FilesystemExtension implements ExtensionInterface
 
         // set configuration parameters
         $prefix = 'filesystem.';
+        $container->setParameter($prefix.'pages', $data['pages']); 
+        $container->setParameter($prefix.'categories', $data['categories']); 
         $container->setParameter($prefix.'paths', $data['paths']); 
         foreach($data['paths'] as $name=>$path){
             $container->setParameter($prefix.'paths.'.$name, $path); 

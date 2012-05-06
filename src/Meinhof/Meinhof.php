@@ -11,6 +11,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Component\Config\FileLocator;
 
+use Meinhof\DependencyInjection\PreloadingExtensionInterface;
 use Meinhof\DependencyInjection\Compiler\TemplatingEnginePass;
 use Meinhof\DependencyInjection\Compiler\EventListenerPass;
 
@@ -67,6 +68,11 @@ class Meinhof
                 throw new \InvalidArgumentException("Invalid extension with id '${id}'.");
             }
             $container->registerExtension($extension);
+
+            // preload the extension
+            if($extension instanceof PreloadingExtensionInterface){
+                $extension->preload();
+            }
 
             // load the extension configuration
             $configs = $container->getExtensionConfig($extension->getAlias());

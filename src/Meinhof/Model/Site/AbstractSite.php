@@ -1,6 +1,6 @@
 <?php
 
-namespace Meinhof\Site;
+namespace Meinhof\Model\Site;
 
 abstract class AbstractSite implements SiteInterface
 {

@@ -24,7 +24,6 @@ class SiteExtension implements ExtensionInterface
         // set configuration parameters
         $prefix = 'site.';
         $container->setParameter($prefix.'globals', $data['globals']); 
-    
     }
 
     public function getNamespace()

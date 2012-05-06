@@ -10,7 +10,7 @@ use Assetic\Factory\Loader\FormulaLoaderInterface;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Meinhof\Site\SiteInterface;
+use Meinhof\Model\Site\SiteInterface;
 use Meinhof\Assetic\ResourceLoaderInterface;
 use Meinhof\Assetic\FormulaLoaderManagerInterface;
 

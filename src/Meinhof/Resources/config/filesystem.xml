@@ -6,7 +6,7 @@
 
     <parameters>
         <parameter key="site.class"
-            >Meinhof\Site\FilesystemSite</parameter>    
+            >Meinhof\Model\Site\FilesystemSite</parameter>    
             
         <parameter key="templating.loader.class"
             >Meinhof\Templating\Loader\FilesystemLoader</parameter>
@@ -33,6 +33,11 @@
         <service id="site" class="%site.class%">
             <argument>%filesystem.paths%</argument>
             <argument>%site.globals%</argument>
+            <argument>%filesystem.pages%</argument>
+            <argument>%filesystem.categories%</argument>            
+            <call method="setPostTemplatingEngine">
+                <argument type="service" id="templating.post"/>            
+            </call>
             <call method="setPostMatterLoader">
                 <argument type="service" id="matter_loader.post"/>
             </call>

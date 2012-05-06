@@ -34,6 +34,8 @@
 
         <parameter key="action.update_posts.class"
             >Meinhof\Action\UpdatePostsAction</parameter>             
+        <parameter key="action.update_pages.class"
+            >Meinhof\Action\UpdatePagesAction</parameter>            
         <parameter key="action.init_site.class"
             >Meinhof\Action\InitSiteAction</parameter>            
     </parameters>
@@ -96,11 +98,16 @@
         </service>
         <service id="action.update_posts" class="%action.update_posts.class%">
             <argument type="service" id="site"/>
-            <argument type="service" id="templating.post"/>
             <argument type="service" id="templating.view"/>
             <argument type="service" id="output"/>
             <tag name="event_listener" event="update" method="take"/>
         </service>
+        <service id="action.update_pages" class="%action.update_pages.class%">
+            <argument type="service" id="site"/>
+            <argument type="service" id="templating.view"/>
+            <argument type="service" id="output"/>
+            <tag name="event_listener" event="update" method="take"/>
+        </service>        
         <service id="action.init_site" class="%action.init_site.class%">
             <argument type="service" id="site_generator"/>
             <argument type="service" id="input"/>

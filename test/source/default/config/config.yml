@@ -2,3 +2,6 @@ site:
     globals:
         site_name: Test blog
         site_slogan: this is the meinhof test blog
+filesystem:
+    pages:
+        - index

@@ -22,6 +22,12 @@ class FilesystemConfiguration implements ConfigurationInterface
                         ->scalarNode('public')->end()
                     ->end()
                 ->end()
+                ->arrayNode('pages')
+                    ->prototype('scalar')->end()
+                ->end()
+                ->arrayNode('categories')
+                    ->prototype('scalar')->end()
+                ->end()                
             ->end()
         ->end();
 

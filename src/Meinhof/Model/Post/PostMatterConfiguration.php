@@ -1,6 +1,6 @@
 <?php
 
-namespace Meinhof\Post;
+namespace Meinhof\Model\Post;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
@@ -10,7 +10,7 @@ class PostMatterConfiguration implements ConfigurationInterface
     public function getConfigTreeBuilder()
     {
         $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('meinhof_post');
+        $rootNode = $treeBuilder->root('post');
 
         $rootNode
             ->children()
