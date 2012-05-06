@@ -34,5 +34,6 @@ class FilesystemLoader extends BaseFilesystemLoader
                 return $result;
             }
         }
+        return false;
     }
 }

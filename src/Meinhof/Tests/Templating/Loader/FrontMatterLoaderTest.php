@@ -60,14 +60,11 @@ class FrontMatterLoaderTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('template', $storage->getContent());
     }
 
-    /**
-     * @expectedException \RuntimeException
-     */
     public function testStorageFail()
     {
         $this->storage = null;
         $template = new TemplateReference('name', 'engine');
-        $this->loader->load($template);
+        $this->assertFalse($this->loader->load($template));
     }
 
     public function testIsFresh()

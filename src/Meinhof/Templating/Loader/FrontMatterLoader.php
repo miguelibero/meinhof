@@ -28,7 +28,7 @@ class FrontMatterLoader implements LoaderInterface
     {
         $storage = $this->loader->load($template);
         if(!$storage instanceof Storage){
-            throw new \RuntimeException("Invalid storage for template.");
+            return false;
         }
         return new FrontMatterStorage($storage, $this->matter_separator);
     }

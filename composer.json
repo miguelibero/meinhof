@@ -1,6 +1,16 @@
 {
-    "name": "meinhof",
+    "name": "miguelibero/meinhof",
+    "type": "library",    
     "description": "A static blog generating tool",
+    "keywords": ["meinhof", "jekyll", "blog", "generator", "command-line"],
+    "homepage": "http://github.com/miguelibero/meinhof",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Miguel Ibero",
+            "email": "miguel@ibero.me"
+        }
+    ],    
     "autoload": {
         "psr-0": { "": "src/" }
     },
