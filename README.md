@@ -18,12 +18,13 @@ Working
 * assetic assets
 * yaml front matter (like in [jekyl](https://github.com/mojombo/jekyll/wiki/YAML-Front-Matter))
 * Dependency injection and composer autoload from site config directory
+* pages
+* categories
 
 TODO
 ----
 * Add tests (!)
-* Add page support
-* Add category support
+* Add archive support
 * Add translator support
 * Add documentation
 

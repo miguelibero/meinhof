@@ -66,7 +66,7 @@ abstract class AbstractExporter implements ExporterInterface
         }else{
             throw \RuntimeException("unknown model type");
         }
-        $url = parse_url($url, PHP_URL_PATH);
+        $url = trim(parse_url($url, PHP_URL_PATH),'/');
         return $url;
     }
 

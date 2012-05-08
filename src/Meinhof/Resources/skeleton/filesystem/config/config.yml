@@ -1,3 +1,9 @@
 site:
     globals:
         site_name: %%site-name%%
+    urls:
+        post: 'post/{date}/{slug}.html'
+        page: '{slug}.html'
+filesystem:
+    pages:
+        - index 
