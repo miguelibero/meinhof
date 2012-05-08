@@ -10,7 +10,7 @@
         <parameter key="assetic.filter_manager.class"
             >Assetic\FilterManager</parameter>
         <parameter key="assetic.asset_factory.class"
-            >Assetic\Factory\AssetFactory</parameter>
+            >Meinhof\Assetic\RelativeAssetFactory</parameter>
         <parameter key="assetic.asset_writer.class"
             >Assetic\AssetWriter</parameter>            
         <parameter key="assetic.resource_loader.class"
@@ -19,7 +19,9 @@
             >Meinhof\Assetic\FormulaLoaderManager</parameter>            
 
         <parameter key="action.update_assets.class"
-            >Meinhof\Action\UpdateAssetsAction</parameter>            
+            >Meinhof\Action\UpdateAssetsAction</parameter>
+        <parameter key="listener.assetic.relative_export.class"
+            >Meinhof\Assetic\RelativeExportListener</parameter>  
         
         <parameter key="assetic.resource_loader.twig.class"
             >Meinhof\Assetic\TwigResourceLoader</parameter>        
@@ -60,6 +62,11 @@
             <argument type="service" id="output"/>
             <tag name="event_listener" event="update" method="take" priority="0"/>
         </service>
+
+        <service id="listener.assetic.relative_export" class="%listener.assetic.relative_export.class%">
+            <argument type="service" id="assetic.asset_factory"/>
+            <tag name="event_listener" event="export" method="export" priority="0"/>
+        </service>        
 
         <!-- twig support -->
         <service id="assetic.resource_loader.twig" class="%assetic.resource_loader.twig.class%">

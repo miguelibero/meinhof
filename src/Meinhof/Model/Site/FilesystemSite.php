@@ -30,6 +30,20 @@ class FilesystemSite extends AbstractSite
         $this->setCategories($categories);
     }
 
+    protected function setCategories(array $categories)
+    {
+        $this->categories = array();
+        foreach($categories as $category){
+            if(is_string($category)){
+                $category = new Category($category);
+            }
+            if(!$category instanceof CategoryInterface){
+                throw new \RuntimeException("Invalid category.");
+            }
+            $this->categories[] = $category;
+        }
+    }    
+
     protected function setPages(array $pages)
     {
         $this->pages = array();
@@ -50,19 +64,6 @@ class FilesystemSite extends AbstractSite
         }
     }
 
-    protected function setCategories(array $categories)
-    {
-        $this->categories = array();
-        foreach($categories as $category){
-            if(is_string($category)){
-                $category = new Category($category);
-            }
-            if(!$category instanceof CategoryInterface){
-                throw new \RuntimeException("Invalid category.");
-            }
-            $this->categories[] = $category;
-        }
-    }    
 
     public function setPostTemplatingEngine(EngineInterface $engine)
     {
@@ -138,22 +139,6 @@ class FilesystemSite extends AbstractSite
             $paths[] = $file->getRelativePathname();
         }
         return $paths;
-    }
-
-    public function savePost(PostInterface $post, $content)
-    {
-        return $this->saveFile($post->getSlug(), $content);
-    }
-
-    public function savePage(PageInterface $page, $content)
-    {
-        return $this->saveFile($page->getSlug(), $content);
-    }
-
-    protected function saveFile($slug, $content)
-    {
-        $path = $this->getPath('site').'/'.$slug.'.html';
-        file_put_contents($path, $content);   
     }
 
     public function getGlobals()

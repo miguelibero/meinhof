@@ -28,6 +28,8 @@
             >\Twig_Loader_Filesystem</parameter>
         <parameter key="site_generator.class"
             >Meinhof\Generator\SimpleSkeletonGenerator</parameter>
+        <parameter key="exporter.class"
+            >Meinhof\Exporter\FilesystemExporter</parameter>            
     </parameters>
     <services>
         <service id="site" class="%site.class%">
@@ -63,9 +65,20 @@
         </service>
         <service id="site_generator" class="%site_generator.class%">
             <argument>Resources/skeleton/filesystem</argument>
+        </service>
+        <service id="exporter" class="%exporter.class%">
+            <argument type="service" id="templating.view"/>
+            <argument type="service" id="url_helper"/>
+            <argument>%filesystem.paths.site%</argument>
+            <call method="setEventDispatcher">
+                <argument type="service" id="event_dispatcher"/>
+            </call>
         </service>        
 
         <!-- twig -->
+        <service id="templating.content.twig_loader" class="%templating.twig_loader.class%" public="false">
+            <argument>%filesystem.paths.posts%</argument>
+        </service>        
         <service id="templating.post.twig_loader" class="%templating.twig_loader.class%" public="false">
             <argument>%filesystem.paths.posts%</argument>
         </service>

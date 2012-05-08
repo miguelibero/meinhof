@@ -7,6 +7,8 @@
     <parameters>         
         <parameter key="templating.twig.class"
             >Meinhof\Templating\TwigEngine</parameter>
+        <parameter key="templating.twig.url_extension.class"
+            >Meinhof\Templating\Twig\UrlExtension</parameter>            
     </parameters>
     <services>        
         <service id="twig_environment.post" class="\Twig_Environment" public="false">
@@ -26,6 +28,11 @@
             <argument type="service" id="twig_environment.view"/>
             <argument type="service" id="templating.name_parser"/>
             <tag name="templating.engine" type="view" />
-        </service>   
+        </service>
+        <service id="templating.twig.url_extension"
+            class="%templating.twig.url_extension.class%" public="false">
+            <argument type="service" id="url_helper"/>
+            <tag name="twig.extension" />
+        </service>           
     </services>
 </container>

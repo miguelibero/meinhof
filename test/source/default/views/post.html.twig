@@ -4,7 +4,7 @@
 <h2>{{ post.title }}</h2>
 
 <div class="info">
-written by {{ post.info.author }}
+<p>written by {{ post.info.author }} at {{ post.updated | date('Y-m-d') }}</p>
 </div>
 
 {{ post.content | raw }}aaaa

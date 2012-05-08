@@ -35,6 +35,11 @@ interface PostInterface
     public function getExcerpt();
 
     /**
+     * @return array of CategoryInterface objects
+     */
+    public function getCategories();
+
+    /**
      * @return string templating key for the post view
      */
     public function getViewTemplatingKey();

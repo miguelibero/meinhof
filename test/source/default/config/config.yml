@@ -2,6 +2,9 @@ site:
     globals:
         site_name: Test blog
         site_slogan: this is the meinhof test blog
+    urls:
+        post: 'post/{date}/{slug}.html'
+        page: '{slug}.html'
 filesystem:
     pages:
         - index

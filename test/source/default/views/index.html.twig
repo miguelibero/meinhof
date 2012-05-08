@@ -4,6 +4,12 @@
 
 {% for post in posts %}
     <h2>{{ post.title }}</h2>
+    <div class="info">
+        <small>{{ post.updated | date('d-m-Y') }}</small>
+    </div>
+    {{ post.excerpt | raw }}
+
+    <p><a href="{{ url(post) }}">Read more...</a></p>
 {% endfor %}
 
 {% endblock %}

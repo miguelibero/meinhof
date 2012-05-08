@@ -6,7 +6,9 @@ use Symfony\Component\Finder\Finder;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Definition\Processor;
 
-use Meinhof\Post\PostConfiguration;
+use Meinhof\Model\Category\Category;
+use Meinhof\Model\Category\CategoryInterface;
+use Meinhof\Model\Post\PostConfiguration;
 
 class Post extends AbstractPost
 {
@@ -15,10 +17,11 @@ class Post extends AbstractPost
     protected $title;
     protected $view;
     protected $updated = null;
+    protected $categories;
     protected $info = array();
 
     public function __construct($slug, $key, $updated=null,
-        $title=null, $view=null, array $info=array())
+        $title=null, $view=null, array $info=array(), array $categories=array())
     {
         $this->slug = $slug;
         $this->key = $key;
@@ -27,8 +30,24 @@ class Post extends AbstractPost
         if($this->updated !== null){
             $this->setUpdated($updated);
         }
+        $this->setCategories($categories);
         $this->info = $info;
     }
+
+
+    protected function setCategories(array $categories)
+    {
+        $this->categories = array();
+        foreach($categories as $category){
+            if(is_string($category)){
+                $category = new Category($category);
+            }
+            if(!$category instanceof CategoryInterface){
+                throw new \RuntimeException("Invalid category.");
+            }
+            $this->categories[] = $category;
+        }
+    }    
 
     protected function setUpdated($updated)
     {
@@ -80,18 +99,25 @@ class Post extends AbstractPost
         return parent::getViewTemplatingKey();
     }
 
+    public function getCategories()
+    {
+        return $this->categories;
+    }
+
     public static function fromArray(array $config, LoaderInterface $loader=null)
     {
         if($loader && isset($config['key'])){
             $matter = self::loadMatter($config['key'], $loader);
-            $config = array_merge($matter, $config);
+            if($matter){
+                $config = array_merge($matter, $config);
+            }
         }
 
         if(!isset($config['info']) || !is_array($config['info'])){
             $config['info'] = array();
         }
-        if(!isset($config['paths']) || !is_array($config['paths'])){
-            $config['paths'] = array();
+        if(!isset($config['categories']) || !is_array($config['categories'])){
+            $config['categories'] = array();
         }        
         $config = array_merge(array(
             'key'       => null,
@@ -100,10 +126,9 @@ class Post extends AbstractPost
             'updated'   => null,
             'view'      => null
         ), $config);
-
         return new static($config['slug'], $config['key'],
             $config['updated'], $config['title'], $config['view'],
-            $config['info'], $config['paths']);
+            $config['info'], $config['categories']);
     }
 
     protected static function loadMatter($key, LoaderInterface $loader)

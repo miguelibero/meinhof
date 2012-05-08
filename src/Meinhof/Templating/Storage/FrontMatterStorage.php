@@ -25,17 +25,14 @@ class FrontMatterStorage extends MatterStorage
         $this->content = null;
         $content = $this->storage->getContent();
         $parts = preg_split($this->separator, $content);
-        
-        foreach($parts as $part){
-            $part = trim($part);
-            if(!$part){
-                continue;
-            }
-            if(!$this->matter){
-                $this->matter = $part;
-            }else if(!$this->content){
-                $this->content = $part;
-            }
+        $parts = array_map('trim', $parts);
+        $parts = array_values(array_filter($parts));
+        $c = count($parts);
+        if($c > 1){
+            $this->matter = $parts[0];
+            $this->content = $parts[1];
+        }else if($c > 0){
+            $this->content = $parts[0];
         }
     }
 

@@ -16,9 +16,14 @@ class SiteConfiguration implements ConfigurationInterface
             ->children()
                 ->arrayNode('globals')
                     ->useAttributeAsKey('key')
-                    ->prototype('scalar')
-                    ->end()
+                    ->prototype('scalar')->end()
                 ->end()
+                ->arrayNode('urls')
+                    ->children()
+                        ->scalarNode('post')->end()
+                        ->scalarNode('page')->end()
+                    ->end()
+                ->end()                
             ->end()
         ->end();
 

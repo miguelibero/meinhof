@@ -21,9 +21,14 @@ class SiteExtension implements ExtensionInterface
         $processor = new Processor();
         $data = $processor->processConfiguration($configuration, $configs);     
 
+        if(!isset($data['urls']) || !is_array($data['urls'])){
+            $data['urls'] = array();
+        }
+
         // set configuration parameters
         $prefix = 'site.';
         $container->setParameter($prefix.'globals', $data['globals']); 
+        $container->setParameter($prefix.'urls', $data['urls']); 
     }
 
     public function getNamespace()

@@ -31,6 +31,8 @@
             >Symfony\Component\Templating\TemplateNameParser</parameter>
         <parameter key="event_dispatcher.class"
             >Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher</parameter>
+        <parameter key="url_helper.class"
+            >Meinhof\Helper\UrlHelper</parameter>
 
         <parameter key="action.update_posts.class"
             >Meinhof\Action\UpdatePostsAction</parameter>             
@@ -91,6 +93,9 @@
         </service>
         <service id="templating.view" class="%templating.class%">
         </service>
+        <service id="url_helper" class="%url_helper.class%">
+            <argument>%site.urls%</argument>
+        </service>        
 
         <!-- event dispatcher base -->
         <service id="event_dispatcher" class="%event_dispatcher.class%">
@@ -98,13 +103,13 @@
         </service>
         <service id="action.update_posts" class="%action.update_posts.class%">
             <argument type="service" id="site"/>
-            <argument type="service" id="templating.view"/>
+            <argument type="service" id="exporter"/>
             <argument type="service" id="output"/>
             <tag name="event_listener" event="update" method="take"/>
         </service>
         <service id="action.update_pages" class="%action.update_pages.class%">
             <argument type="service" id="site"/>
-            <argument type="service" id="templating.view"/>
+            <argument type="service" id="exporter"/>
             <argument type="service" id="output"/>
             <tag name="event_listener" event="update" method="take"/>
         </service>        

@@ -31,16 +31,4 @@ interface SiteInterface
      * @return array of key values to replace in the templates
      */
     public function getGlobals();
-
-    /**
-     * @param PostInterface $post post to save
-     * @param string $content generated post content to save
-     */
-    public function savePost(PostInterface $post, $content);
-
-    /**
-     * @param PageInterface $page page to save
-     * @param string $content generated page content to save
-     */
-    public function savePage(PageInterface $page, $content);    
 }

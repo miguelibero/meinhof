@@ -41,7 +41,7 @@ class FilesystemPost extends Post
         $timestamp = filemtime($this->getContentTemplatePath());
         $date = new \DateTime();
         $date->setTimestamp($timestamp);
-        return $data;
+        return $date;
     }
 
     public function getSlug()

@@ -40,7 +40,7 @@ abstract class AbstractPost implements PostInterface
 
     public function getExcerpt()
     {
-        $parts = explode(EXCERPT_SEPARATOR, $this->getContent());
+        $parts = explode(self::EXCERPT_SEPARATOR, $this->getContent());
         return reset($parts);
     }
 
