@@ -25,7 +25,7 @@
         "symfony/templating":           "2.1.*",
         "symfony/translation":          "2.1.*"
     },
-    "suggest": {
+    "require-dev": {
         "symfony/yaml":             "2.1.*",        
         "twig/twig":                "1.8.*",
         "kriswallsmith/assetic":    "1.1.*",
