@@ -58,6 +58,13 @@ class FrontMatterLoaderTest extends \PHPUnit_Framework_TestCase
 
         $this->assertEquals('matter', $storage->getMatter());
         $this->assertEquals('template', $storage->getContent());
+
+        // test template without matter
+        $this->storage = new StringStorage("template");
+
+        $storage = $this->loader->load($template);
+
+        $this->assertEquals('template', $storage->getContent());        
     }
 
     public function testStorageFail()
