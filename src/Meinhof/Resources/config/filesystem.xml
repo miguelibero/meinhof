@@ -29,7 +29,12 @@
         <parameter key="site_generator.class"
             >Meinhof\Generator\SimpleSkeletonGenerator</parameter>
         <parameter key="exporter.class"
-            >Meinhof\Exporter\FilesystemExporter</parameter>            
+            >Meinhof\Exporter\FilesystemExporter</parameter>
+
+        <parameter key="assetic.paths.read_from"
+            >%filesystem.paths.public%</parameter>
+        <parameter key="assetic.paths.write_to"
+            >%filesystem.paths.web%</parameter>            
     </parameters>
     <services>
         <service id="site" class="%site.class%">
@@ -69,7 +74,7 @@
         <service id="exporter" class="%exporter.class%">
             <argument type="service" id="templating.view"/>
             <argument type="service" id="url_helper"/>
-            <argument>%filesystem.paths.site%</argument>
+            <argument>%filesystem.paths.web%</argument>
             <call method="setEventDispatcher">
                 <argument type="service" id="event_dispatcher"/>
             </call>

@@ -29,6 +29,7 @@
             >Assetic\Extension\Twig\TwigFormulaLoader</parameter>
         <parameter key="templating.twig.assetic_extension.class"
             >Assetic\Extension\Twig\AsseticExtension</parameter>
+            
     </parameters>
     <services>
         <service id="assetic.asset_manager" class="%assetic.asset_manager.class%">

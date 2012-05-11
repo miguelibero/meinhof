@@ -19,6 +19,7 @@ class FilesystemConfiguration implements ConfigurationInterface
                         ->scalarNode('base')->end()
                         ->scalarNode('posts')->end()
                         ->scalarNode('views')->end()
+                        ->scalarNode('web')->end()                        
                         ->scalarNode('public')->end()
                     ->end()
                 ->end()

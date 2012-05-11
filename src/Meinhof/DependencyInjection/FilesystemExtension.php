@@ -54,8 +54,6 @@ class FilesystemExtension implements PreloadingExtensionInterface
         foreach($data['paths'] as $name=>$path){
             $container->setParameter($prefix.'paths.'.$name, $path); 
         }
-        $container->setParameter('assetic.paths.read_from', $data['paths']['public']);
-        $container->setParameter('assetic.paths.write_to', $data['paths']['site']);
 
         // load filesystem services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -67,7 +65,7 @@ class FilesystemExtension implements PreloadingExtensionInterface
         $paths = array_merge(array(
             'posts'     => 'posts',
             'views'     => 'views',
-            'site'      => 'site',
+            'web'       => 'web',
             'public'    => 'public',
             'base'      => $this->base_path
         ), $paths);
@@ -76,7 +74,7 @@ class FilesystemExtension implements PreloadingExtensionInterface
             if(substr($path,0,1) !== '/'){
                 $path = $this->base_path.'/'.$path;
             }
-            $paths[$k] = realpath($path);
+            $paths[$k] = $path;
         }
         return $paths;
     }
