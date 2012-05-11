@@ -35,5 +35,18 @@ class PageTest extends \PHPUnit_Framework_TestCase
         $date = new \DateTime();
         $date->setTimestamp(1);
         $this->assertEquals($date, $this->page->getUpdated());
-    }    
+    }
+
+    public function testFromArray()
+    {
+        $page = Page::fromArray(array(
+            'updated'   => 'september 11 2001',
+        ));
+        $this->assertTrue($page instanceof PageInterface);
+
+        $date = new \DateTime('september 11 2001');
+        $this->assertEquals($date, $page->getUpdated());
+
+        $this->assertEquals('page', $page->getViewTemplatingKey());
+    }
 }

@@ -34,7 +34,7 @@
         <parameter key="assetic.paths.read_from"
             >%filesystem.paths.public%</parameter>
         <parameter key="assetic.paths.write_to"
-            >%filesystem.paths.web%</parameter>            
+            >%filesystem.paths.web%</parameter>
     </parameters>
     <services>
         <service id="site" class="%site.class%">
