@@ -11,6 +11,9 @@ use Meinhof\Model\Post\PostInterface;
 use Meinhof\Model\Site\SiteInterface;
 use Meinhof\Exporter\ExporterInterface;
 
+/**
+ * This action calls the exporter on all the posts.
+ */
 class UpdatePostsAction extends OutputAction
 {
     protected $site;

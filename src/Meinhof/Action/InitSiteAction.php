@@ -8,6 +8,9 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Meinhof\Command\Helper\DialogHelper;
 use Meinhof\Generator\GeneratorInterface;
 
+/**
+ * This action creates a new site configuration structure from a generator.
+ */
 class InitSiteAction extends OutputAction
 {
     protected $generator;
@@ -26,6 +29,12 @@ class InitSiteAction extends OutputAction
         return $this->output;
     }
 
+    /**
+     * Checks if a given path is a directory with files in it
+     *
+     * @param string $dir path to the directory
+     * @return boolean if it is a full directory
+     */
     public function isFullDirectory($dir)
     {
         if(!file_exists($dir)){

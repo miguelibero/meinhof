@@ -13,7 +13,7 @@ class Page extends AbstractPage
     public function __construct($slug, $updated=null, $title=null, $view=null, array $info=array())
     {
         $this->slug = $slug;
-        if($this->updated !== null){
+        if($updated !== null){
             $this->setUpdated($updated);
         }
         $this->title = $title;
