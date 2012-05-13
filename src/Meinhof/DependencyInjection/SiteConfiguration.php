@@ -22,6 +22,9 @@ class SiteConfiguration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('post')->end()
                         ->scalarNode('page')->end()
+                        ->scalarNode('public')->end()
+                        ->scalarNode('web')->end()
+                        ->scalarNode('content')->end()
                     ->end()
                 ->end()
                 ->arrayNode('post')
@@ -39,3 +42,4 @@ class SiteConfiguration implements ConfigurationInterface
         return $treeBuilder;
     }
 }
+

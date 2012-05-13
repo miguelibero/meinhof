@@ -8,27 +8,33 @@ use Symfony\Component\DependencyInjection\Reference;
 
 class TemplatingEnginePass implements CompilerPassInterface
 {
+    protected $engine_types = array('post', 'content', 'view');
+
     public function process(ContainerBuilder $container)
     {
-        $post_def = $container->getDefinition('templating.post');
-        $view_def = $container->getDefinition('templating.view');
+        $method = 'addEngine';
+        $prefix = 'templating.';
+        $tag = 'templating.engine';
 
-        foreach ($container->findTaggedServiceIds('templating.engine') as $id => $attributes) {
+        $defs = array();
+        foreach($this->engine_types as $type){
+            $key = $prefix.$type;
+            if($container->hasDefinition($key)){
+                $defs[$type] = $container->getDefinition($key);
+            }
+        }
+
+        foreach ($container->findTaggedServiceIds($tag) as $id => $attributes) {
             $type = $this->getTypeFromAttributes($attributes);
             $args = array(new Reference($id));
-            switch($type){
-                case 'post':
-                    $post_def->addMethodCall('addEngine', $args);
-                    break;
-                case 'view':
-                    $view_def->addMethodCall('addEngine', $args);
-                    break;
-                case 'all':
-                    $post_def->addMethodCall('addEngine', $args);
-                    $view_def->addMethodCall('addEngine', $args);
-                    break;
-                default:
-                    throw new \InvalidArgumentException("Invalid templating engine type '${type}'.");
+            if(in_array($type, array_keys($defs))){
+                $defs[$type]->addMethodCall($method, $args);
+            }else if($type === 'all'){
+                foreach($defs as $def){
+                    $def->addMethodCall($method, $args);
+                }
+            }else{
+                throw new \InvalidArgumentException("Invalid templating engine type '${type}'.");
             }
         }
     }

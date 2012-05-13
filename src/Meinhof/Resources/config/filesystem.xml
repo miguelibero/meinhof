@@ -5,30 +5,30 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="site.class"
+        <parameter key="filesystem.site.class"
             >Meinhof\Model\Site\FilesystemSite</parameter>    
             
-        <parameter key="templating.loader.class"
+        <parameter key="filesystem.templating.loader.class"
             >Meinhof\Templating\Loader\FilesystemLoader</parameter>
-        <parameter key="templating.post.loader.class"
+        <parameter key="filesystem.templating.post.loader.class"
             >Meinhof\Templating\Loader\FrontMatterLoader</parameter>
-        <parameter key="templating.markdown.class"
+        <parameter key="filesystem.templating.markdown.class"
             >Meinhof\Templating\MarkdownEngine</parameter>      
-        <parameter key="templating.twig_loader.class"
+        <parameter key="filesystem.templating.twig.loader.class"
             >\Twig_Loader_Filesystem</parameter>             
-        <parameter key="templating.twig.class"
+        <parameter key="filesystem.templating.twig.class"
             >Meinhof\Templating\TwigEngine</parameter>
-        <parameter key="templating.twig.assetic_extension.class"
+        <parameter key="filesystem.templating.twig.assetic_extension.class"
             >Assetic\Extension\Twig\AsseticExtension</parameter>
-        <parameter key="matter_loader.yaml.class"
+        <parameter key="filesystem.matter_loader.yaml.class"
             >Meinhof\Config\Loader\YamlMatterLoader</parameter>
-        <parameter key="matter_loader.class"
+        <parameter key="filesystem.matter_loader.class"
             >Meinhof\Config\Loader\TemplateMatterLoader</parameter>
-        <parameter key="templating.twig_loader.class"
+        <parameter key="filesystem.templating.twig.loader.class"
             >\Twig_Loader_Filesystem</parameter>
-        <parameter key="site_generator.class"
+        <parameter key="filesystem.site_generator.class"
             >Meinhof\Generator\SimpleSkeletonGenerator</parameter>
-        <parameter key="exporter.class"
+        <parameter key="filesystem.exporter.class"
             >Meinhof\Exporter\FilesystemExporter</parameter>
 
         <parameter key="assetic.paths.read_from"
@@ -37,7 +37,7 @@
             >%filesystem.paths.web%</parameter>
     </parameters>
     <services>
-        <service id="site" class="%site.class%">
+        <service id="site" class="%filesystem.site.class%">
             <argument>%filesystem.paths%</argument>
             <argument>%site.info%</argument>
             <argument>%filesystem.pages%</argument>
@@ -49,30 +49,36 @@
                 <argument type="service" id="matter_loader.post"/>
             </call>
         </service>
-        <service id="templating.post.real_loader"
-            class="%templating.loader.class%" public="false">
+        <service id="templating.post.content_loader"
+            class="%filesystem.templating.loader.class%" public="false">
             <argument>%filesystem.paths.posts%</argument>
         </service>
         <service id="templating.post.loader"
-            class="%templating.post.loader.class%" public="false">
-            <argument type="service" id="templating.post.real_loader"/>
+            class="%filesystem.templating.post.loader.class%" public="false">
+            <argument type="service" id="templating.post.content_loader"/>
         </service>
         <service id="templating.view.loader"
-            class="%templating.loader.class%" public="false">
+            class="%filesystem.templating.loader.class%" public="false">
             <argument>%filesystem.paths.views%</argument>
         </service>
-        <service id="matter_loader.yaml" class="%matter_loader.yaml.class%">
+        <service id="templating.content.loader"
+            class="%filesystem.templating.loader.class%" public="false">
+            <argument>%filesystem.paths.content%</argument>
+        </service>        
+        <service id="matter_loader.yaml"
+            class="%filesystem.matter_loader.yaml.class%">
         </service>
-        <service id="matter_loader.post" class="%matter_loader.class%">
+        <service id="matter_loader.post"
+            class="%filesystem.matter_loader.class%">
             <argument type="service" id="templating.name_parser"/>
             <argument type="service" id="templating.post.loader"/>
             <argument type="service" id="matter_loader.yaml"/>
             <argument>%site.post%</argument>
         </service>
-        <service id="site_generator" class="%site_generator.class%">
+        <service id="site_generator" class="%filesystem.site_generator.class%">
             <argument>Resources/skeleton/filesystem</argument>
         </service>
-        <service id="exporter" class="%exporter.class%">
+        <service id="exporter" class="%filesystem.exporter.class%">
             <argument type="service" id="templating.view"/>
             <argument type="service" id="url_helper"/>
             <argument>%filesystem.paths.web%</argument>
@@ -82,13 +88,13 @@
         </service>        
 
         <!-- twig -->
-        <service id="templating.content.twig_loader" class="%templating.twig_loader.class%" public="false">
+        <service id="twig.templating.content.loader" class="%filesystem.templating.twig.loader.class%" public="false">
             <argument>%filesystem.paths.posts%</argument>
         </service>        
-        <service id="templating.post.twig_loader" class="%templating.twig_loader.class%" public="false">
+        <service id="twig.templating.post.loader" class="%filesystem.templating.twig.loader.class%" public="false">
             <argument>%filesystem.paths.posts%</argument>
         </service>
-        <service id="templating.view.twig_loader" class="%templating.twig_loader.class%" public="false">
+        <service id="twig.templating.view.loader" class="%filesystem.templating.twig.loader.class%" public="false">
             <argument>%filesystem.paths.views%</argument>
         </service>        
     </services>

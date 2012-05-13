@@ -96,6 +96,8 @@
         </service>                  
         <service id="templating.post" class="%templating.class%">
         </service>
+        <service id="templating.content" class="%templating.class%">
+        </service>        
         <service id="templating.view" class="%templating.class%">
         </service>
         <service id="url_helper" class="%url_helper.class%">

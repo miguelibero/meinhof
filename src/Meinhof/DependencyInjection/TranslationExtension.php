@@ -29,13 +29,18 @@ class TranslationExtension implements ExtensionInterface
         if(!isset($data['default_locale']) || !$data['default_locale']){
             $data['default_locale'] = 'C';
         }
-        if(!isset($data['locale']) || count($data['locales']) === 0){
+        if(!isset($data['locales']) || count($data['locales']) === 0){
             $data['locales'] = array('C');
         }
 
         $prefix = 'translation.';
         $container->setParameter($prefix.'default_locale', $data['default_locale']); 
-        $container->setParameter($prefix.'locales', $data['locales']); 
+        $container->setParameter($prefix.'locales', $data['locales']);
+
+        if($container->hasDefinition('exporter')){
+            $def = $container->getDefinition('exporter');
+            $container->setDefinition($prefix.'internal_exporter', $def);
+        }
 
         // load translation services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

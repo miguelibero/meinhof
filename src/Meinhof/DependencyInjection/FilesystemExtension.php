@@ -67,6 +67,7 @@ class FilesystemExtension implements PreloadingExtensionInterface
             'views'     => 'views',
             'web'       => 'web',
             'public'    => 'public',
+            'content'   => 'content',
             'base'      => $this->base_path
         ), $paths);
 

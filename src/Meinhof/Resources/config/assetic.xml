@@ -18,16 +18,16 @@
         <parameter key="assetic.formula_loader_manager.class"
             >Meinhof\Assetic\FormulaLoaderManager</parameter>            
 
-        <parameter key="action.update_assets.class"
+        <parameter key="assetic.action.update_assets.class"
             >Meinhof\Action\UpdateAssetsAction</parameter>
-        <parameter key="listener.assetic.relative_export.class"
+        <parameter key="assetic.listener.relative_export.class"
             >Meinhof\Assetic\RelativeExportListener</parameter>  
         
         <parameter key="assetic.resource_loader.twig.class"
             >Meinhof\Assetic\TwigResourceLoader</parameter>        
         <parameter key="assetic.formula_loader.twig.class"
             >Assetic\Extension\Twig\TwigFormulaLoader</parameter>
-        <parameter key="templating.twig.assetic_extension.class"
+        <parameter key="assetic.twig.extension.class"
             >Assetic\Extension\Twig\AsseticExtension</parameter>
             
     </parameters>
@@ -54,7 +54,7 @@
         <service id="assetic.asset_writer" class="%assetic.asset_writer.class%">
             <argument>%assetic.paths.write_to%</argument>
         </service>
-        <service id="action.update_assets" class="%action.update_assets.class%">
+        <service id="action.update_assets" class="%assetic.action.update_assets.class%">
             <argument type="service" id="site"/>
             <argument type="service" id="assetic.asset_factory"/>
             <argument type="service" id="assetic.asset_writer"/>
@@ -64,22 +64,22 @@
             <tag name="event_listener" event="update" method="take" priority="0"/>
         </service>
 
-        <service id="listener.assetic.relative_export" class="%listener.assetic.relative_export.class%">
+        <service id="assetic.listener.relative_export" class="%assetic.listener.relative_export.class%">
             <argument type="service" id="assetic.asset_factory"/>
             <tag name="event_listener" event="export" method="export" priority="0"/>
         </service>        
 
         <!-- twig support -->
         <service id="assetic.resource_loader.twig" class="%assetic.resource_loader.twig.class%">
-            <argument type="service" id="templating.view.twig_loader"/>
+            <argument type="service" id="twig.templating.view.loader"/>
             <tag name="assetic.resource_loader" type="twig"/>
         </service>
         <service id="assetic.formula_loader.twig" class="%assetic.formula_loader.twig.class%">
-            <argument type="service" id="twig_environment.view"/>
+            <argument type="service" id="twig.environment.view"/>
             <tag name="assetic.formula_loader" type="twig"/>
         </service>
-        <service id="templating.twig.assetic_extension"
-            class="%templating.twig.assetic_extension.class%" public="false">
+        <service id="assetic.twig.extension"
+            class="%assetic.twig.extension.class%" public="false">
             <argument type="service" id="assetic.asset_factory"/>
             <tag name="twig.extension"/>
         </service>

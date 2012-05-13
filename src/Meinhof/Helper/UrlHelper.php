@@ -12,6 +12,9 @@ class UrlHelper implements UrlHelperInterface
         'page'  => '{slug}.html',
         'date'  => 'Y-m-d',
     );
+    protected $parameters = array();
+
+    const PARAMETER_TEMPLATE = '{%s}';
 
     public function __construct(array $config)
     {
@@ -25,23 +28,51 @@ class UrlHelper implements UrlHelperInterface
         }
     }
 
+    protected function getPostParameters(PostInterface $post)
+    {
+        return array(
+            'slug'    => $post->getSlug(),
+            'date'    => $this->formatDate($post->getUpdated()),
+        );
+    }
+
+    protected function getPageParameters(PageInterface $page)
+    {
+        return array(
+            'slug'    => $page->getSlug(),
+            'date'    => $this->formatDate($page->getUpdated()),
+        );
+    }
+
+    public function generateUrl($name, array $params)
+    {
+        if(!isset($this->config[$name])){
+            throw new \InvalidArgumentException("Unknown url template '${name}'.");
+        }
+        $tparams = array();
+        foreach($params as $k=>$v){
+            $k = sprintf(self::PARAMETER_TEMPLATE, $k);
+            $tparams[$k] = $v;
+        }
+        return strtr($this->config[$name], $tparams);
+    }
+
+    public function setParameter($name, $value)
+    {
+        $this->parameters[$name] = $value;
+    }
+
     public function getPostUrl(PostInterface $post)
     {
-        $params = array(
-            '{slug}'    => $post->getSlug(),
-            '{date}'    => $this->formatDate($post->getUpdated()),
-        );
-        $template = $this->config['post'];
-        return strtr($template, $params);
+        $params = array_merge($this->parameters,
+            $this->getPostParameters($post));
+        return $this->generateUrl('post', $params);
     }
 
     public function getPageUrl(PageInterface $page)
     {
-        $params = array(
-            '{slug}'    => $page->getSlug(),
-            '{date}'    => $this->formatDate($page->getUpdated()),
-        );
-        $template = $this->config['page'];
-        return strtr($template, $params);
+        $params = array_merge($this->parameters,
+            $this->getPageParameters($page));
+        return $this->generateUrl('page', $params);
     }
 }

@@ -4,36 +4,45 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>         
-        <parameter key="templating.twig.class"
+    <parameters>
+        <parameter key="twig.environment.class"
+            >\Twig_Environment</parameter>
+        <parameter key="twig.templating.class"
             >Meinhof\Templating\TwigEngine</parameter>
-        <parameter key="templating.twig.url_extension.class"
-            >Meinhof\Templating\Twig\Extension\UrlExtension</parameter>            
+        <parameter key="twig.extension.url.class"
+            >Meinhof\Templating\Twig\Extension\UrlExtension</parameter>         
+        <parameter key="twig.extension.content.class"
+            >Meinhof\Templating\Twig\Extension\ContentExtension</parameter>            
     </parameters>
     <services>        
-        <service id="twig_environment.post" class="\Twig_Environment" public="false">
-            <argument type="service" id="templating.post.twig_loader"/>
+        <service id="twig.environment.post" class="%twig.environment.class%">
+            <argument type="service" id="twig.templating.post.loader"/>
         </service>
-        <service id="twig_environment.view" class="\Twig_Environment" public="false">
-            <argument type="service" id="templating.view.twig_loader"/>
+        <service id="twig.environment.view" class="%twig.environment.class%">
+            <argument type="service" id="twig.templating.view.loader"/>
         </service>       
-        <service id="templating.post.twig"
-            class="%templating.twig.class%" public="false">
-            <argument type="service" id="twig_environment.post"/>
+        <service id="twig.templating.post"
+            class="%twig.templating.class%" public="false">
+            <argument type="service" id="twig.environment.post"/>
             <argument type="service" id="templating.name_parser"/>
             <tag name="templating.engine" type="post" />
         </service>
-        <service id="templating.view.twig"
-            class="%templating.twig.class%" public="false">
-            <argument type="service" id="twig_environment.view"/>
+        <service id="twig.templating.view"
+            class="%twig.templating.class%" public="false">
+            <argument type="service" id="twig.environment.view"/>
             <argument type="service" id="templating.name_parser"/>
             <tag name="templating.engine" type="view" />
         </service>
-        <service id="templating.twig.url_extension"
-            class="%templating.twig.url_extension.class%" public="false">
+        <service id="twig.extension.url"
+            class="%twig.extension.url.class%">
             <argument type="service" id="url_helper"/>
             <tag name="twig.extension" />
             <tag name="event_listener" event="export" method="export" priority="0"/>
-        </service>           
+        </service>
+        <service id="twig.extension.content"
+            class="%twig.extension.content.class%">
+            <argument type="service" id="templating.content"/>
+            <tag name="twig.extension" />
+        </service>  
     </services>
 </container>

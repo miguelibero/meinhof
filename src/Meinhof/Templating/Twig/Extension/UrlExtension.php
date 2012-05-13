@@ -38,10 +38,10 @@ class UrlExtension extends \Twig_Extension
     public function getUrl($obj)
     {
         if($obj instanceof PostInterface){
-            return $this->helper->getPostUrl($obj);
+            $obj = $this->helper->getPostUrl($obj);
         }
         if($obj instanceof PageInterface){
-            return $this->helper->getPageUrl($obj);
+            $obj = $this->helper->getPageUrl($obj);
         }
         if(is_string($obj)){
             return $this->webroot.$obj;

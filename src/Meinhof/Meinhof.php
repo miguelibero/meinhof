@@ -61,24 +61,24 @@ class Meinhof
         $loader = new XmlFileLoader($container, new FileLocator($configdirs));
         $loader->load('services.xml');
 
-        // preload extensions
-        $extensions = array();
+        // register extensions
         foreach ($container->findTaggedServiceIds('extension') as $id => $attributes) {
             $extension = $container->get($id);
             if(!$extension instanceof ExtensionInterface){
                 throw new \InvalidArgumentException("Invalid extension with id '${id}'.");
             }
             $container->registerExtension($extension);
+        }
 
-            // preload the extension
+        // preload the extensions
+        foreach($container->getExtensions() as $extension){
             if($extension instanceof PreloadingExtensionInterface){
                 $extension->preload();
             }
-            $extensions[] = $extension;
         }
 
         // load extensions
-        foreach($extensions as $extension){
+        foreach($container->getExtensions() as $extension){
             // load the extension configuration
             $configs = $container->getExtensionConfig($extension->getAlias());
             $extension->load($configs, $container);
