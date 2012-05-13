@@ -27,7 +27,7 @@ class FilesystemExporter extends AbstractExporter
     {
         $path = $this->base_path.'/'.trim($url,'/');
         @mkdir(dirname($path), 0755, true);
-        if(!@file_put_contents($path, $content)){
+        if(@file_put_contents($path, $content) === false){
             throw new \RuntimeException("Could not save url '${url}'.");
         }
     }

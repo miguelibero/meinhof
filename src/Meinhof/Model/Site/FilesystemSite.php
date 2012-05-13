@@ -16,16 +16,16 @@ use Meinhof\Model\Category\Category;
 class FilesystemSite extends AbstractSite
 {
     protected $paths = array();
-    protected $globals;
+    protected $info;
     protected $pages;
     protected $categories;
     protected $post_loader;
     protected $post_templating;
 
-    public function __construct(array $paths, array $globals, array $pages, array $categories)
+    public function __construct(array $paths, array $info, array $pages, array $categories)
     {
         $this->paths = array_merge($this->paths, $paths);
-        $this->globals = $globals;
+        $this->info = $info;
         $this->setPages($pages);
         $this->setCategories($categories);
     }
@@ -47,8 +47,11 @@ class FilesystemSite extends AbstractSite
     protected function setPages(array $pages)
     {
         $this->pages = array();
-        foreach($pages as $page){
+        foreach($pages as $k=>$page){
             if(is_array($page)){
+                if(!isset($page['key'])){
+                    $page['key'] = $k;
+                }
                 $page = FilesystemPage::fromArray($page);
             }
             if(is_string($page)){
@@ -60,7 +63,7 @@ class FilesystemSite extends AbstractSite
             if($page instanceof FilesystemPage){
                 $page->setSite($this);
             }
-            $this->pages[] = $page;
+            $this->pages[$page->getKey()] = $page;
         }
     }
 
@@ -141,8 +144,8 @@ class FilesystemSite extends AbstractSite
         return $paths;
     }
 
-    public function getGlobals()
+    public function getInfo()
     {
-        return $this->globals;
+        return $this->info;
     }
 }

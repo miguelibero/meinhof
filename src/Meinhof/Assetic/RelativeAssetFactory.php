@@ -23,7 +23,9 @@ class RelativeAssetFactory extends AssetFactory
         $asset = parent::createAsset($inputs, $filters, $options);
         if($asset instanceof AssetInterface){
             $path = $asset->getTargetPath();
-            $path = $this->base_target_path.'/'.ltrim($path,'/');
+            if($this->base_target_path && substr($path,0,1) !== '/'){
+                $path = $this->base_target_path.'/'.$path;
+            }
             $asset->setTargetPath($path);
         }
         return $asset;

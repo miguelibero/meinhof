@@ -4,14 +4,16 @@ namespace Meinhof\Model\Page;
 
 class Page extends AbstractPage
 {
+    protected $key;
     protected $slug;
     protected $updated;
     protected $title;
     protected $view;
     protected $info;
 
-    public function __construct($slug, $updated=null, $title=null, $view=null, array $info=array())
+    public function __construct($key, $slug=null, $updated=null, $title=null, $view=null, array $info=array())
     {
+        $this->key = $key;
         $this->slug = $slug;
         if($updated !== null){
             $this->setUpdated($updated);
@@ -51,12 +53,20 @@ class Page extends AbstractPage
 
     public function getSlug()
     {
-        return $this->slug;
+        if($this->slug){
+            return $this->slug;
+        }
+        return parent::getSlug();
     }
 
     public function getInfo()
     {
         return $this->info;
+    }
+
+    public function getKey()
+    {
+        return $this->key;
     }
 
     public function getViewTemplatingKey()
@@ -67,21 +77,25 @@ class Page extends AbstractPage
         if($this->slug){
             return $this->slug;
         }
-        return 'page';
+        return parent::getViewTemplatingKey();
     }
 
     public static function fromArray(array $data)
     {
+        if(!isset($data['key'])){
+            throw new \InvalidArgumentException("Each page neeeds a key.");
+        }
         if(!isset($data['info']) || !is_array($data['info'])){
             $data['info'] = array();
         }
         $data = array_merge(array(
+            'key'       => null,
             'slug'      => null,
             'updated'   => null,
             'title'     => null,
             'view'      => null,
         ), $data);
-        return new static($data['slug'], $data['updated'], $data['title'], $data['view'], $data['info']);
+        return new static($data['key'], $data['slug'], $data['updated'], $data['title'], $data['view'], $data['info']);
     }
 
 }

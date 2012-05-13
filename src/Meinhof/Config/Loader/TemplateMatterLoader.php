@@ -19,15 +19,20 @@ class TemplateMatterLoader extends ConfigLoader
     protected $config_loader;
     protected $parser;
     protected $cache = array();
+    protected $defaults = array();
 
     public function __construct(
         TemplateNameParserInterface $parser,
         TemplateLoaderInterface $template_loader,
-        ConfigLoaderInterface $config_loader)
+        ConfigLoaderInterface $config_loader,
+        $defaults = null)
     {
         $this->parser = $parser;
         $this->template_loader = $template_loader;
         $this->config_loader = $config_loader;
+        if(is_array($defaults)){
+            $this->defaults = $defaults;
+        }
     }
 
     protected function getConfigLoader()
@@ -38,7 +43,11 @@ class TemplateMatterLoader extends ConfigLoader
     public function load($resource, $type = null)
     {
         $storage = $this->loadStorage($resource);
-        return $this->config_loader->load($storage);
+        $data = $this->config_loader->load($storage);
+        if(!is_array($data)){
+            throw new \RuntimeException("Config loader returned invalid data");
+        }
+        return array_merge($data, $this->defaults);
     }
 
     public function supports($resource, $type = null)

@@ -11,12 +11,13 @@ class PageTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
+        $key = 'new_page';
         $slug = 'new_page';
         $updated = 1;
         $title = 'New page';
         $view = 'view';
         $info = array('key'=>'value');
-        $this->page = new Page($slug, $updated, $title, $view, $info);
+        $this->page = new Page($key, $slug, $updated, $title, $view, $info);
     }
 
     public function testImplementation()
@@ -40,6 +41,7 @@ class PageTest extends \PHPUnit_Framework_TestCase
     public function testFromArray()
     {
         $page = Page::fromArray(array(
+            'key'       => 'new_page',
             'updated'   => 'september 11 2001',
         ));
         $this->assertTrue($page instanceof PageInterface);
@@ -47,6 +49,6 @@ class PageTest extends \PHPUnit_Framework_TestCase
         $date = new \DateTime('september 11 2001');
         $this->assertEquals($date, $page->getUpdated());
 
-        $this->assertEquals('page', $page->getViewTemplatingKey());
+        $this->assertEquals('new_page', $page->getViewTemplatingKey());
     }
 }

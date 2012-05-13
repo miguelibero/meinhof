@@ -71,6 +71,12 @@ class FilesystemExtension implements PreloadingExtensionInterface
         ), $paths);
 
         foreach($paths as $k=>$path){
+            if($path === '.' || substr($path,0,2) !== './'){
+                $path = getcwd().'/'.$path;
+            }
+            $paths[$k] = $path;
+        }        
+        foreach($paths as $k=>$path){
             if(substr($path,0,1) !== '/'){
                 $path = $this->base_path.'/'.$path;
             }

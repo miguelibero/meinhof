@@ -51,7 +51,7 @@ class InitSiteAction extends OutputAction
             throw new \RuntimeException("Could not read '${dir}'.");
         }
         $i = 0;
-        $invalid_files = array('.', '..');
+        $invalid_files = array('.', '..', 'meinhof.phar');
         while (($file = readdir($dh)) !== false) {
             if(!in_array($file, $invalid_files)){
                 $i++;

@@ -13,6 +13,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 use Meinhof\Model\Site\SiteInterface;
 use Meinhof\Assetic\ResourceLoaderInterface;
 use Meinhof\Assetic\FormulaLoaderManagerInterface;
+use Meinhof\Assetic\RelativeAssetFactory;
 
 class UpdateAssetsAction extends OutputAction
 {
@@ -43,6 +44,10 @@ class UpdateAssetsAction extends OutputAction
     public function take()
     {
         $this->writeOutputLine("updating assets...", 2);
+
+        if($this->factory instanceof RelativeAssetFactory){
+            $this->factory->setBaseTargetPath('');
+        }
 
         $manager = new LazyAssetManager($this->factory);
 

@@ -16,6 +16,7 @@ class PostMatterConfiguration implements ConfigurationInterface
             ->children()
                 ->scalarNode('title')->end()
                 ->scalarNode('view')->end()
+                ->scalarNode('updated')->end()
                 ->variableNode('info')->end()
             ->end()
         ->end();

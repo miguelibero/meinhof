@@ -43,17 +43,16 @@ abstract class AbstractExporter implements ExporterInterface
 
     protected function exportUrl($url, $key, array $params)
     {
+        $params['webroot'] = ExportEvent::getRelativeRootUrl($url);
         $content = $this->render($key, $params);
         $this->saveUrl($url, $content);
     }
 
     protected function getSiteParams(SiteInterface $site)
     {
-        $params = $site->getGlobals();
-        $params['posts'] = $site->getPosts();
-        $params['pages'] = $site->getPages();
-        $params['categories'] = $site->getCategories();
-
+        $params = array(
+            'site' => $site
+        );
         return $params;
     }
 

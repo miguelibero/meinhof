@@ -1,9 +1,9 @@
 <?php
 
-namespace Meinhof\Tests\Templating\Twig;
+namespace Meinhof\Tests\Templating\Twig\Extension;
 
 use Meinhof\Helper\UrlHelperInterface;
-use Meinhof\Templating\Twig\UrlExtension;
+use Meinhof\Templating\Twig\Extension\UrlExtension;
 
 use Meinhof\Model\Post\PostInterface;
 use Meinhof\Model\Page\PageInterface;
@@ -36,7 +36,6 @@ class UrlExtensionTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertTrue($this->extension instanceof \Twig_Extension);
         $this->assertEquals('url', $this->extension->getName());
-        
     }
 
     /**
@@ -44,7 +43,7 @@ class UrlExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetUrlFail()
     {
-        $this->extension->getUrl('not_valid');
+        $this->extension->getUrl(new \stdClass());
     }
 
     public function testGetUrl()

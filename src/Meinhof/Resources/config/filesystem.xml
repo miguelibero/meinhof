@@ -39,7 +39,7 @@
     <services>
         <service id="site" class="%site.class%">
             <argument>%filesystem.paths%</argument>
-            <argument>%site.globals%</argument>
+            <argument>%site.info%</argument>
             <argument>%filesystem.pages%</argument>
             <argument>%filesystem.categories%</argument>            
             <call method="setPostTemplatingEngine">
@@ -67,6 +67,7 @@
             <argument type="service" id="templating.name_parser"/>
             <argument type="service" id="templating.post.loader"/>
             <argument type="service" id="matter_loader.yaml"/>
+            <argument>%site.post%</argument>
         </service>
         <service id="site_generator" class="%site_generator.class%">
             <argument>Resources/skeleton/filesystem</argument>

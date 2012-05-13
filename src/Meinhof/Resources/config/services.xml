@@ -24,7 +24,9 @@
         <parameter key="extension.twig.class"
             >Meinhof\DependencyInjection\TwigExtension</parameter>
         <parameter key="extension.markdown.class"
-            >Meinhof\DependencyInjection\MarkdownExtension</parameter>            
+            >Meinhof\DependencyInjection\MarkdownExtension</parameter>  
+        <parameter key="extension.translation.class"
+            >Meinhof\DependencyInjection\TranslationExtension</parameter>                      
         <parameter key="templating.class"
             >Symfony\Component\Templating\DelegatingEngine</parameter>       
         <parameter key="templating.name_parser.class"
@@ -84,6 +86,9 @@
         <service id="extension.markdown" class="%extension.markdown.class%">
             <tag name="extension"/>
         </service>        
+        <service id="extension.translation" class="%extension.translation.class%">
+            <tag name="extension"/>
+        </service>  
 
         <!-- templating base -->     
         <service id="templating.name_parser"

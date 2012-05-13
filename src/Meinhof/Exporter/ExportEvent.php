@@ -24,9 +24,7 @@ class ExportEvent extends Event
 
     public function getRelativeRoot()
     {
-        $url = $this->getUrl();
-        $times = count(explode('/', dirname($url)));
-        return str_repeat('../', $times);
+        return self::getRelativeRootUrl($this->getUrl());
     }
 
     public function getModel()
@@ -38,4 +36,10 @@ class ExportEvent extends Event
     {
         return $this->site;
     }
+
+    public static function getRelativeRootUrl($url)
+    {
+        $times = count(explode('/', $url))-1;
+        return str_repeat('../', $times);
+    }    
 }

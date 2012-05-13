@@ -28,7 +28,7 @@ interface SiteInterface
     public function getViews();
 
     /**
-     * @return array of key values to replace in the templates
+     * @return array of site information values
      */
-    public function getGlobals();
+    public function getInfo();
 }

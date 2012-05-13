@@ -5,6 +5,11 @@ namespace Meinhof\Model\Page;
 interface PageInterface
 {
     /**
+     * @return string the key of the page
+     */
+    public function getKey();
+
+    /**
      * @return string the title of the page
      */
     public function getTitle();
