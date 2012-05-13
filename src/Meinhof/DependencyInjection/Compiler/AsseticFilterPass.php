@@ -10,21 +10,24 @@ class AsseticFilterPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        if(!$container->hasDefinition('assetic.filter_manager')){
+        $defid = 'assetic.filter_manager';
+        if(!$container->hasDefinition($defid)){
             return;
         }
-        $def = $container->getDefinition('assetic.filter_manager');
-        foreach ($container->findTaggedServiceIds('assetic.filter') as $id => $attributes) {
-            $alias = $this->getAliasFromAttributes($attributes);
-            $def->addMethodCall('addFilter', array(new Reference($id), $alias));
+        $def = $container->getDefinition($defid);
+        foreach ($container->findTaggedServiceIds('assetic.filter') as $id => $tags) {
+            foreach($tags as $attributes){
+                $alias = $this->getAliasFromAttributes($attributes);
+                $def->addMethodCall('addFilter', array(new Reference($id), $alias));
+            }
         }
     }
 
     protected function getAliasFromAttributes($attrs)
     {
-        if(!is_array($attrs) || !isset($attrs[0]) || !is_array($attrs[0]) || !isset($attrs[0]['alias'])){
+        if(!is_array($attrs) || !isset($attrs['alias'])){
             throw new \InvalidArgumentException("Assetic filter without an alias.");
         }
-        return $attrs[0]['alias'];
+        return $attrs['alias'];
     }
 }

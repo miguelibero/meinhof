@@ -18,10 +18,16 @@ class UrlExtension extends \Twig_Extension
         $this->helper = $helper;
     }
 
-    public function export(ExportEvent $event)
+    public function beforeExport(ExportEvent $event)
     {
         $this->webroot = $event->getRelativeRoot();
     }
+
+    public function afterExport(ExportEvent $event)
+    {
+        $this->webroot = '';
+    }
+
 
     public function getName()
     {

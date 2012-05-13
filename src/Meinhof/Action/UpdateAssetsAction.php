@@ -18,18 +18,18 @@ use Meinhof\Assetic\RelativeAssetFactory;
 class UpdateAssetsAction extends OutputAction
 {
     protected $site;
-    protected $factory;
+    protected $manager;
     protected $writer;
     protected $resource_loader;
     protected $formula_loader;
     protected $output;
 
-    public function __construct(SiteInterface $site, AssetFactory $factory,
+    public function __construct(SiteInterface $site, LazyAssetManager $manager,
         AssetWriter $writer, ResourceLoaderInterface $resource_loader,
         FormulaLoaderManagerInterface $formula_loader_manager, OutputInterface $output=null)
     {
         $this->site = $site;
-        $this->factory = $factory;
+        $this->manager = $manager;
         $this->writer = $writer;
         $this->resource_loader = $resource_loader;
         $this->formula_loader_manager = $formula_loader_manager;
@@ -45,24 +45,18 @@ class UpdateAssetsAction extends OutputAction
     {
         $this->writeOutputLine("updating assets...", 2);
 
-        if($this->factory instanceof RelativeAssetFactory){
-            $this->factory->setBaseTargetPath('');
-        }
-
-        $manager = new LazyAssetManager($this->factory);
-
         // load formula loaders, done lazily to avoid circular dependencies
         foreach($this->formula_loader_manager->getTypes() as $type){
-            $manager->setLoader($type, $this->formula_loader_manager->getLoader($type));
+            $this->manager->setLoader($type, $this->formula_loader_manager->getLoader($type));
         }
 
         // load template resources
         foreach($this->site->getViews() as $view){
-            $this->resource_loader->load($view, $manager);
+            $this->resource_loader->load($view, $this->manager);
         }
 
         // write output assets
-        $this->writer->writeManagerAssets($manager);
+        $this->writer->writeManagerAssets($this->manager);
 
         $this->writeOutputLine("done", 2);
     }

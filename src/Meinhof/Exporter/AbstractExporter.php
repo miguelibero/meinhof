@@ -15,6 +15,7 @@ abstract class AbstractExporter implements ExporterInterface
     protected $templating;
     protected $url_helper;
     protected $event_dispatcher;
+    protected $parameters = array();
 
     public function __construct(EngineInterface $engine,
         UrlHelperInterface $url)
@@ -48,12 +49,16 @@ abstract class AbstractExporter implements ExporterInterface
         $this->saveUrl($url, $content);
     }
 
-    protected function getSiteParams(SiteInterface $site)
+    public function setParameter($name, $value)
     {
-        $params = array(
+        $this->parameters[$name] = $value;
+    }
+
+    protected function getSiteParameters(SiteInterface $site)
+    {
+        return array_merge(array(
             'site' => $site
-        );
-        return $params;
+        ), $this->parameters);
     }
 
     protected function getModelUrl($model)
@@ -75,34 +80,36 @@ abstract class AbstractExporter implements ExporterInterface
         return $this->fixRelativeUrl($url);
     }
 
-    protected function dispatchEvent($url, $model, $site)
+    protected function dispatchEvent($url, $model, $site, $name)
     {
         if(!$this->event_dispatcher){
             return;
         }
         $event = new ExportEvent($url, $model, $site);
-        $this->event_dispatcher->dispatch('export', $event);
+        $this->event_dispatcher->dispatch($name, $event);
     }
 
     public function exportPost(PostInterface $post, SiteInterface $site)
     {
         $url = $this->getModelUrl($post);
-        $this->dispatchEvent($url, $post, $site);
+        $this->dispatchEvent($url, $post, $site, 'before_export');
 
-        $params = $this->getSiteParams($site);
+        $params = $this->getSiteParameters($site);
         $params['post'] = $post;        
         $key = $post->getViewTemplatingKey();
         $this->exportUrl($url, $key, $params);
+        $this->dispatchEvent($url, $post, $site, 'after_export');
     }
 
     public function exportPage(PageInterface $page, SiteInterface $site)
     {
         $url = $this->getModelUrl($page);
-        $this->dispatchEvent($url, $page, $site);
+        $this->dispatchEvent($url, $page, $site, 'before_export');
 
-        $params = $this->getSiteParams($site);
+        $params = $this->getSiteParameters($site);
         $params['page'] = $page;
         $key = $page->getViewTemplatingKey();
         $this->exportUrl($url, $key, $params);
+        $this->dispatchEvent($url, $page, $site, 'after_export');
     }
 }

@@ -21,9 +21,14 @@ class RelativeExportListener
         $this->factory = $factory;
     }
 
-    public function export(ExportEvent $event)
+    public function beforeExport(ExportEvent $event)
     {
         $base = $event->getRelativeRoot();
         $this->factory->setBaseTargetPath($base);
+    }
+
+    public function afterExport(ExportEvent $event)
+    {
+        $this->factory->setBaseTargetPath('');
     }
 }
