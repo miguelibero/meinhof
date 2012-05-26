@@ -29,10 +29,10 @@ class FilesystemPage extends Page
             ->name($name.'.*')
             ->ignoreVCS(true)
             ->in($base_path);
-        foreach($finder as $file){
+        foreach ($finder as $file) {
             return $file->getRelativePathname();
         }
         throw new \RuntimeException("Could not find template '${name}'.");
-    }    
+    }
 
 }

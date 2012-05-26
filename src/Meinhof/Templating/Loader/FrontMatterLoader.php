@@ -27,9 +27,10 @@ class FrontMatterLoader implements LoaderInterface
     public function load(TemplateReferenceInterface $template)
     {
         $storage = $this->loader->load($template);
-        if(!$storage instanceof Storage){
+        if (!$storage instanceof Storage) {
             return false;
         }
+
         return new FrontMatterStorage($storage, $this->matter_separator);
     }
 

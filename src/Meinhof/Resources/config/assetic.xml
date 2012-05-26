@@ -4,7 +4,7 @@
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
-    <parameters>       
+    <parameters>
         <parameter key="assetic.asset_manager.class"
             >Assetic\Factory\LazyAssetManager</parameter>
         <parameter key="assetic.filter_manager.class"
@@ -12,21 +12,21 @@
         <parameter key="assetic.asset_factory.class"
             >Meinhof\Assetic\AssetFactory</parameter>
         <parameter key="assetic.asset_writer.class"
-            >Assetic\AssetWriter</parameter>            
+            >Assetic\AssetWriter</parameter>
         <parameter key="assetic.resource_loader.class"
             >Meinhof\Assetic\DelegatingResourceLoader</parameter>
         <parameter key="assetic.formula_loader_manager.class"
-            >Meinhof\Assetic\FormulaLoaderManager</parameter>            
+            >Meinhof\Assetic\FormulaLoaderManager</parameter>
         <parameter key="assetic.asset_filter.class"
             >Assetic\Filter\FilterCollection</parameter>
 
         <parameter key="assetic.action.update_assets.class"
             >Meinhof\Action\UpdateAssetsAction</parameter>
         <parameter key="assetic.listener.relative_export.class"
-            >Meinhof\Assetic\RelativeExportListener</parameter>  
-        
+            >Meinhof\Assetic\RelativeExportListener</parameter>
+
         <parameter key="assetic.resource_loader.twig.class"
-            >Meinhof\Assetic\TwigResourceLoader</parameter>        
+            >Meinhof\Assetic\TwigResourceLoader</parameter>
         <parameter key="assetic.formula_loader.twig.class"
             >Assetic\Extension\Twig\TwigFormulaLoader</parameter>
 
@@ -42,7 +42,7 @@
             <argument type="service" id="templating.name_parser"/>
         </service>
         <service id="assetic.formula_loader_manager" class="%assetic.formula_loader_manager.class%">
-        </service>        
+        </service>
         <service id="assetic.asset_filter" class="%assetic.asset_filter.class%">
         </service>
         <service id="assetic.filter_manager" class="%assetic.filter_manager.class%">
@@ -50,7 +50,7 @@
                 <argument>asset</argument>
                 <argument type="service" id="assetic.asset_filter" />
             </call>
-        </service>        
+        </service>
         <service id="assetic.asset_factory" class="%assetic.asset_factory.class%">
             <argument>%assetic.paths.read_from%</argument>
             <call method="setAssetManager">
@@ -59,7 +59,7 @@
             <call method="setFilterManager">
                 <argument type="service" id="assetic.filter_manager"/>
             </call>
-        </service>          
+        </service>
         <service id="assetic.asset_writer" class="%assetic.asset_writer.class%">
             <argument>%assetic.paths.write_to%</argument>
             <argument type="collection">
@@ -72,8 +72,8 @@
             <argument type="service" id="site"/>
             <argument type="service" id="assetic.asset_manager"/>
             <argument type="service" id="assetic.asset_writer"/>
-            <argument type="service" id="assetic.resource_loader"/>    
-            <argument type="service" id="assetic.formula_loader_manager"/>            
+            <argument type="service" id="assetic.resource_loader"/>
+            <argument type="service" id="assetic.formula_loader_manager"/>
             <argument type="service" id="output"/>
             <tag name="event_listener" event="update" method="take" priority="0"/>
         </service>
@@ -97,7 +97,7 @@
                         <argument key="output">*</argument>
                         <argument key="root">%assetic.paths.read_from%</argument>
                     </argument>
-                </argument>                
+                </argument>
             </argument>
             <tag name="twig.extension"/>
         </service>

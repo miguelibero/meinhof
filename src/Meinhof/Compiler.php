@@ -18,7 +18,7 @@ class Compiler
      * Compiles meinhof into a single phar file
      *
      * @throws \RuntimeException
-     * @param string $pharFile The full path to the file to create
+     * @param  string            $pharFile The full path to the file to create
      */
     public function compile($pharFile = 'meinhof.phar')
     {
@@ -57,7 +57,7 @@ class Compiler
         $finder->files()
             ->ignoreVCS(true)
             ->name('*.php')
-            ->exclude('Tests')            
+            ->exclude('Tests')
             ->notName('Compiler.php')
             ->notName('ClassLoader.php')
             ->in(__DIR__.'/..')
@@ -67,7 +67,6 @@ class Compiler
             $this->addFile($phar, $file);
         }
 
-        
         $finder = new Finder();
         $finder->files()
             ->ignoreVCS(true)
@@ -135,7 +134,7 @@ class Compiler
     /**
      * Removes whitespace from a PHP source string while preserving line numbers.
      *
-     * @param string $source A PHP string
+     * @param  string $source A PHP string
      * @return string The PHP string with the whitespace removed
      */
     private function stripWhitespace($source)

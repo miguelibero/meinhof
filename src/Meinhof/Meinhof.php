@@ -28,7 +28,7 @@ class Meinhof
     {
         // load libraries defined in site configuration
         $autoload = realpath($dir.'/vendor/autoload.php');
-        if(is_readable($autoload)){
+        if (is_readable($autoload)) {
             require_once($autoload);
         }
 
@@ -52,7 +52,7 @@ class Meinhof
         // setup basic container compiler passes
         $container->addCompilerPass(new EventListenerPass());
         $container->addCompilerPass(new TemplatingEnginePass());
-       
+
         // set the key as a parameter
         $container->setParameter('base_dir', $dir);
 
@@ -64,21 +64,21 @@ class Meinhof
         // register extensions
         foreach ($container->findTaggedServiceIds('extension') as $id => $attributes) {
             $extension = $container->get($id);
-            if(!$extension instanceof ExtensionInterface){
+            if (!$extension instanceof ExtensionInterface) {
                 throw new \InvalidArgumentException("Invalid extension with id '${id}'.");
             }
             $container->registerExtension($extension);
         }
 
         // preload the extensions
-        foreach($container->getExtensions() as $extension){
-            if($extension instanceof PreloadingExtensionInterface){
+        foreach ($container->getExtensions() as $extension) {
+            if ($extension instanceof PreloadingExtensionInterface) {
                 $extension->preload();
             }
         }
 
         // load extensions
-        foreach($container->getExtensions() as $extension){
+        foreach ($container->getExtensions() as $extension) {
             // load the extension configuration
             $configs = $container->getExtensionConfig($extension->getAlias());
             $extension->load($configs, $container);
@@ -96,12 +96,12 @@ class Meinhof
     public function init()
     {
         $this->dispatchEvent('init');
-    }    
+    }
 
     public function update()
     {
         $dir = $this->container->getParameter('base_dir');
-        if(!is_dir($dir) || !is_readable($dir)){
+        if (!is_dir($dir) || !is_readable($dir)) {
             throw new \InvalidArgumentException("'${dir}' is not a valid readable directory.");
         }
         $this->dispatchEvent('update');

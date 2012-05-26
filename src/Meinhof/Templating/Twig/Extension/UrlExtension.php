@@ -42,13 +42,13 @@ class UrlExtension extends \Twig_Extension
 
     public function getUrl($obj)
     {
-        if($obj instanceof PostInterface){
+        if ($obj instanceof PostInterface) {
             $obj = $this->helper->getPostUrl($obj);
         }
-        if($obj instanceof PageInterface){
+        if ($obj instanceof PageInterface) {
             $obj = $this->helper->getPageUrl($obj);
         }
-        if(is_string($obj)){
+        if (is_string($obj)) {
             return $this->webroot.$obj;
         }
         throw new \InvalidArgumentException("Do not know the parameter.");

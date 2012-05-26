@@ -10,7 +10,6 @@ use Symfony\Component\Templating\TemplateReference;
 use Meinhof\Templating\Loader\FrontMatterLoader;
 use Meinhof\Templating\Storage\MatterStorage;
 
-
 class FrontMatterLoaderTest extends \PHPUnit_Framework_TestCase
 {
     protected $loader;
@@ -29,7 +28,7 @@ class FrontMatterLoaderTest extends \PHPUnit_Framework_TestCase
 
         $loader->expects($this->any())
             ->method('isFresh')
-            ->will($this->returnCallback(array($this, 'getIsFresh')));   
+            ->will($this->returnCallback(array($this, 'getIsFresh')));
 
         $this->loader = new FrontMatterLoader($loader, '/(^|\n)\*{3,}\n/');
     }
@@ -64,7 +63,7 @@ class FrontMatterLoaderTest extends \PHPUnit_Framework_TestCase
 
         $storage = $this->loader->load($template);
 
-        $this->assertEquals('template', $storage->getContent());        
+        $this->assertEquals('template', $storage->getContent());
     }
 
     public function testStorageFail()
@@ -77,12 +76,12 @@ class FrontMatterLoaderTest extends \PHPUnit_Framework_TestCase
     public function testIsFresh()
     {
         $template = new TemplateReference('name', 'engine');
-        $time = time();     
+        $time = time();
 
         $this->assertTrue($this->loader->isFresh($template, $time));
 
         $this->fresh = false;
 
         $this->assertFalse($this->loader->isFresh($template, $time));
-    }  
+    }
 }

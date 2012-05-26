@@ -8,7 +8,7 @@ use Meinhof\Model\Page\PageInterface;
 interface UrlHelperInterface
 {
     public function getPostUrl(PostInterface $post);
-    
+
     public function getPageUrl(PageInterface $page);
 
     public function setParameter($name, $value);

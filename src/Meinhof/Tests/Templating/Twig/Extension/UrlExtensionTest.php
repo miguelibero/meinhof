@@ -52,7 +52,7 @@ class UrlExtensionTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals(array('url'), array_keys($functions));
         $get_url = $functions['url'];
         $this->assertTrue($get_url instanceof \Twig_Function);
-        
+
         $url = $this->extension->getUrl($this->post);
         $this->assertEquals('post_url', $url);
 

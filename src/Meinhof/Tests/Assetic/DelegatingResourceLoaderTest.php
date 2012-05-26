@@ -53,7 +53,7 @@ class DelegatingResourceLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $this->template = null;
         $this->loader->load('test.twig', $this->manager);
-    }    
+    }
 
     /**
      * @expectedException \InvalidArgumentException
@@ -73,5 +73,5 @@ class DelegatingResourceLoaderTest extends \PHPUnit_Framework_TestCase
 
         $this->loader->setLoader('twig', $loader);
         $this->assertEquals('result', $this->loader->load('test.twig', $this->manager));
-    } 
+    }
 }

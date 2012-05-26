@@ -35,10 +35,9 @@ class FrontMatterStorageTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->storage instanceof MatterStorage);
     }
 
-
     public function testLoad()
     {
         $this->assertEquals("matter", $this->storage->getMatter());
         $this->assertEquals("content", $this->storage->getContent());
-    }    
+    }
 }

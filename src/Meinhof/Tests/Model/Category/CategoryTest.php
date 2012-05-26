@@ -23,5 +23,5 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
     {
         $this->assertEquals('name', $this->category->getName());
         $this->assertEquals('name', $this->category.'');
-    }    
+    }
 }

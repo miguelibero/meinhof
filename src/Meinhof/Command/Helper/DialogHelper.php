@@ -38,13 +38,14 @@ class DialogHelper extends BaseDialogHelper
     public function askForArray(OutputInterface $output, $question, $default)
     {
         $result = $this->ask($output, $question, $default);
-        if(is_string($result)){
+        if (is_string($result)) {
             $result = explode(',', $result);
         }
-        if(!is_array($result)){
+        if (!is_array($result)) {
             $result = array();
         }
         $result = array_map('trim', $result);
+
         return $result;
     }
 }

@@ -4,7 +4,6 @@ namespace Meinhof\Tests\Templating;
 
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Templating\Loader\FilesystemLoader;
-use Symfony\Component\Templating\Storage\Storage;
 
 use Meinhof\Templating\MarkdownEngine;
 
@@ -21,7 +20,7 @@ class MarkdownEngineTest extends \PHPUnit_Framework_TestCase
         $this->template->expects($this->any())
             ->method('get')
             ->with($this->equalTo('name'))
-            ->will($this->returnValue('test.markdown'));         
+            ->will($this->returnValue('test.markdown'));
 
         $this->template->expects($this->any())
             ->method('all')
@@ -57,14 +56,14 @@ class MarkdownEngineTest extends \PHPUnit_Framework_TestCase
     }
 
     public function testSupports()
-    {        
+    {
         $this->template = $this->getMock('Symfony\\Component\\Templating\\TemplateReferenceInterface');
 
         $this->template->expects($this->any())
             ->method('get')
             ->with($this->equalTo('engine'))
-            ->will($this->returnValue('markdown'));         
-     
+            ->will($this->returnValue('markdown'));
+
         $this->assertTrue($this->engine->supports('test.markdown'));
-    }    
+    }
 }

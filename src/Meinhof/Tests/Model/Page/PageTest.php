@@ -32,7 +32,6 @@ class PageTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('view', $this->page->getViewTemplatingKey());
         $this->assertEquals(array('key'=>'value'), $this->page->getInfo());
 
-
         $date = new \DateTime();
         $date->setTimestamp(1);
         $this->assertEquals($date, $this->page->getUpdated());

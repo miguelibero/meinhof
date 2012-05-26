@@ -3,8 +3,6 @@
 namespace Meinhof\Templating\Loader;
 
 use Symfony\Component\Templating\Loader\FilesystemLoader as BaseFilesystemLoader;
-use Symfony\Component\Templating\Storage\Storage;
-use Symfony\Component\Templating\Storage\FileStorage;
 use Symfony\Component\Templating\TemplateReferenceInterface;
 
 /**
@@ -18,7 +16,7 @@ class FilesystemLoader extends BaseFilesystemLoader
     {
         $this->paths = (array) $paths;
         $patterns = array();
-        foreach($this->paths as $path){
+        foreach ($this->paths as $path) {
             $patters[] = $path.'/*';
         }
         parent::__construct($patterns);
@@ -27,13 +25,14 @@ class FilesystemLoader extends BaseFilesystemLoader
     public function load(TemplateReferenceInterface $template)
     {
         $file = $template->get('name');
-        foreach($this->paths as $path){
+        foreach ($this->paths as $path) {
             $template->set('name', $path.'/'.$file);
             $result = parent::load($template);
-            if($result){
+            if ($result) {
                 return $result;
             }
         }
+
         return false;
     }
 }

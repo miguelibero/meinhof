@@ -17,13 +17,14 @@ abstract class SkeletonGenerator implements GeneratorInterface
 
     protected function fixSkeletonPath($skeleton)
     {
-        if(!$this->isAbsolutePath($skeleton)){
+        if (!$this->isAbsolutePath($skeleton)) {
             $skeleton = __DIR__.'/../'.$skeleton;
         }
-        if(!is_readable($skeleton) || !is_dir($skeleton)){
+        if (!is_readable($skeleton) || !is_dir($skeleton)) {
             throw new \RuntimeException("Skeleton path '${skeleton}' is not a readable directory.");
-        } 
-        return $skeleton;        
+        }
+
+        return $skeleton;
     }
 
     private function isAbsolutePath($file)
@@ -39,8 +40,9 @@ abstract class SkeletonGenerator implements GeneratorInterface
         ) {
             return true;
         }
+
         return false;
-    }    
+    }
 
     protected function getSkeletonPath()
     {
@@ -57,29 +59,30 @@ abstract class SkeletonGenerator implements GeneratorInterface
         $paths = array();
 
         $k = mb_strlen($this->skeleton)+1;
-        foreach($finder as $file){
+        foreach ($finder as $file) {
             $paths[] = $file->getRelativePathname();
         }
+
         return $paths;
     }
 
     protected function saveFile($path, $content)
     {
         $dir = dirname($path);
-        if(is_file($dir)){
+        if (is_file($dir)) {
             throw new \RuntimeException("Could not use directory '${dir}' since it is a file.");
         }
-        if(!file_exists($dir) && @mkdir($dir, 0755, true) === false){
+        if (!file_exists($dir) && @mkdir($dir, 0755, true) === false) {
             throw new \RuntimeException("Could not create directory '${dir}'.");
         }
-        if(@file_put_contents($path, $content) === false){
-            throw new \RuntimeException("Could not create File '${path}'.");   
+        if (@file_put_contents($path, $content) === false) {
+            throw new \RuntimeException("Could not create File '${path}'.");
         }
     }
 
     public function generate(array $params, $dir)
     {
-        foreach($this->getSkeletonFiles() as $file){
+        foreach ($this->getSkeletonFiles() as $file) {
             $content = $this->render($file, $params);
             $path = $dir.'/'.$file;
             $this->saveFile($path, $content);

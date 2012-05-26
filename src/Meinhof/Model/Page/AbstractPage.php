@@ -9,6 +9,7 @@ abstract class AbstractPage implements PageInterface
         $title = $this->getKey();
         $title = str_replace('-', ' ', $title);
         $title = ucwords($title);
+
         return $title;
     }
 
@@ -20,9 +21,10 @@ abstract class AbstractPage implements PageInterface
     public function getViewTemplatingKey()
     {
         $key = $this->getKey();
-        if($key){
+        if ($key) {
             return $key;
         }
+
         return 'page';
-    }    
+    }
 }

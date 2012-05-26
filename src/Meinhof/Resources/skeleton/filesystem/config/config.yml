@@ -6,4 +6,4 @@ site:
         page: '{slug}.html'
 filesystem:
     pages:
-        - index 
+        - index

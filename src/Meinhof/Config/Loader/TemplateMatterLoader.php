@@ -30,7 +30,7 @@ class TemplateMatterLoader extends ConfigLoader
         $this->parser = $parser;
         $this->template_loader = $template_loader;
         $this->config_loader = $config_loader;
-        if(is_array($defaults)){
+        if (is_array($defaults)) {
             $this->defaults = $defaults;
         }
     }
@@ -44,18 +44,20 @@ class TemplateMatterLoader extends ConfigLoader
     {
         $storage = $this->loadStorage($resource);
         $data = $this->config_loader->load($storage);
-        if(!is_array($data)){
+        if (!is_array($data)) {
             throw new \RuntimeException("Config loader returned invalid data");
         }
+
         return array_merge($data, $this->defaults);
     }
 
     public function supports($resource, $type = null)
     {
-        try{
+        try {
             $storage = $this->loadStorage($resource);
+
             return $this->config_loader->supports($storage);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return false;
         }
     }

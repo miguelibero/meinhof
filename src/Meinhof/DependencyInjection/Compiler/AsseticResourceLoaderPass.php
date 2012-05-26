@@ -11,12 +11,12 @@ class AsseticResourceLoaderPass implements CompilerPassInterface
     public function process(ContainerBuilder $container)
     {
         $defid = 'assetic.resource_loader';
-        if(!$container->hasDefinition($defid)){
+        if (!$container->hasDefinition($defid)) {
             return;
         }
         $def = $container->getDefinition($defid);
         foreach ($container->findTaggedServiceIds('assetic.resource_loader') as $id => $tags) {
-            foreach ($tags as $attributes){
+            foreach ($tags as $attributes) {
                 $type = $this->getTypeFromAttributes($attributes);
                 $def->addMethodCall('setLoader', array($type, new Reference($id)));
             }
@@ -25,9 +25,10 @@ class AsseticResourceLoaderPass implements CompilerPassInterface
 
     protected function getTypeFromAttributes($attrs)
     {
-        if(!is_array($attrs) || !isset($attrs['type'])){
+        if (!is_array($attrs) || !isset($attrs['type'])) {
             throw new \InvalidArgumentException("Assetic resource loader without a type.");
         }
+
         return $attrs['type'];
     }
 }

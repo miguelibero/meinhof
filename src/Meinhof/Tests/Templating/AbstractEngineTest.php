@@ -3,7 +3,6 @@
 namespace Meinhof\Tests\Templating;
 
 use Symfony\Component\Templating\EngineInterface;
-use Symfony\Component\Templating\Loader\FilesystemLoader;
 use Symfony\Component\Templating\Storage\Storage;
 
 class AbstractEngineTest extends \PHPUnit_Framework_TestCase
@@ -25,7 +24,7 @@ class AbstractEngineTest extends \PHPUnit_Framework_TestCase
         $template->expects($this->any())
             ->method('get')
             ->with($this->equalTo('name'))
-            ->will($this->returnValue('test'));         
+            ->will($this->returnValue('test'));
 
         $template->expects($this->any())
             ->method('all')
@@ -38,7 +37,7 @@ class AbstractEngineTest extends \PHPUnit_Framework_TestCase
         $this->loader->expects($this->any())
             ->method('load')
             ->with($this->equalTo($template))
-            ->will($this->returnValue($storage));            
+            ->will($this->returnValue($storage));
 
         $this->engine = $this->getMockBuilder('Meinhof\\Templating\\AbstractEngine')
             ->setConstructorArgs(array($this->parser, $this->loader))
@@ -60,7 +59,7 @@ class AbstractEngineTest extends \PHPUnit_Framework_TestCase
     public function testRenderFail()
     {
         $this->engine->render('test');
-    }    
+    }
 
     public function testExists()
     {
@@ -74,7 +73,7 @@ class AbstractEngineTest extends \PHPUnit_Framework_TestCase
 
         $this->engine = $this->getMockBuilder('Meinhof\\Templating\\AbstractEngine')
             ->setConstructorArgs(array($this->parser, $this->loader))
-            ->getMockForAbstractClass();    
+            ->getMockForAbstractClass();
 
         $this->assertFalse($this->engine->exists('test2'));
 
@@ -82,11 +81,11 @@ class AbstractEngineTest extends \PHPUnit_Framework_TestCase
 
         $this->parser->expects($this->any())
             ->method('parse')
-            ->will($this->returnValue(null));        
+            ->will($this->returnValue(null));
 
         $this->engine = $this->getMockBuilder('Meinhof\\Templating\\AbstractEngine')
             ->setConstructorArgs(array($this->parser, $this->loader))
-            ->getMockForAbstractClass();            
+            ->getMockForAbstractClass();
 
         $this->assertFalse($this->engine->exists('test3'));
     }
@@ -99,9 +98,9 @@ class AbstractEngineTest extends \PHPUnit_Framework_TestCase
         $this->assertTrue($this->engine->exists('test'));
         $this->assertTrue($this->engine->exists('test'));
 
-        try{
+        try {
             $this->engine->render('test');
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
         }
     }
 

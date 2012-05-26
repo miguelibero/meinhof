@@ -33,40 +33,39 @@ class FilesystemSite extends AbstractSite
     protected function setCategories(array $categories)
     {
         $this->categories = array();
-        foreach($categories as $category){
-            if(is_string($category)){
+        foreach ($categories as $category) {
+            if (is_string($category)) {
                 $category = new Category($category);
             }
-            if(!$category instanceof CategoryInterface){
+            if (!$category instanceof CategoryInterface) {
                 throw new \RuntimeException("Invalid category.");
             }
             $this->categories[] = $category;
         }
-    }    
+    }
 
     protected function setPages(array $pages)
     {
         $this->pages = array();
-        foreach($pages as $k=>$page){
-            if(is_array($page)){
-                if(!isset($page['key'])){
+        foreach ($pages as $k=>$page) {
+            if (is_array($page)) {
+                if (!isset($page['key'])) {
                     $page['key'] = $k;
                 }
                 $page = FilesystemPage::fromArray($page);
             }
-            if(is_string($page)){
+            if (is_string($page)) {
                 $page = new FilesystemPage($page);
             }
-            if(!$page instanceof PageInterface){
+            if (!$page instanceof PageInterface) {
                 throw new \RuntimeException("Invalid page.");
             }
-            if($page instanceof FilesystemPage){
+            if ($page instanceof FilesystemPage) {
                 $page->setSite($this);
             }
             $this->pages[$page->getKey()] = $page;
         }
     }
-
 
     public function setPostTemplatingEngine(EngineInterface $engine)
     {
@@ -80,16 +79,17 @@ class FilesystemSite extends AbstractSite
 
     public function getPath($name)
     {
-        if(!is_array($this->paths) || !isset($this->paths[$name])){
+        if (!is_array($this->paths) || !isset($this->paths[$name])) {
             throw new \InvalidArgumentException("Could not find path ${name}.");
         }
         $path = $this->paths[$name];
-        if(substr($path,0,1) !== '/'){
-            if(!isset($this->paths['base'])){
+        if (substr($path,0,1) !== '/') {
+            if (!isset($this->paths['base'])) {
                 throw new \InvalidArgumentException('No base path defined.');
             }
             $path = $this->paths['base'].'/'.$path;
         }
+
         return $path;
     }
 
@@ -103,20 +103,21 @@ class FilesystemSite extends AbstractSite
             ->in($posts_path);
 
         $posts = array();
-        foreach($finder as $file){
+        foreach ($finder as $file) {
             $path = $file->getRelativePathname();
             $post = FilesystemPost::fromArray(array(
                 'key'   => $path,
             ), $this->post_loader);
-            if(!$post instanceof PostInterface){
+            if (!$post instanceof PostInterface) {
                 throw new \RuntimeException("Invalid post.");
             }
-            if($post instanceof FilesystemPost){
+            if ($post instanceof FilesystemPost) {
                 $post->setSite($this);
                 $post->setTemplatingEngine($this->post_templating);
             }
             $posts[] = $post;
         }
+
         return $posts;
     }
 
@@ -138,9 +139,10 @@ class FilesystemSite extends AbstractSite
             ->ignoreVCS(true)
             ->in($this->getPath('views'));
         $paths = array();
-        foreach($finder as $file){
+        foreach ($finder as $file) {
             $paths[] = $file->getRelativePathname();
         }
+
         return $paths;
     }
 

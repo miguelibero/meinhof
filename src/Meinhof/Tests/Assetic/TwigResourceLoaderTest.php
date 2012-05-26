@@ -13,7 +13,7 @@ class TwigResourceLoaderTest extends \PHPUnit_Framework_TestCase
     {
         $twig_loader = $this->getMock('Twig_LoaderInterface');
         $this->loader = new TwigResourceLoader($twig_loader);
-    }   
+    }
 
     public function testImplementation()
     {
@@ -30,5 +30,5 @@ class TwigResourceLoaderTest extends \PHPUnit_Framework_TestCase
             ->with($this->equalTo('test'), $this->equalTo('twig'));
 
         $this->loader->load('test', $manager);
-    }    
+    }
 }

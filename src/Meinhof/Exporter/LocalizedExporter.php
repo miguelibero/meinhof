@@ -31,23 +31,23 @@ class LocalizedExporter implements ExporterInterface
 
     protected function setLocale($locale)
     {
-        if($this->url_helper){
+        if ($this->url_helper) {
             $this->url_helper->setParameter('locale', $locale);
         }
-        $this->exporter->setParameter('locale', $locale);        
+        $this->exporter->setParameter('locale', $locale);
     }
 
     public function exportPost(PostInterface $post, SiteInterface $site)
     {
-        foreach($this->locales as $locale){
+        foreach ($this->locales as $locale) {
             $this->setLocale($locale);
             $this->exporter->exportPost($post, $site);
         }
     }
-    
+
     public function exportPage(PageInterface $page, SiteInterface $site)
     {
-        foreach($this->locales as $locale){
+        foreach ($this->locales as $locale) {
             $this->setLocale($locale);
             $this->exporter->exportPage($page, $site);
         }

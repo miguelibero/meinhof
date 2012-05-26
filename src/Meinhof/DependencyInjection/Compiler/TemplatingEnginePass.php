@@ -17,24 +17,24 @@ class TemplatingEnginePass implements CompilerPassInterface
         $tag = 'templating.engine';
 
         $defs = array();
-        foreach($this->engine_types as $type){
+        foreach ($this->engine_types as $type) {
             $key = $prefix.$type;
-            if($container->hasDefinition($key)){
+            if ($container->hasDefinition($key)) {
                 $defs[$type] = $container->getDefinition($key);
             }
         }
 
         foreach ($container->findTaggedServiceIds($tag) as $id => $tags) {
-            foreach($tags as $attributes){
+            foreach ($tags as $attributes) {
                 $type = $this->getTypeFromAttributes($attributes);
                 $args = array(new Reference($id));
-                if(in_array($type, array_keys($defs))){
+                if (in_array($type, array_keys($defs))) {
                     $defs[$type]->addMethodCall($method, $args);
-                }else if($type === 'all'){
-                    foreach($defs as $def){
+                } elseif ($type === 'all') {
+                    foreach ($defs as $def) {
                         $def->addMethodCall($method, $args);
                     }
-                }else{
+                } else {
                     throw new \InvalidArgumentException("Invalid templating engine type '${type}'.");
                 }
             }
@@ -43,9 +43,10 @@ class TemplatingEnginePass implements CompilerPassInterface
 
     protected function getTypeFromAttributes($attrs)
     {
-        if(!is_array($attrs) || !isset($attrs['type'])){
+        if (!is_array($attrs) || !isset($attrs['type'])) {
             return 'all';
         }
+
         return $attrs['type'];
     }
 }

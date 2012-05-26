@@ -8,7 +8,7 @@
         <parameter key="translation.translator.class"
             >Symfony\Component\Translation\Translator</parameter>
         <parameter key="translation.twig.extension.class"
-            >Meinhof\Templating\Twig\Extension\TranslationExtension</parameter>            
+            >Meinhof\Templating\Twig\Extension\TranslationExtension</parameter>
         <parameter key="translation.exporter.class"
             >Meinhof\Exporter\LocalizedExporter</parameter>
     </parameters>

@@ -12,7 +12,7 @@ use Meinhof\Model\Page\PageInterface;
 interface ExporterInterface
 {
     public function exportPost(PostInterface $post, SiteInterface $site);
-    
+
     public function exportPage(PageInterface $page, SiteInterface $site);
 
     public function setParameter($name, $value);

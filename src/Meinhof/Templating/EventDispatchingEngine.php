@@ -13,8 +13,6 @@ namespace Meinhof\Templating;
 
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\Templating\StreamingEngineInterface;
-use Symfony\Component\EventDispatcher;
-use Symfony\Component\EventDispatcher\Event;
 
 /**
  * DelegatingEngine selects an engine for a given template.
@@ -43,6 +41,7 @@ class EventDispatchingEngine implements EngineInterface, StreamingEngineInterfac
     public function render($name, array $parameters = array())
     {
         $this->dispatcher->dispatch('templating.render');
+
         return $this->engine->render($name, $parameters);
     }
 

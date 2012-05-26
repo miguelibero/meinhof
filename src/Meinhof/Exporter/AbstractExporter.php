@@ -33,12 +33,13 @@ abstract class AbstractExporter implements ExporterInterface
 
     protected function render($key, array $params)
     {
-        if(!$this->templating->exists($key)){
+        if (!$this->templating->exists($key)) {
             throw new \InvalidArgumentException("View template '${key}' does not exist.");
         }
-        if(!$this->templating->supports($key)){
+        if (!$this->templating->supports($key)) {
             throw new \InvalidArgumentException("View template '${key}' does not have a valid format.");
         }
+
         return $this->templating->render($key, $params);
     }
 
@@ -63,26 +64,28 @@ abstract class AbstractExporter implements ExporterInterface
 
     protected function getModelUrl($model)
     {
-        if($model instanceof PostInterface){
+        if ($model instanceof PostInterface) {
             $url = $this->url_helper->getPostUrl($model);
-        }else if($model instanceof PageInterface){
+        } elseif ($model instanceof PageInterface) {
             $url = $this->url_helper->getPageUrl($model);
-        }else{
+        } else {
             throw \RuntimeException("unknown model type");
         }
         $url = trim(parse_url($url, PHP_URL_PATH),'/');
+
         return $url;
     }
 
     protected function getPageUrl(PostInterface $post)
     {
         $url = $this->url_helper->getPageUrl($post);
+
         return $this->fixRelativeUrl($url);
     }
 
     protected function dispatchEvent($url, $model, $site, $name)
     {
-        if(!$this->event_dispatcher){
+        if (!$this->event_dispatcher) {
             return;
         }
         $event = new ExportEvent($url, $model, $site);
@@ -95,7 +98,7 @@ abstract class AbstractExporter implements ExporterInterface
         $this->dispatchEvent($url, $post, $site, 'before_export');
 
         $params = $this->getSiteParameters($site);
-        $params['post'] = $post;        
+        $params['post'] = $post;
         $key = $post->getViewTemplatingKey();
         $this->exportUrl($url, $key, $params);
         $this->dispatchEvent($url, $post, $site, 'after_export');

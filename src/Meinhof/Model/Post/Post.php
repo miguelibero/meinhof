@@ -2,13 +2,11 @@
 
 namespace Meinhof\Model\Post;
 
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Definition\Processor;
 
 use Meinhof\Model\Category\Category;
 use Meinhof\Model\Category\CategoryInterface;
-use Meinhof\Model\Post\PostConfiguration;
 
 class Post extends AbstractPost
 {
@@ -27,47 +25,47 @@ class Post extends AbstractPost
         $this->key = $key;
         $this->title = $title;
         $this->view = $view;
-        if($this->updated !== null){
+        if ($this->updated !== null) {
             $this->setUpdated($updated);
         }
         $this->setCategories($categories);
         $this->info = $info;
     }
 
-
     protected function setCategories(array $categories)
     {
         $this->categories = array();
-        foreach($categories as $category){
-            if(is_string($category)){
+        foreach ($categories as $category) {
+            if (is_string($category)) {
                 $category = new Category($category);
             }
-            if(!$category instanceof CategoryInterface){
+            if (!$category instanceof CategoryInterface) {
                 throw new \RuntimeException("Invalid category.");
             }
             $this->categories[] = $category;
         }
-    }    
+    }
 
     protected function setUpdated($updated)
     {
-        if(is_int($updated) || is_numeric($updated)){
+        if (is_int($updated) || is_numeric($updated)) {
             $this->updated = new \DateTime();
             $this->updated->setTimestamp($updated);
-        }else if(is_string($updated)){
+        } elseif (is_string($updated)) {
             $this->updated = new \DateTime($updated);
-        }else if($updated instanceof \DateTime){
+        } elseif ($updated instanceof \DateTime) {
             $this->updated = $updated;
-        }else{
+        } else {
             throw new \InvalidArgumentException("Could not set updated time.");
         }
     }
 
     public function getTitle()
     {
-        if($this->title){
+        if ($this->title) {
             return $this->title;
         }
+
         return parent::getTitle();
     }
 
@@ -93,9 +91,10 @@ class Post extends AbstractPost
 
     public function getViewTemplatingKey()
     {
-        if($this->view){
+        if ($this->view) {
             return $this->view;
         }
+
         return parent::getViewTemplatingKey();
     }
 
@@ -106,19 +105,19 @@ class Post extends AbstractPost
 
     public static function fromArray(array $config, LoaderInterface $loader=null)
     {
-        if($loader && isset($config['key'])){
+        if ($loader && isset($config['key'])) {
             $matter = self::loadMatter($config['key'], $loader);
-            if($matter){
+            if ($matter) {
                 $config = array_merge($matter, $config);
             }
         }
 
-        if(!isset($config['info']) || !is_array($config['info'])){
+        if (!isset($config['info']) || !is_array($config['info'])) {
             $config['info'] = array();
         }
-        if(!isset($config['categories']) || !is_array($config['categories'])){
+        if (!isset($config['categories']) || !is_array($config['categories'])) {
             $config['categories'] = array();
-        }        
+        }
         $config = array_merge(array(
             'key'       => null,
             'slug'      => null,
@@ -126,6 +125,7 @@ class Post extends AbstractPost
             'updated'   => null,
             'view'      => null
         ), $config);
+
         return new static($config['slug'], $config['key'],
             $config['updated'], $config['title'], $config['view'],
             $config['info'], $config['categories']);
@@ -133,16 +133,17 @@ class Post extends AbstractPost
 
     protected static function loadMatter($key, LoaderInterface $loader)
     {
-        if(!$loader->supports($key)){
+        if (!$loader->supports($key)) {
             return null;
         }
         $matter = $loader->load($key);
-        if(!is_array($matter)){
+        if (!is_array($matter)) {
             return null;
         }
         $matter = array('post' => $matter);
         $processor = new Processor();
         $configuration = new PostMatterConfiguration();
-        return $processor->processConfiguration($configuration, $matter);  
+
+        return $processor->processConfiguration($configuration, $matter);
     }
 }

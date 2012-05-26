@@ -35,22 +35,24 @@ class FilesystemPost extends Post
     public function getUpdated()
     {
         $updated = parent::getUpdated();
-        if($updated instanceof \DateTime){
+        if ($updated instanceof \DateTime) {
             return $updated;
         }
         $timestamp = filemtime($this->getContentTemplatePath());
         $date = new \DateTime();
         $date->setTimestamp($timestamp);
+
         return $date;
     }
 
     public function getSlug()
     {
         $slug = parent::getSlug();
-        if($slug){
+        if ($slug) {
             return $slug;
         }
         $parts = explode('.', basename($this->key));
+
         return reset($parts);
     }
 
@@ -68,7 +70,7 @@ class FilesystemPost extends Post
             ->name($name.'.*')
             ->ignoreVCS(true)
             ->in($base_path);
-        foreach($finder as $file){
+        foreach ($finder as $file) {
             return $file->getRelativePathname();
         }
         throw new \RuntimeException("Could not find template '${name}'.");

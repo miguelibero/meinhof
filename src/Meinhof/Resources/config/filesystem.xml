@@ -6,16 +6,16 @@
 
     <parameters>
         <parameter key="filesystem.site.class"
-            >Meinhof\Model\Site\FilesystemSite</parameter>    
-            
+            >Meinhof\Model\Site\FilesystemSite</parameter>
+
         <parameter key="filesystem.templating.loader.class"
             >Meinhof\Templating\Loader\FilesystemLoader</parameter>
         <parameter key="filesystem.templating.post.loader.class"
             >Meinhof\Templating\Loader\FrontMatterLoader</parameter>
         <parameter key="filesystem.templating.markdown.class"
-            >Meinhof\Templating\MarkdownEngine</parameter>      
+            >Meinhof\Templating\MarkdownEngine</parameter>
         <parameter key="filesystem.templating.twig.loader.class"
-            >\Twig_Loader_Filesystem</parameter>             
+            >\Twig_Loader_Filesystem</parameter>
         <parameter key="filesystem.templating.twig.class"
             >Meinhof\Templating\TwigEngine</parameter>
         <parameter key="filesystem.templating.twig.assetic_extension.class"
@@ -41,9 +41,9 @@
             <argument>%filesystem.paths%</argument>
             <argument>%site.info%</argument>
             <argument>%filesystem.pages%</argument>
-            <argument>%filesystem.categories%</argument>            
+            <argument>%filesystem.categories%</argument>
             <call method="setPostTemplatingEngine">
-                <argument type="service" id="templating.post"/>            
+                <argument type="service" id="templating.post"/>
             </call>
             <call method="setPostMatterLoader">
                 <argument type="service" id="matter_loader.post"/>
@@ -64,7 +64,7 @@
         <service id="templating.content.loader"
             class="%filesystem.templating.loader.class%" public="false">
             <argument>%filesystem.paths.content%</argument>
-        </service>        
+        </service>
         <service id="matter_loader.yaml"
             class="%filesystem.matter_loader.yaml.class%">
         </service>
@@ -85,17 +85,17 @@
             <call method="setEventDispatcher">
                 <argument type="service" id="event_dispatcher"/>
             </call>
-        </service>        
+        </service>
 
         <!-- twig -->
         <service id="twig.templating.content.loader" class="%filesystem.templating.twig.loader.class%" public="false">
             <argument>%filesystem.paths.posts%</argument>
-        </service>        
+        </service>
         <service id="twig.templating.post.loader" class="%filesystem.templating.twig.loader.class%" public="false">
             <argument>%filesystem.paths.posts%</argument>
         </service>
         <service id="twig.templating.view.loader" class="%filesystem.templating.twig.loader.class%" public="false">
             <argument>%filesystem.paths.views%</argument>
-        </service>        
+        </service>
     </services>
 </container>

@@ -14,24 +14,24 @@ class FrontMatterStorage extends MatterStorage
     public function __construct(Storage $storage, $separator=null)
     {
         $this->storage = $storage;
-        if($separator){
+        if ($separator) {
             $this->separator = $separator;
         }
     }
 
     protected function load()
     {
-        $this->matter = null;        
+        $this->matter = null;
         $this->content = null;
         $content = $this->storage->getContent();
         $parts = preg_split($this->separator, $content);
         $parts = array_map('trim', $parts);
         $parts = array_values(array_filter($parts));
         $c = count($parts);
-        if($c > 1){
+        if ($c > 1) {
             $this->matter = $parts[0];
             $this->content = $parts[1];
-        }else if($c > 0){
+        } elseif ($c > 0) {
             $this->content = $parts[0];
         }
     }
@@ -39,12 +39,14 @@ class FrontMatterStorage extends MatterStorage
     public function getMatter()
     {
         $this->load();
-        return $this->matter;        
+
+        return $this->matter;
     }
 
     public function getContent()
     {
         $this->load();
+
         return $this->content;
     }
 }

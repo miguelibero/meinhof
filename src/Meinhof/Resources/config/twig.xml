@@ -10,17 +10,17 @@
         <parameter key="twig.templating.class"
             >Meinhof\Templating\TwigEngine</parameter>
         <parameter key="twig.extension.url.class"
-            >Meinhof\Templating\Twig\Extension\UrlExtension</parameter>         
+            >Meinhof\Templating\Twig\Extension\UrlExtension</parameter>
         <parameter key="twig.extension.content.class"
-            >Meinhof\Templating\Twig\Extension\ContentExtension</parameter>            
+            >Meinhof\Templating\Twig\Extension\ContentExtension</parameter>
     </parameters>
-    <services>        
+    <services>
         <service id="twig.environment.post" class="%twig.environment.class%">
             <argument type="service" id="twig.templating.post.loader"/>
         </service>
         <service id="twig.environment.view" class="%twig.environment.class%">
             <argument type="service" id="twig.templating.view.loader"/>
-        </service>       
+        </service>
         <service id="twig.templating.post"
             class="%twig.templating.class%" public="false">
             <argument type="service" id="twig.environment.post"/>
@@ -44,6 +44,6 @@
             class="%twig.extension.content.class%">
             <argument type="service" id="templating.content"/>
             <tag name="twig.extension" />
-        </service>  
+        </service>
     </services>
 </container>

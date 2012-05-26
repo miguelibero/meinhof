@@ -3,7 +3,6 @@
 namespace Meinhof\Assetic;
 
 use Assetic\Factory\AssetFactory as BaseAssetFactory;
-use Assetic\Asset\AssetInterface;
 
 class AssetFactory extends BaseAssetFactory
 {
@@ -12,8 +11,8 @@ class AssetFactory extends BaseAssetFactory
      */
     public function generateAssetName($inputs, $filters, $options = array())
     {
-        if(is_array($options) && isset($options['root'])){
-            if(!is_array($options['root'])){
+        if (is_array($options) && isset($options['root'])) {
+            if (!is_array($options['root'])) {
                 $options['root'] = array($options['root']);
             }
             // remove empty elements
@@ -21,6 +20,7 @@ class AssetFactory extends BaseAssetFactory
             // remove duplicate roots
             $options['root'] = array_unique($options['root']);
         }
+
         return parent::generateAssetName($inputs, $filters, $options);
     }
 
@@ -29,13 +29,14 @@ class AssetFactory extends BaseAssetFactory
      */
     public function createAsset($inputs = array(), $filters = array(), array $options = array())
     {
-        if(!is_array($inputs)){
+        if (!is_array($inputs)) {
             $inputs = array($inputs);
         }
         // set output the same as output if only one input
-        if(count($inputs) === 1 && (!isset($options['output'])  || $options['output'] === "*")){
+        if (count($inputs) === 1 && (!isset($options['output'])  || $options['output'] === "*")) {
             $options['output'] = reset($inputs);
         }
+
         return parent::createAsset($inputs, $filters, $options);
     }
 }

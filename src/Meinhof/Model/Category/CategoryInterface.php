@@ -2,7 +2,6 @@
 
 namespace Meinhof\Model\Category;
 
-
 interface CategoryInterface
 {
     /**

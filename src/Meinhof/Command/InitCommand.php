@@ -22,7 +22,7 @@ class InitCommand extends MeinhofCommand
                  new InputOption('pages', 'p', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'List of initial site pages'),
                  new InputOption('categories', 'c', InputOption::VALUE_OPTIONAL | InputOption::VALUE_IS_ARRAY, 'List of initial site categories'),
                  new InputOption('update', 'u', InputOption::VALUE_NONE, 'Update the site after the init'),
-            ))            
+            ))
             ->setHelp(<<<EOT
 <info>php meinhof.phar init</info>
 EOT
@@ -38,7 +38,7 @@ EOT
         $dir = $input->getArgument('dir');
         $this->installComposer($dir, $output);
 
-        if($input->getOption('update')){
+        if ($input->getOption('update')) {
             $update = new UpdateCommand();
             $update->execute($input, $output);
         }
@@ -46,7 +46,7 @@ EOT
 
     protected function installComposer($dir, OutputInterface $output)
     {
-        if(!file_exists($dir.'/composer.json')){
+        if (!file_exists($dir.'/composer.json')) {
             return;
         }
         $write_output = function ($type, $buffer) use ($output) {
@@ -70,7 +70,7 @@ EOT
         $process->run($write_output);
         if (!$process->isSuccessful()) {
             throw new RuntimeException($process->getErrorOutput());
-        }        
+        }
     }
 
     protected function interact(InputInterface $input, OutputInterface $output)
@@ -94,7 +94,7 @@ EOT
 
         $input->setOption('empty', $empty);
 
-        if($empty){
+        if ($empty) {
             return;
         }
 
@@ -116,10 +116,10 @@ EOT
 
         $categories = $dialog->ask($output, $dialog->getQuestion('Categories',
             $input->getOption('categories')), $input->getOption('categories'));
-        $input->setOption('categories', $categories);        
+        $input->setOption('categories', $categories);
 
         $update = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want to update the site after the init', 'yes', '?'), true);
-        $input->setOption('update', $update);        
+        $input->setOption('update', $update);
     }
 
 }

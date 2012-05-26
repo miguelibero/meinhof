@@ -20,6 +20,6 @@
             <argument type="service" id="templating.name_parser"/>
             <argument type="service" id="templating.content.loader"/>
             <tag name="templating.engine" type="content" />
-        </service>        
+        </service>
     </services>
 </container>

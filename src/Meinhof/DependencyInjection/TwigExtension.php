@@ -2,7 +2,6 @@
 
 namespace Meinhof\DependencyInjection;
 
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
@@ -13,12 +12,12 @@ use Meinhof\DependencyInjection\Compiler\TwigExtensionPass;
 
 class TwigExtension implements ExtensionInterface
 {
-	/**
+    /**
      * {@inheritDoc}
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        if(!class_exists('Twig_Environment')){
+        if (!class_exists('Twig_Environment')) {
             // do not load if library not present
             return;
         }
@@ -29,7 +28,7 @@ class TwigExtension implements ExtensionInterface
         // load configuration
         $configuration = new TwigConfiguration();
         $processor = new Processor();
-        $data = $processor->processConfiguration($configuration, $configs);     
+        $data = $processor->processConfiguration($configuration, $configs);
 
         // load twig services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
@@ -38,16 +37,16 @@ class TwigExtension implements ExtensionInterface
 
     public function getNamespace()
     {
-    	return 'twig';
+        return 'twig';
     }
 
     public function getXsdValidationBasePath()
     {
-    	return 'twig';
+        return 'twig';
     }
 
     public function getAlias()
     {
-    	return 'twig';
+        return 'twig';
     }
 }

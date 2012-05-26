@@ -2,16 +2,13 @@
 
 namespace Meinhof\DependencyInjection;
 
-use Symfony\Component\Finder\Finder;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\Config\Definition\Processor;
-use Symfony\Component\Config\FileLocator;
 
 class SiteExtension implements ExtensionInterface
 {
-	/**
+    /**
      * {@inheritDoc}
      */
     public function load(array $configs, ContainerBuilder $container)
@@ -19,31 +16,31 @@ class SiteExtension implements ExtensionInterface
         // load configuration
         $configuration = new SiteConfiguration();
         $processor = new Processor();
-        $data = $processor->processConfiguration($configuration, $configs);     
+        $data = $processor->processConfiguration($configuration, $configs);
 
-        if(!isset($data['urls']) || !is_array($data['urls'])){
+        if (!isset($data['urls']) || !is_array($data['urls'])) {
             $data['urls'] = array();
         }
 
         // set configuration parameters
         $prefix = 'site.';
-        $container->setParameter($prefix.'info', $data['info']); 
+        $container->setParameter($prefix.'info', $data['info']);
         $container->setParameter($prefix.'urls', $data['urls']);
         $container->setParameter($prefix.'post', $data['post']);
     }
 
     public function getNamespace()
     {
-    	return 'site';
+        return 'site';
     }
 
     public function getXsdValidationBasePath()
     {
-    	return 'site';
+        return 'site';
     }
 
     public function getAlias()
     {
-    	return 'site';
+        return 'site';
     }
 }

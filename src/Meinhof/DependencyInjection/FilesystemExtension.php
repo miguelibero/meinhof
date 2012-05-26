@@ -23,14 +23,14 @@ class FilesystemExtension implements PreloadingExtensionInterface
     public function preload()
     {
         // load the site configuration files
-        foreach($this->getConfigurationResources($this->base_path) as $resource){
-            if($this->loader->supports($resource)){
+        foreach ($this->getConfigurationResources($this->base_path) as $resource) {
+            if ($this->loader->supports($resource)) {
                 $this->loader->load($resource);
             }
-        }        
+        }
     }
 
-	/**
+    /**
      * {@inheritDoc}
      */
     public function load(array $configs, ContainerBuilder $container)
@@ -38,26 +38,26 @@ class FilesystemExtension implements PreloadingExtensionInterface
         // load configuration
         $configuration = new FilesystemConfiguration();
         $processor = new Processor();
-        $data = $processor->processConfiguration($configuration, $configs);     
+        $data = $processor->processConfiguration($configuration, $configs);
 
         // fix configuration
-        if(!isset($data['paths']) || !is_array($data['paths'])){
+        if (!isset($data['paths']) || !is_array($data['paths'])) {
             $data['paths'] = array();
         }
         $data['paths'] = $this->fixConfigurationPaths($data['paths']);
 
         // set configuration parameters
         $prefix = 'filesystem.';
-        $container->setParameter($prefix.'pages', $data['pages']); 
-        $container->setParameter($prefix.'categories', $data['categories']); 
-        $container->setParameter($prefix.'paths', $data['paths']); 
-        foreach($data['paths'] as $name=>$path){
-            $container->setParameter($prefix.'paths.'.$name, $path); 
+        $container->setParameter($prefix.'pages', $data['pages']);
+        $container->setParameter($prefix.'categories', $data['categories']);
+        $container->setParameter($prefix.'paths', $data['paths']);
+        foreach ($data['paths'] as $name=>$path) {
+            $container->setParameter($prefix.'paths.'.$name, $path);
         }
 
         // load filesystem services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('filesystem.xml');       
+        $loader->load('filesystem.xml');
     }
 
     protected function fixConfigurationPaths(array $paths)
@@ -71,18 +71,19 @@ class FilesystemExtension implements PreloadingExtensionInterface
             'base'      => $this->base_path
         ), $paths);
 
-        foreach($paths as $k=>$path){
-            if($path === '.' || substr($path,0,2) !== './'){
+        foreach ($paths as $k=>$path) {
+            if ($path === '.' || substr($path,0,2) !== './') {
                 $path = getcwd().'/'.$path;
             }
             $paths[$k] = $path;
-        }        
-        foreach($paths as $k=>$path){
-            if(substr($path,0,1) !== '/'){
+        }
+        foreach ($paths as $k=>$path) {
+            if (substr($path,0,1) !== '/') {
                 $path = $this->base_path.'/'.$path;
             }
             $paths[$k] = $path;
         }
+
         return $paths;
     }
 
@@ -91,7 +92,7 @@ class FilesystemExtension implements PreloadingExtensionInterface
         $resources = array();
         $dir = $dir.'/config';
 
-        if(!is_readable($dir) || !is_dir($dir)){
+        if (!is_readable($dir) || !is_dir($dir)) {
             return $resources;
         }
 
@@ -101,24 +102,25 @@ class FilesystemExtension implements PreloadingExtensionInterface
             ->ignoreVCS(true)
             ->in($dir);
 
-        foreach($finder as $file){
+        foreach ($finder as $file) {
             $resources[] = $file->getRealPath();
         }
+
         return $resources;
     }
 
     public function getNamespace()
     {
-    	return 'filesystem';
+        return 'filesystem';
     }
 
     public function getXsdValidationBasePath()
     {
-    	return 'filesystem';
+        return 'filesystem';
     }
 
     public function getAlias()
     {
-    	return 'filesystem';
+        return 'filesystem';
     }
 }

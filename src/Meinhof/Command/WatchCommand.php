@@ -15,7 +15,7 @@ class WatchCommand extends MeinhofCommand
             ->setDescription('Watches for changes in and updates the site')
             ->setDefinition(array(
                  new InputArgument('dir', InputArgument::OPTIONAL, 'base directory of the site configuration', '.'),
-            ))            
+            ))
             ->setHelp(<<<EOT
 <info>php meinhof.phar watch</info>
 EOT

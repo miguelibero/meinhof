@@ -3,17 +3,13 @@
 namespace Meinhof\Action;
 
 use Assetic\AssetWriter;
-use Assetic\Factory\Resource\ResourceInterface;
-use Assetic\Factory\AssetFactory;
 use Assetic\Factory\LazyAssetManager;
-use Assetic\Factory\Loader\FormulaLoaderInterface;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Meinhof\Model\Site\SiteInterface;
 use Meinhof\Assetic\ResourceLoaderInterface;
 use Meinhof\Assetic\FormulaLoaderManagerInterface;
-use Meinhof\Assetic\RelativeAssetFactory;
 
 class UpdateAssetsAction extends OutputAction
 {
@@ -46,12 +42,12 @@ class UpdateAssetsAction extends OutputAction
         $this->writeOutputLine("updating assets...", 2);
 
         // load formula loaders, done lazily to avoid circular dependencies
-        foreach($this->formula_loader_manager->getTypes() as $type){
+        foreach ($this->formula_loader_manager->getTypes() as $type) {
             $this->manager->setLoader($type, $this->formula_loader_manager->getLoader($type));
         }
 
         // load template resources
-        foreach($this->site->getViews() as $view){
+        foreach ($this->site->getViews() as $view) {
             $this->resource_loader->load($view, $this->manager);
         }
 

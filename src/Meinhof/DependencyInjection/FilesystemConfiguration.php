@@ -19,7 +19,7 @@ class FilesystemConfiguration implements ConfigurationInterface
                         ->scalarNode('base')->end()
                         ->scalarNode('posts')->end()
                         ->scalarNode('views')->end()
-                        ->scalarNode('web')->end()                        
+                        ->scalarNode('web')->end()
                         ->scalarNode('public')->end()
                     ->end()
                 ->end()
@@ -28,7 +28,7 @@ class FilesystemConfiguration implements ConfigurationInterface
                 ->end()
                 ->arrayNode('categories')
                     ->prototype('scalar')->end()
-                ->end()                
+                ->end()
             ->end()
         ->end();
 

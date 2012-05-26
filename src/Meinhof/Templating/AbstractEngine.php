@@ -17,8 +17,8 @@ abstract class AbstractEngine implements EngineInterface
     /**
      * Constructor.
      *
-     * @param TemplateNameParserInterface $parser  A TemplateNameParserInterface instance
-     * @param LoaderInterface             $loader  A loader instance
+     * @param TemplateNameParserInterface $parser A TemplateNameParserInterface instance
+     * @param LoaderInterface             $loader A loader instance
      */
     public function __construct(TemplateNameParserInterface $parser, LoaderInterface $loader)
     {
@@ -69,6 +69,7 @@ abstract class AbstractEngine implements EngineInterface
         } catch (\Exception $e) {
             return false;
         }
+
         return true;
     }
 
@@ -113,7 +114,7 @@ abstract class AbstractEngine implements EngineInterface
     {
         $template = $this->parser->parse($name);
 
-        if(!$template instanceof TemplateReferenceInterface){
+        if (!$template instanceof TemplateReferenceInterface) {
             throw new \RuntimeException(sprintf('The template "%s" could not be parsed.', $name));
         }
 

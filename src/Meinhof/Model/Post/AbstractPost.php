@@ -15,13 +15,14 @@ abstract class AbstractPost implements PostInterface
         $title = $this->getSlug();
         $title = str_replace('-', ' ', $title);
         $title = ucwords($title);
+
         return $title;
     }
 
     public function getViewTemplatingKey()
     {
         return 'post';
-    }      
+    }
 
     public function setTemplatingEngine(EngineInterface $templating)
     {
@@ -32,15 +33,17 @@ abstract class AbstractPost implements PostInterface
 
     public function getContent()
     {
-        if(!$this->content){
+        if (!$this->content) {
             $this->content = $this->renderContent();
         }
+
         return $this->content;
     }
 
     public function getExcerpt()
     {
         $parts = explode(self::EXCERPT_SEPARATOR, $this->getContent());
+
         return reset($parts);
     }
 
@@ -52,15 +55,16 @@ abstract class AbstractPost implements PostInterface
     public function renderContent()
     {
         $key = $this->getContentTemplatingKey();
-        if(!$this->templating){
+        if (!$this->templating) {
             throw new \RuntimeException("No templating engine loaded");
         }
-        if(!$this->templating->exists($key)){
+        if (!$this->templating->exists($key)) {
             throw new \RuntimeException("Post template '${key}' does not exist.");
         }
-        if(!$this->templating->supports($key)){
-            throw new \RuntimeException("Post template '${key}' does not have a valid format.");   
+        if (!$this->templating->supports($key)) {
+            throw new \RuntimeException("Post template '${key}' does not have a valid format.");
         }
+
         return $this->templating->render($key, $this->getContentTemplateParameters());
     }
 

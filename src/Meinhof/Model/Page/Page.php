@@ -15,7 +15,7 @@ class Page extends AbstractPage
     {
         $this->key = $key;
         $this->slug = $slug;
-        if($updated !== null){
+        if ($updated !== null) {
             $this->setUpdated($updated);
         }
         $this->title = $title;
@@ -23,26 +23,26 @@ class Page extends AbstractPage
         $this->info = $info;
     }
 
-
     protected function setUpdated($updated)
     {
-        if(is_int($updated) || is_numeric($updated)){
+        if (is_int($updated) || is_numeric($updated)) {
             $this->updated = new \DateTime();
             $this->updated->setTimestamp($updated);
-        }else if(is_string($updated)){
+        } elseif (is_string($updated)) {
             $this->updated = new \DateTime($updated);
-        }else if($updated instanceof \DateTime){
+        } elseif ($updated instanceof \DateTime) {
             $this->updated = $updated;
-        }else{
+        } else {
             throw new \InvalidArgumentException("Could not set updated time.");
         }
-    }    
+    }
 
     public function getTitle()
     {
-        if($this->title){
+        if ($this->title) {
             return $this->title;
         }
+
         return parent::getTitle();
     }
 
@@ -53,9 +53,10 @@ class Page extends AbstractPage
 
     public function getSlug()
     {
-        if($this->slug){
+        if ($this->slug) {
             return $this->slug;
         }
+
         return parent::getSlug();
     }
 
@@ -71,21 +72,22 @@ class Page extends AbstractPage
 
     public function getViewTemplatingKey()
     {
-        if($this->view){
+        if ($this->view) {
             return $this->view;
         }
-        if($this->slug){
+        if ($this->slug) {
             return $this->slug;
         }
+
         return parent::getViewTemplatingKey();
     }
 
     public static function fromArray(array $data)
     {
-        if(!isset($data['key'])){
+        if (!isset($data['key'])) {
             throw new \InvalidArgumentException("Each page neeeds a key.");
         }
-        if(!isset($data['info']) || !is_array($data['info'])){
+        if (!isset($data['info']) || !is_array($data['info'])) {
             $data['info'] = array();
         }
         $data = array_merge(array(
@@ -95,6 +97,7 @@ class Page extends AbstractPage
             'title'     => null,
             'view'      => null,
         ), $data);
+
         return new static($data['key'], $data['slug'], $data['updated'], $data['title'], $data['view'], $data['info']);
     }
 

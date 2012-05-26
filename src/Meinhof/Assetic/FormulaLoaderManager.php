@@ -3,7 +3,6 @@
 namespace Meinhof\Assetic;
 
 use Assetic\Factory\Loader\FormulaLoaderInterface;
-use Assetic\Factory\Resource\ResourceInterface;
 
 class FormulaLoaderManager implements FormulaLoaderManagerInterface
 {
@@ -17,8 +16,8 @@ class FormulaLoaderManager implements FormulaLoaderManagerInterface
     protected function setLoaders(array $loaders)
     {
         $this->loaders = array();
-        foreach($loaders as $type=>$loader){
-            if(!$loader instanceof FormulaLoaderInterface){
+        foreach ($loaders as $type=>$loader) {
+            if (!$loader instanceof FormulaLoaderInterface) {
                 throw new \InvalidArgumentException("Not a valid formula loader with key '${type}'.");
             }
             $this->setLoader($type, $loader);
@@ -32,9 +31,10 @@ class FormulaLoaderManager implements FormulaLoaderManagerInterface
 
     public function getLoader($type)
     {
-        if(!isset($this->loaders[$type])){
+        if (!isset($this->loaders[$type])) {
             throw new \InvalidArgumentException("No formula loader defined for type '${type}'.");
         }
+
         return $this->loaders[$type];
     }
 

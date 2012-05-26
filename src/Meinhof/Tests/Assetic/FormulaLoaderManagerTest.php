@@ -2,9 +2,6 @@
 
 namespace Meinhof\Tests\Assetic;
 
-use Symfony\Component\Templating\TemplateNameParserInterface;
-use Symfony\Component\Templating\TemplateReferenceInterface;
-
 use Meinhof\Assetic\FormulaLoaderManagerInterface;
 use Meinhof\Assetic\FormulaLoaderManager;
 

@@ -32,6 +32,7 @@ class FixedTemplateNameParser implements TemplateNameParserInterface
         if ($name instanceof TemplateReferenceInterface) {
             return $name;
         }
+
         return new TemplateReference($name, $this->engine);
     }
 }

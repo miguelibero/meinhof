@@ -32,18 +32,18 @@ class InitSiteAction extends OutputAction
     /**
      * Checks if a given path is a directory with files in it
      *
-     * @param string $dir path to the directory
+     * @param  string  $dir path to the directory
      * @return boolean if it is a full directory
      */
     public function isFullDirectory($dir)
     {
-        if(!file_exists($dir)){
+        if (!file_exists($dir)) {
             return false;
         }
-        if(!is_readable($dir)){
+        if (!is_readable($dir)) {
             throw new \InvalidArgumentException("File '${dir}' is not readable.");
         }
-        if(!is_dir($dir)){
+        if (!is_dir($dir)) {
             return false;
         }
         $dh = opendir($dir);
@@ -53,11 +53,12 @@ class InitSiteAction extends OutputAction
         $i = 0;
         $invalid_files = array('.', '..', 'meinhof.phar');
         while (($file = readdir($dh)) !== false) {
-            if(!in_array($file, $invalid_files)){
+            if (!in_array($file, $invalid_files)) {
                 $i++;
             }
         }
-        closedir($dh);        
+        closedir($dh);
+
         return $i>0;
     }
 
@@ -66,25 +67,25 @@ class InitSiteAction extends OutputAction
         $params = $this->input->getOptions();
         $dir = $this->input->getArgument('dir');
 
-        if(!file_exists($dir)){
-            if(!@mkdir($dir)){
-                throw new \RuntimeException("Could not create directory '${dir}'.");    
+        if (!file_exists($dir)) {
+            if (!@mkdir($dir)) {
+                throw new \RuntimeException("Could not create directory '${dir}'.");
             }
         }
-        if(is_file($dir)){
+        if (is_file($dir)) {
             throw new \RuntimeException("'${dir}' is a file.");
         }
-        if(!is_writable($dir)){
+        if (!is_writable($dir)) {
             throw new \RuntimeException("Directory '${dir}' is not writable.");
         }
 
-        if($this->isFullDirectory($dir)){
+        if ($this->isFullDirectory($dir)) {
             if (!$this->input->isInteractive()) {
                 throw new \RuntimeException("Directory ${dir} already exists and has files.");
             }
             $dialog = new DialogHelper();
             $force = $dialog->askConfirmation($this->output, $dialog->getQuestion('Directory has files, do you want to init anyway', 'no', '?'), false);
-            if(!$force){
+            if (!$force) {
                 return;
             }
         }

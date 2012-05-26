@@ -23,7 +23,7 @@ class UrlHelper implements UrlHelperInterface
 
     protected function formatDate($date)
     {
-        if($date instanceof \DateTime){
+        if ($date instanceof \DateTime) {
             return $date->format($this->config['date']);
         }
     }
@@ -46,14 +46,15 @@ class UrlHelper implements UrlHelperInterface
 
     public function generateUrl($name, array $params)
     {
-        if(!isset($this->config[$name])){
+        if (!isset($this->config[$name])) {
             throw new \InvalidArgumentException("Unknown url template '${name}'.");
         }
         $tparams = array();
-        foreach($params as $k=>$v){
+        foreach ($params as $k=>$v) {
             $k = sprintf(self::PARAMETER_TEMPLATE, $k);
             $tparams[$k] = $v;
         }
+
         return strtr($this->config[$name], $tparams);
     }
 
@@ -66,6 +67,7 @@ class UrlHelper implements UrlHelperInterface
     {
         $params = array_merge($this->parameters,
             $this->getPostParameters($post));
+
         return $this->generateUrl('post', $params);
     }
 
@@ -73,6 +75,7 @@ class UrlHelper implements UrlHelperInterface
     {
         $params = array_merge($this->parameters,
             $this->getPageParameters($page));
+
         return $this->generateUrl('page', $params);
     }
 }

@@ -19,6 +19,7 @@ class MarkdownEngine extends AbstractEngine
     protected function parse(Storage $template, array $parameters = array())
     {
         $parser = new MarkdownExtraParser();
+
         return $parser->transformMarkdown($template->getContent());
-    } 
+    }
 }
