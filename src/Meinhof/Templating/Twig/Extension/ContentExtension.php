@@ -29,5 +29,4 @@ class ContentExtension extends \Twig_Extension
     {
         return $this->engine->render($key, $params);
     }
-
 }

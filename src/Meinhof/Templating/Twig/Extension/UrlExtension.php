@@ -28,7 +28,6 @@ class UrlExtension extends \Twig_Extension
         $this->webroot = '';
     }
 
-
     public function getName()
     {
         return 'url';

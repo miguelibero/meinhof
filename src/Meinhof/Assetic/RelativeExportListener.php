@@ -16,7 +16,7 @@ class RelativeExportListener
 {
     protected $factory;
 
-    public function __construct(RelativeAssetFactory $factory)
+    public function __construct(AssetFactory $factory)
     {
         $this->factory = $factory;
     }
@@ -24,11 +24,9 @@ class RelativeExportListener
     public function beforeExport(ExportEvent $event)
     {
         $base = $event->getRelativeRoot();
-        $this->factory->setBaseTargetPath($base);
     }
 
     public function afterExport(ExportEvent $event)
     {
-        $this->factory->setBaseTargetPath('');
     }
 }
