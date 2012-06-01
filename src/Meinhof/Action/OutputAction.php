@@ -6,16 +6,22 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 /**
  * Defines an action that can write to an output interface
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
  */
 abstract class OutputAction implements ActionInterface
 {
     /**
+     * Classes that inherit this one should implement this method
+     * returning a command line output.
+     *
      * @return OutputInterface
      */
     abstract protected function getOutput();
 
     /**
      * Checks if the output verbositiy is between two given levels
+     *
      * @param integer $min minimum verbosity level
      * @param integer $max maximum verbosity level or null for no maximum
      * @param boolean if output should be written

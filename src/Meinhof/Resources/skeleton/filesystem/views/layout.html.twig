@@ -5,7 +5,7 @@
 {% javascripts output='js/layout.js'
     'js/layout.js'
 %}
-<script src="{{ asset_url }}" type="text/javascript"></script>
+<script src="{{ url(asset_url) }}" type="text/javascript"></script>
 {% endjavascripts %}
 {% endblock %}
 
@@ -14,7 +14,7 @@
 {% stylesheets output='css/layout.css'
     'css/layout.css'
 %}
-<link rel="stylesheet" href="{{ asset_url }}" type="text/css" media="all" />
+<link rel="stylesheet" href="{{ url(asset_url) }}" type="text/css" media="all" />
 {% endstylesheets %}
 {% endblock %}
 

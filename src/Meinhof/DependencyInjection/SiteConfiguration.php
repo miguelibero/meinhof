@@ -22,6 +22,7 @@ class SiteConfiguration implements ConfigurationInterface
                     ->children()
                         ->scalarNode('post')->end()
                         ->scalarNode('page')->end()
+                        ->scalarNode('category')->end()
                         ->scalarNode('public')->end()
                         ->scalarNode('web')->end()
                         ->scalarNode('content')->end()

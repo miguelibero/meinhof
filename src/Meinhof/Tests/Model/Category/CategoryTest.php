@@ -11,7 +11,7 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
 
     public function setUp()
     {
-        $this->category = new Category('name');
+        $this->category = new Category('key', 'Category Name', 'category-slug');
     }
 
     public function testImplementation()
@@ -21,7 +21,8 @@ class CategoryTest extends \PHPUnit_Framework_TestCase
 
     public function testName()
     {
-        $this->assertEquals('name', $this->category->getName());
-        $this->assertEquals('name', $this->category.'');
+        $this->assertEquals('key', $this->category->getKey());
+        $this->assertEquals('category-slug', $this->category->getSlug());
+        $this->assertEquals('Category Name', $this->category.'');
     }
 }

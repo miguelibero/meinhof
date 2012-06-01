@@ -9,7 +9,7 @@ use Symfony\Component\Templating\TemplateNameParserInterface;
 /**
  * This engine knows how to render Twig templates.
  *
- * @author Fabien Potencier <fabien@symfony.com>
+ * @author Miguel Ibero <miguel@ibero.me>
  */
 class TwigEngine implements EngineInterface, StreamingEngineInterface
 {

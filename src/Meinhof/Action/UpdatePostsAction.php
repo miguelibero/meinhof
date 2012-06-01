@@ -10,6 +10,8 @@ use Meinhof\Exporter\ExporterInterface;
 
 /**
  * This action calls the exporter on all the posts.
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
  */
 class UpdatePostsAction extends OutputAction
 {

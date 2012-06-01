@@ -11,6 +11,11 @@ use Meinhof\Model\Site\SiteInterface;
 use Meinhof\Assetic\ResourceLoaderInterface;
 use Meinhof\Assetic\FormulaLoaderManagerInterface;
 
+/**
+ * Compiles the site assets and copies them to the site.
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
+ */
 class UpdateAssetsAction extends OutputAction
 {
     protected $site;

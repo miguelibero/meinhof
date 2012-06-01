@@ -11,8 +11,13 @@
             >Meinhof\Templating\Twig\Extension\TranslationExtension</parameter>
         <parameter key="translation.exporter.class"
             >Meinhof\Exporter\LocalizedExporter</parameter>
+        <parameter key="translation.loader.yml.class"
+            >Symfony\Component\Translation\Loader\YamlFileLoader</parameter>
     </parameters>
     <services>
+        <service id="translation.loader.yml" class="%translation.loader.yml.class%">
+            <tag name="translation.loader" format="yml" />
+        </service>
         <service id="translator" class="%translation.translator.class%">
             <argument>%translation.default_locale%</argument>
         </service>

@@ -30,6 +30,8 @@
             >Meinhof\Generator\SimpleSkeletonGenerator</parameter>
         <parameter key="filesystem.exporter.class"
             >Meinhof\Exporter\FilesystemExporter</parameter>
+        <parameter key="filesystem.action.load_translation_resources.class"
+            >Meinhof\Action\LoadFilesystemTranslationResourcesAction</parameter>
 
         <parameter key="assetic.paths.read_from"
             >%filesystem.paths.public%</parameter>
@@ -96,6 +98,13 @@
         </service>
         <service id="twig.templating.view.loader" class="%filesystem.templating.twig.loader.class%" public="false">
             <argument>%filesystem.paths.views%</argument>
+        </service>
+
+        <!-- actions -->
+        <service id="filesystem.action.load_translation_resources" class="%filesystem.action.load_translation_resources.class%">
+            <argument type="service" id="translator"/>
+            <argument>%filesystem.paths.translations%</argument>
+            <tag name="event_listener" event="update" method="take" priority="10"/>
         </service>
     </services>
 </container>

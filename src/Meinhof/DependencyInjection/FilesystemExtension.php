@@ -48,9 +48,9 @@ class FilesystemExtension implements PreloadingExtensionInterface
 
         // set configuration parameters
         $prefix = 'filesystem.';
-        $container->setParameter($prefix.'pages', $data['pages']);
-        $container->setParameter($prefix.'categories', $data['categories']);
-        $container->setParameter($prefix.'paths', $data['paths']);
+        foreach ($data as $k=>$v) {
+            $container->setParameter($prefix.$k, $v);
+        }
         foreach ($data['paths'] as $name=>$path) {
             $container->setParameter($prefix.'paths.'.$name, $path);
         }
@@ -63,11 +63,12 @@ class FilesystemExtension implements PreloadingExtensionInterface
     protected function fixConfigurationPaths(array $paths)
     {
         $paths = array_merge(array(
-            'posts'     => 'posts',
-            'views'     => 'views',
-            'web'       => 'web',
-            'public'    => 'public',
-            'content'   => 'content',
+            'posts'         => 'posts',
+            'views'         => 'views',
+            'web'           => 'web',
+            'public'        => 'public',
+            'content'       => 'content',
+            'translations'  => 'translations',
             'base'      => $this->base_path
         ), $paths);
 

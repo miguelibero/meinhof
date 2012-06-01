@@ -4,6 +4,19 @@ namespace Meinhof\Assetic;
 
 use Assetic\Factory\AssetFactory as BaseAssetFactory;
 
+/**
+ * Overwrites the base assetic factory to fix some problems.
+ *
+ * First problem is repeated roots generate different asset names.
+ *     $options['root'] = array('/path', '/path')
+ *     $options['root'] = '/path'
+ * These two options should generate the same asset name.
+ *
+ * Second problem is creating an asset with only one input and output
+ * pat empty or '*' should generate the same output path.
+ * '/images/loading.gif' -> '*' should be changed to
+ * '/images/loading.gif' -> '/images/loading.gif'
+ */
 class AssetFactory extends BaseAssetFactory
 {
     /**

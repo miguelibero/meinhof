@@ -8,6 +8,11 @@ use Meinhof\Model\Page\PageInterface;
 use Meinhof\Model\Site\SiteInterface;
 use Meinhof\Exporter\ExporterInterface;
 
+/**
+ * Generates the site pages
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
+ */
 class UpdatePagesAction extends OutputAction
 {
     protected $site;
@@ -22,6 +27,9 @@ class UpdatePagesAction extends OutputAction
         $this->output = $output;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getOutput()
     {
         return $this->output;

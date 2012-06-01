@@ -9,8 +9,6 @@ use Symfony\Component\Process\Process;
  * The Compiler class compiles meinhof into a phar
  *
  * @author Miguel Ibero <miguel@ibero.me>
- * @author Fabien Potencier <fabien@symfony.com>
- * @author Jordi Boggiano <j.boggiano@seld.be>
  */
 class Compiler
 {

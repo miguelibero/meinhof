@@ -4,21 +4,56 @@ namespace Meinhof\Model\Category;
 
 class Category implements CategoryInterface
 {
+    protected $key;
     protected $name;
+    protected $slug;
 
-    public function __construct($name)
+    public function __construct($key, $name, $slug)
     {
+        $this->key = $key;
         $this->name = $name;
+        $this->slug = $slug;
     }
 
     public function getName()
     {
-        return $this->name;
+        if ($this->name) {
+            return $this->name;
+        }
+
+        return $this->getKey();
+    }
+
+    public function getKey()
+    {
+        return $this->key;
+    }
+
+    public function getSlug()
+    {
+        if ($this->slug) {
+            return $this->slug;
+        }
+        $slug = mb_strtolower($this->getName());
+        $slug = preg_replace('/[^a-z0-9]/', '-', $slug);
+
+        return $slug;
     }
 
     public function __toString()
     {
         return (string) $this->getName();
+    }
+
+    public static function fromArray(array $config)
+    {
+        $config = array_merge(array(
+            'key'   => null,
+            'name'  => null,
+            'slug'  => null
+        ), $config);
+
+        return new Category($config['key'], $config['name'], $config['slug']);
     }
 
 }

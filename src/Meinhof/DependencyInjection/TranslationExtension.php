@@ -8,6 +8,8 @@ use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 
+use Meinhof\DependencyInjection\Compiler\TranslationLoaderPass;
+
 class TranslationExtension implements ExtensionInterface
 {
     /**
@@ -19,6 +21,8 @@ class TranslationExtension implements ExtensionInterface
             // do not load if library not present
             return;
         }
+
+        $container->addCompilerPass(new TranslationLoaderPass());
 
         // load configuration
         $configuration = new TranslationConfiguration();
