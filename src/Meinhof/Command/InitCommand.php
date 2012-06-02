@@ -8,8 +8,16 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Process\Process;
 
+/**
+ * This command will setup a base site configuration for you.
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
+ */
 class InitCommand extends MeinhofCommand
 {
+    /**
+     * {@inheritDoc}
+     */
     protected function configure()
     {
         $this
@@ -30,6 +38,9 @@ EOT
         ;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         parent::execute($input, $output);
@@ -44,6 +55,13 @@ EOT
         }
     }
 
+    /**
+     * Downloads composer into the site configuration directory
+     * and installs the dependencies
+     *
+     * @param string          $dir    site configuration base path
+     * @param OutputInterface $output command line output
+     */
     protected function installComposer($dir, OutputInterface $output)
     {
         if (!file_exists($dir.'/composer.json')) {
@@ -73,6 +91,9 @@ EOT
         }
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function interact(InputInterface $input, OutputInterface $output)
     {
         $dialog = $this->getDialogHelper();

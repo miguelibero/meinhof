@@ -7,6 +7,7 @@ use Symfony\Component\Process\Process;
 
 /**
  * The Compiler class compiles meinhof into a phar
+ * this compiler is based on the composer class.
  *
  * @author Miguel Ibero <miguel@ibero.me>
  */

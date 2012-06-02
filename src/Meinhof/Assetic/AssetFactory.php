@@ -16,14 +16,17 @@ use Assetic\Factory\AssetFactory as BaseAssetFactory;
  * pat empty or '*' should generate the same output path.
  * '/images/loading.gif' -> '*' should be changed to
  * '/images/loading.gif' -> '/images/loading.gif'
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
  */
 class AssetFactory extends BaseAssetFactory
 {
     /**
-     * Fixes a problem with bad roots
+     * {@inheritDoc}
      */
     public function generateAssetName($inputs, $filters, $options = array())
     {
+        // Fixes a problem with bad roots
         if (is_array($options) && isset($options['root'])) {
             if (!is_array($options['root'])) {
                 $options['root'] = array($options['root']);
@@ -38,10 +41,11 @@ class AssetFactory extends BaseAssetFactory
     }
 
     /**
-     * Fixes problem with generated output
+     * {@inheritDoc}
      */
     public function createAsset($inputs = array(), $filters = array(), array $options = array())
     {
+        // Fixes problem with generated output
         if (!is_array($inputs)) {
             $inputs = array($inputs);
         }

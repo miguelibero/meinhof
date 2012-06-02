@@ -8,6 +8,11 @@ use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Command that loads a webserver and listens to changes
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
+ */
 class ServerCommand extends MeinhofCommand
 {
     protected function configure()

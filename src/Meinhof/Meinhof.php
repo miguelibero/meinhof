@@ -17,13 +17,29 @@ use Meinhof\DependencyInjection\Compiler\EventListenerPass;
 
 /**
  * Main class
+ *
+ * This class loads the dependency container and then can be used to trigger the different events
+ * that will do stuff.
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
  */
 class Meinhof
 {
+    /**
+     * the meinhof version
+     */
     const VERSION = "0.1";
 
+    /**
+     * @var ContainerInterface the dependency injection container
+     */
     protected $container;
 
+    /**
+     * @param string          $dir    the path to the base of the site configuration
+     * @param InputInterface  $Input  the command line input
+     * @param OutputInterface $output the command line output
+     */
     public function __construct($dir, InputInterface $input = null, OutputInterface $output = null)
     {
         // load libraries defined in site configuration
@@ -44,6 +60,14 @@ class Meinhof
         $this->dispatchEvent('load');
     }
 
+    /**
+     * Builds the dependency injection container
+     *
+     * @param  string             $dir the path to the base of the site configuration
+     * @return ContainerInterface the new container
+     *
+     * @throws \RuntimeException when a service tagged as an extension does not implement ExtensionInterface
+     */
     protected function buildContainer($dir)
     {
         // load the container
@@ -65,7 +89,7 @@ class Meinhof
         foreach ($container->findTaggedServiceIds('extension') as $id => $attributes) {
             $extension = $container->get($id);
             if (!$extension instanceof ExtensionInterface) {
-                throw new \InvalidArgumentException("Invalid extension with id '${id}'.");
+                throw new \RuntimeException("Invalid extension with id '${id}'.");
             }
             $container->registerExtension($extension);
         }
@@ -87,17 +111,33 @@ class Meinhof
         return $container;
     }
 
+    /**
+     * Dispatches an event
+     *
+     * @throws \RuntimeException when the container is not present
+     */
     protected function dispatchEvent($event)
     {
+        if (!$this->container) {
+            throw new \RuntimeException("The container has not been set up.");
+        }
         $dispatcher = $this->container->get('event_dispatcher');
         $dispatcher->dispatch($event);
     }
 
+    /**
+     * Dispatches the init event.
+     * This should create a new site configuration.
+     */
     public function init()
     {
         $this->dispatchEvent('init');
     }
 
+    /**
+     * Dispatches the update event.
+     * This should export the changes to the site
+     */
     public function update()
     {
         $dir = $this->container->getParameter('base_dir');

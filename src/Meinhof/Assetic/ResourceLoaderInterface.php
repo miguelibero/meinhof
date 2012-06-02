@@ -22,6 +22,8 @@ use Assetic\Factory\LazyAssetManager;
 interface ResourceLoaderInterface
 {
     /**
+     * Loads a resource into an asset manager
+     *
      * @param string           $name name of the resource to load
      * @param LazyAssetManager $mng  the manager to be loaded
      */

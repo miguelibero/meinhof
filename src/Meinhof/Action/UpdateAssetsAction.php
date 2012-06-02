@@ -12,7 +12,7 @@ use Meinhof\Assetic\ResourceLoaderInterface;
 use Meinhof\Assetic\FormulaLoaderManagerInterface;
 
 /**
- * Compiles the site assets and copies them to the site.
+ * Compiles the site assets.
  *
  * @author Miguel Ibero <miguel@ibero.me>
  */

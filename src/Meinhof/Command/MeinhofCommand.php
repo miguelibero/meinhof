@@ -9,8 +9,18 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Base class for commands, adds the custom dialog helper
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
+ *
+ * @see Meinhof\Command\Helper\DialogHelper
+ */
 abstract class MeinhofCommand extends Command
 {
+    /**
+     * @var Meinhof
+     */
     protected $meinhof;
 
     protected function getMeinhof()
@@ -18,12 +28,18 @@ abstract class MeinhofCommand extends Command
         return $this->meinhof;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $dir = $input->getArgument('dir');
         $this->meinhof = new Meinhof($dir, $input, $output);
     }
 
+    /**
+     * @{inheritDoc}
+     */
     protected function getDialogHelper()
     {
         $dialog = $this->getHelperSet()->get('dialog');

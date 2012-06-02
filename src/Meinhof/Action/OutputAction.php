@@ -22,9 +22,9 @@ abstract class OutputAction implements ActionInterface
     /**
      * Checks if the output verbositiy is between two given levels
      *
-     * @param integer $min minimum verbosity level
-     * @param integer $max maximum verbosity level or null for no maximum
-     * @param boolean if output should be written
+     * @param  integer $min minimum verbosity level
+     * @param  integer $max maximum verbosity level or null for no maximum
+     * @return boolean if output should be written
      */
     protected function shouldWriteOutput($min=0, $max=null)
     {

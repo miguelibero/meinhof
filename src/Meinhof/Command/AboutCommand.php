@@ -6,8 +6,16 @@ use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * This command prints information about meinhof and exits
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
+ */
 class AboutCommand extends Command
 {
+    /**
+     * {@inheritDoc}
+     */
     protected function configure()
     {
         $this
@@ -20,6 +28,9 @@ EOT
         ;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $output->writeln(<<<EOT
