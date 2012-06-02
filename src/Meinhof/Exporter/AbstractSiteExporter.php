@@ -10,7 +10,7 @@ use Meinhof\Helper\UrlHelperInterface;
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
-abstract class AbstractExporter implements ExporterInterface
+abstract class AbstractSiteExporter implements SiteExporterInterface
 {
     protected $templating;
     protected $url_helper;
@@ -69,7 +69,7 @@ abstract class AbstractExporter implements ExporterInterface
         } elseif ($model instanceof PageInterface) {
             $url = $this->url_helper->getPageUrl($model);
         } else {
-            throw \RuntimeException("unknown model type");
+            throw new \RuntimeException("unknown model type");
         }
         $url = trim(parse_url($url, PHP_URL_PATH),'/');
 

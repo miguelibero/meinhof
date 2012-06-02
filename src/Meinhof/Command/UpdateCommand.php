@@ -6,8 +6,17 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
+/**
+ * Command that generates the update site pages
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
+ */
 class UpdateCommand extends MeinhofCommand
 {
+
+    /**
+     * @{inheritDoc}
+     */
     protected function configure()
     {
         $this
@@ -16,16 +25,14 @@ class UpdateCommand extends MeinhofCommand
             ->setDefinition(array(
                 new InputArgument('dir', InputArgument::OPTIONAL, 'base directory of the site configuration', '.'),
             ))
-            ->setHelp(<<<EOT
-<info>php meinhof.phar update</info>
-EOT
-            )
         ;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        parent::execute($input, $output);
         $this->getMeinhof()->update();
     }
 }

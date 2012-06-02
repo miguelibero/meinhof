@@ -6,7 +6,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Meinhof\Model\Post\PostInterface;
 use Meinhof\Model\Site\SiteInterface;
-use Meinhof\Exporter\ExporterInterface;
+use Meinhof\Exporter\SiteExporterInterface;
 
 /**
  * This action calls the exporter on all the posts.
@@ -20,7 +20,7 @@ class UpdatePostsAction extends OutputAction
     protected $output;
 
     public function __construct(SiteInterface $site,
-        ExporterInterface $exporter, OutputInterface $output=null)
+        SiteExporterInterface $exporter, OutputInterface $output=null)
     {
         $this->site = $site;
         $this->exporter = $exporter;

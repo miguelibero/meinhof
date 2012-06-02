@@ -21,10 +21,6 @@ class AboutCommand extends Command
         $this
             ->setName('about')
             ->setDescription('Short information about Meinhof')
-            ->setHelp(<<<EOT
-<info>php meinhof.phar about</info>
-EOT
-            )
         ;
     }
 

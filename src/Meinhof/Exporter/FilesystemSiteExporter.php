@@ -5,7 +5,7 @@ namespace Meinhof\Exporter;
 use Meinhof\Helper\UrlHelperInterface;
 use Symfony\Component\Templating\EngineInterface;
 
-class FilesystemExporter extends AbstractExporter
+class FilesystemSiteExporter extends AbstractSiteExporter
 {
     protected $base_path;
     protected $base_url;

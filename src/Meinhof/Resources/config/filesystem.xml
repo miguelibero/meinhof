@@ -26,12 +26,12 @@
             >Meinhof\Config\Loader\TemplateMatterLoader</parameter>
         <parameter key="filesystem.templating.twig.loader.class"
             >\Twig_Loader_Filesystem</parameter>
-        <parameter key="filesystem.site_generator.class"
-            >Meinhof\Generator\SimpleSkeletonGenerator</parameter>
         <parameter key="filesystem.exporter.class"
-            >Meinhof\Exporter\FilesystemExporter</parameter>
+            >Meinhof\Exporter\FilesystemSiteExporter</parameter>
         <parameter key="filesystem.action.load_translation_resources.class"
             >Meinhof\Action\LoadFilesystemTranslationResourcesAction</parameter>
+        <parameter key="filesystem.setup_writer.class"
+            >Meinhof\Setup\FilesystemSetupWriter</parameter>
 
         <parameter key="assetic.paths.read_from"
             >%filesystem.paths.public%</parameter>
@@ -50,6 +50,9 @@
             <call method="setPostMatterLoader">
                 <argument type="service" id="matter_loader.post"/>
             </call>
+        </service>
+        <service id="setup_writer" class="%filesystem.setup_writer.class%">
+            <argument>%filesystem.paths.config%</argument>
         </service>
         <service id="templating.post.content_loader"
             class="%filesystem.templating.loader.class%" public="false">
@@ -76,9 +79,6 @@
             <argument type="service" id="templating.post.loader"/>
             <argument type="service" id="matter_loader.yaml"/>
             <argument>%site.post%</argument>
-        </service>
-        <service id="site_generator" class="%filesystem.site_generator.class%">
-            <argument>Resources/skeleton/filesystem</argument>
         </service>
         <service id="exporter" class="%filesystem.exporter.class%">
             <argument type="service" id="templating.view"/>

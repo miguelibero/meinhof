@@ -12,6 +12,8 @@ use Meinhof\Templating\Storage\MatterStorage;
  * This loader tries to read matter from a template loader
  * that returns MatterStorage elements. These elements
  * are then passed to a config loader to obtain the configuration array.
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
  */
 class TemplateMatterLoader extends ConfigLoader
 {

@@ -1,0 +1,25 @@
+# this is the basic configuration used by the FilesystemSetupWriter
+site:
+    info:
+        name: ~
+        slogan: a website build using meinhof
+        disqus_shortname: ~
+    urls:
+        post: 'post/{date}/{slug}.html'
+        page: '{slug}.html'
+        category: 'categories/{slug}.html'
+    post:
+        view: post
+        info:
+            author: ~
+            author_email: ~
+translation:
+    default_locale: ~
+    locales: []
+filesystem:
+    pages:
+        - index
+    assets: []
+    categories:
+        default:
+            name: Default

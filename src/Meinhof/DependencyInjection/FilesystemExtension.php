@@ -23,7 +23,8 @@ class FilesystemExtension implements PreloadingExtensionInterface
     public function preload()
     {
         // load the site configuration files
-        foreach ($this->getConfigurationResources($this->base_path) as $resource) {
+        $resources = $this->getConfigurationResources($this->base_path);
+        foreach ($resources as $resource) {
             if ($this->loader->supports($resource)) {
                 $this->loader->load($resource);
             }
@@ -58,6 +59,10 @@ class FilesystemExtension implements PreloadingExtensionInterface
         // load filesystem services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('filesystem.xml');
+
+        if(!$container->hasDefinition('translator')){
+            $container->removeDefinition('filesystem.action.load_translation_resources');
+        }
     }
 
     protected function fixConfigurationPaths(array $paths)
@@ -68,8 +73,9 @@ class FilesystemExtension implements PreloadingExtensionInterface
             'web'           => 'web',
             'public'        => 'public',
             'content'       => 'content',
+            'config'        => 'config',
             'translations'  => 'translations',
-            'base'      => $this->base_path
+            'base'          => $this->base_path
         ), $paths);
 
         foreach ($paths as $k=>$path) {

@@ -15,6 +15,9 @@ use Symfony\Component\Console\Output\OutputInterface;
  */
 class ServerCommand extends MeinhofCommand
 {
+    /**
+     * @{inheritDoc}
+     */
     protected function configure()
     {
         $this
@@ -25,13 +28,12 @@ class ServerCommand extends MeinhofCommand
                  new InputOption('port', 'p', InputOption::VALUE_REQUIRED, 'The port to start the server'),
                  new InputOption('base-url', 'u', InputOption::VALUE_OPTIONAL, 'The base url of the site'),
             ))
-            ->setHelp(<<<EOT
-<info>php meinhof.phar server</info>
-EOT
-            )
         ;
     }
 
+    /**
+     * @{inheritDoc}
+     */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         if (strnatcmp(phpversion(),'5.4') < 0) {

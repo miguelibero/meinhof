@@ -40,8 +40,8 @@
             >Meinhof\Action\UpdatePostsAction</parameter>
         <parameter key="action.update_pages.class"
             >Meinhof\Action\UpdatePagesAction</parameter>
-        <parameter key="action.init_site.class"
-            >Meinhof\Action\InitSiteAction</parameter>
+        <parameter key="action.setup_site.class"
+            >Meinhof\Action\SetupSiteAction</parameter>
     </parameters>
     <services>
         <!-- configuration loader -->
@@ -120,11 +120,11 @@
             <argument type="service" id="output"/>
             <tag name="event_listener" event="update" method="take"/>
         </service>
-        <service id="action.init_site" class="%action.init_site.class%">
-            <argument type="service" id="site_generator"/>
+        <service id="action.setup_site" class="%action.setup_site.class%">
+            <argument type="service" id="setup_writer"/>
             <argument type="service" id="input"/>
             <argument type="service" id="output"/>
-            <tag name="event_listener" event="init" method="take"/>
+            <tag name="event_listener" event="setup" method="take"/>
         </service>
     </services>
 </container>

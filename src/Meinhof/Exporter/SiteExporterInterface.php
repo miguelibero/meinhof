@@ -7,9 +7,9 @@ use Meinhof\Model\Post\PostInterface;
 use Meinhof\Model\Page\PageInterface;
 
 /**
- * A way to store a template.
+ * Exports elements of a site
  */
-interface ExporterInterface
+interface SiteExporterInterface
 {
     public function exportPost(PostInterface $post, SiteInterface $site);
 

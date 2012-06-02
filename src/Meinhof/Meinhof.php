@@ -61,6 +61,23 @@ class Meinhof
     }
 
     /**
+     * Returns a service.
+     *
+     * @param string $id id of the service
+     *
+     * @return mixed the service object
+     *
+     * @throws \RuntimeException when the container is not present
+     */
+    public function get($id)
+    {
+        if (!$this->container) {
+            throw new \RuntimeException("The container has not been set up.");
+        }        
+        return $this->container->get($id);
+    }
+
+    /**
      * Builds the dependency injection container
      *
      * @param  string             $dir the path to the base of the site configuration
@@ -115,23 +132,28 @@ class Meinhof
      * Dispatches an event
      *
      * @throws \RuntimeException when the container is not present
+     * @throws \RuntimeException when the site directory is not readable    
      */
     protected function dispatchEvent($event)
     {
         if (!$this->container) {
             throw new \RuntimeException("The container has not been set up.");
         }
+        $dir = $this->container->getParameter('base_dir');
+        if (!is_dir($dir) || !is_readable($dir)) {
+            throw new \RuntimeException("'${dir}' is not a valid readable directory.");
+        }        
         $dispatcher = $this->container->get('event_dispatcher');
         $dispatcher->dispatch($event);
     }
 
     /**
-     * Dispatches the init event.
+     * Dispatches the setup event.
      * This should create a new site configuration.
      */
-    public function init()
+    public function setup()
     {
-        $this->dispatchEvent('init');
+        $this->dispatchEvent('setup');
     }
 
     /**
@@ -140,10 +162,6 @@ class Meinhof
      */
     public function update()
     {
-        $dir = $this->container->getParameter('base_dir');
-        if (!is_dir($dir) || !is_readable($dir)) {
-            throw new \InvalidArgumentException("'${dir}' is not a valid readable directory.");
-        }
         $this->dispatchEvent('update');
     }
 

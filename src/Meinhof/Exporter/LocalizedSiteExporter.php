@@ -10,8 +10,10 @@ use Meinhof\Helper\UrlHelperInterface;
 
 /**
  * Exports each element for a list of locales
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
  */
-class LocalizedExporter implements ExporterInterface
+class LocalizedSiteExporter implements SiteExporterInterface
 {
     protected $locales;
     protected $exporter;

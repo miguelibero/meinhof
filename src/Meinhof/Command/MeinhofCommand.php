@@ -31,7 +31,7 @@ abstract class MeinhofCommand extends Command
     /**
      * @{inheritDoc}
      */
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function initialize(InputInterface $input, OutputInterface $output)
     {
         $dir = $input->getArgument('dir');
         $this->meinhof = new Meinhof($dir, $input, $output);
