@@ -4,14 +4,14 @@ namespace Meinhof;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
+use Symfony\Component\DependencyInjection\Extension\ExtensionInterface as BaseExtensionInterface;
 
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
 use Symfony\Component\Config\FileLocator;
 
-use Meinhof\DependencyInjection\PreloadingExtensionInterface;
+use Meinhof\DependencyInjection\ExtensionInterface;
 use Meinhof\DependencyInjection\Compiler\TemplatingEnginePass;
 use Meinhof\DependencyInjection\Compiler\EventListenerPass;
 
@@ -106,7 +106,7 @@ class Meinhof
         // register extensions
         foreach ($container->findTaggedServiceIds('extension') as $id => $attributes) {
             $extension = $container->get($id);
-            if (!$extension instanceof ExtensionInterface) {
+            if (!$extension instanceof BaseExtensionInterface) {
                 throw new \RuntimeException("Invalid extension with id '${id}'.");
             }
             $container->registerExtension($extension);
@@ -114,16 +114,9 @@ class Meinhof
 
         // preload the extensions
         foreach ($container->getExtensions() as $extension) {
-            if ($extension instanceof PreloadingExtensionInterface) {
-                $extension->preload();
+            if ($extension instanceof ExtensionInterface) {
+                $extension->preload($container);
             }
-        }
-
-        // load extensions
-        foreach ($container->getExtensions() as $extension) {
-            // load the extension configuration
-            $configs = $container->getExtensionConfig($extension->getAlias());
-            $extension->load($configs, $container);
         }
 
         return $container;

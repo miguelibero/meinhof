@@ -9,7 +9,7 @@ use Symfony\Component\Config\Loader\LoaderInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 
-class FilesystemExtension implements PreloadingExtensionInterface
+class FilesystemExtension implements ExtensionInterface
 {
     protected $base_path;
     protected $loader;
@@ -20,8 +20,15 @@ class FilesystemExtension implements PreloadingExtensionInterface
         $this->loader = $loader;
     }
 
-    public function preload()
+    /**
+     * {@inheritDoc}
+     */
+    public function preload(ContainerBuilder $container)
     {
+        // load filesystem services
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('filesystem.xml');
+
         // load the site configuration files
         $resources = $this->getConfigurationResources($this->base_path);
         foreach ($resources as $resource) {
@@ -55,10 +62,6 @@ class FilesystemExtension implements PreloadingExtensionInterface
         foreach ($data['paths'] as $name=>$path) {
             $container->setParameter($prefix.'paths.'.$name, $path);
         }
-
-        // load filesystem services
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('filesystem.xml');
     }
 
     protected function fixConfigurationPaths(array $paths)

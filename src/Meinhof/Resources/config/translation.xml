@@ -26,9 +26,9 @@
             <argument type="service" id="translator"/>
             <tag name="twig.extension"/>
         </service>
-        <service id="site_exporter" class="%translation.site_exporter.class%">
+        <service id="translation.site_exporter" class="%translation.site_exporter.class%" >
             <argument>%translation.locales%</argument>
-            <argument type="service" id="translation.internal_site_exporter" />
+            <argument type="service" id="site_exporter" />
             <argument type="service" id="url_helper" />
         </service>
     </services>

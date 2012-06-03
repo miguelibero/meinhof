@@ -4,25 +4,36 @@ namespace Meinhof\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
-use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 
 use Meinhof\DependencyInjection\Compiler\TranslationLoaderPass;
+use Meinhof\DependencyInjection\Compiler\LocalizedSiteExporterPass;
 
 class TranslationExtension implements ExtensionInterface
 {
     /**
      * {@inheritDoc}
      */
+    public function preload(ContainerBuilder $container)
+    {
+        // load compilers
+        $container->addCompilerPass(new TranslationLoaderPass());
+        $container->addCompilerPass(new LocalizedSiteExporterPass());
+
+        // load translation services
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('translation.xml');
+    }
+
+    /**
+     * {@inheritDoc}
+     */
     public function load(array $configs, ContainerBuilder $container)
     {
         if (!class_exists('Symfony\\Component\\Translation\\Translator')) {
-            // do not load if library not present
-            return;
+            throw new \RuntimeException("Symfony translator component not loaded.");
         }
-
-        $container->addCompilerPass(new TranslationLoaderPass());
 
         // load configuration
         $configuration = new TranslationConfiguration();
@@ -39,15 +50,6 @@ class TranslationExtension implements ExtensionInterface
         $prefix = 'translation.';
         $container->setParameter($prefix.'default_locale', $data['default_locale']);
         $container->setParameter($prefix.'locales', $data['locales']);
-
-        if ($container->hasDefinition('site_exporter')) {
-            $def = $container->getDefinition('site_exporter');
-            $container->setDefinition($prefix.'internal_site_exporter', $def);
-        }
-
-        // load translation services
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('translation.xml');
     }
 
     public function getNamespace()

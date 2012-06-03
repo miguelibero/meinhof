@@ -3,11 +3,19 @@
 namespace Meinhof\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\DependencyInjection\Extension\ExtensionInterface;
 use Symfony\Component\Config\Definition\Processor;
 
 class SiteExtension implements ExtensionInterface
 {
+    /**
+     * {@inheritDoc}
+     */
+    public function preload(ContainerBuilder $container)
+    {
+        // make shure this extension will be loaded
+        $container->loadFromExtension($this->getAlias(), array());
+    }
+
     /**
      * {@inheritDoc}
      */
@@ -17,10 +25,6 @@ class SiteExtension implements ExtensionInterface
         $configuration = new SiteConfiguration();
         $processor = new Processor();
         $data = $processor->processConfiguration($configuration, $configs);
-
-        if (!isset($data['urls']) || !is_array($data['urls'])) {
-            $data['urls'] = array();
-        }
 
         // set configuration parameters
         $prefix = 'site.';

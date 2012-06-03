@@ -53,9 +53,11 @@
         </service>
         <service id="assetic.asset_factory" class="%assetic.asset_factory.class%">
             <argument>%assetic.paths.read_from%</argument>
+            <!--
             <call method="setAssetManager">
                 <argument type="service" id="assetic.asset_manager"/>
             </call>
+            -->
             <call method="setFilterManager">
                 <argument type="service" id="assetic.filter_manager"/>
             </call>
