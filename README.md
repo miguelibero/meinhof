@@ -23,25 +23,18 @@ Working
 
 TODO
 ----
-* Add tests (!)
-* Add archive support
-* Add translator support
+* Add tests
+* Add post archive support (pagination, calendar, etc...)
 * Add documentation
 
 Installation
 ------------
 
-    $ git clone git://github.com/miguelibero/meinhof.git
-    $ curl -s http://getcomposer.org/installer | php
-    $ php composer.phar install
-    $ ./bin/compile
-    $ ./meinhof.phar init /tmp/meinhof_site
-
-After answering the questions a new site configuration will be created,
-the generated html files should be in the site directory
+This is only a library, to setup your site please see [meinhof-standard](https://github.com/miguelibero/meinhof-standard).
 
 Thanks
 ------
 
-Fabien Potencier for creating symfony. Nils Adermann and Jordi Boggiano for
-creating composer and the packagist repo. Rasmus Lerdorf for creating php.
+* Fabien Potencier for creating symfony
+* Nils Adermann and Jordi Boggiano for creating composer and the packagist repo
+* Rasmus Lerdorf for creating php

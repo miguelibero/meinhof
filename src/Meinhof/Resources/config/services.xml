@@ -110,13 +110,13 @@
         </service>
         <service id="action.update_posts" class="%action.update_posts.class%">
             <argument type="service" id="site"/>
-            <argument type="service" id="exporter"/>
+            <argument type="service" id="site_exporter"/>
             <argument type="service" id="output"/>
             <tag name="event_listener" event="update" method="take"/>
         </service>
         <service id="action.update_pages" class="%action.update_pages.class%">
             <argument type="service" id="site"/>
-            <argument type="service" id="exporter"/>
+            <argument type="service" id="site_exporter"/>
             <argument type="service" id="output"/>
             <tag name="event_listener" event="update" method="take"/>
         </service>

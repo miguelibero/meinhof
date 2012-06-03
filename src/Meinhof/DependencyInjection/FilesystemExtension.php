@@ -59,10 +59,6 @@ class FilesystemExtension implements PreloadingExtensionInterface
         // load filesystem services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('filesystem.xml');
-
-        if(!$container->hasDefinition('translator')){
-            $container->removeDefinition('filesystem.action.load_translation_resources');
-        }
     }
 
     protected function fixConfigurationPaths(array $paths)

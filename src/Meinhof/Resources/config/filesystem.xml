@@ -26,7 +26,7 @@
             >Meinhof\Config\Loader\TemplateMatterLoader</parameter>
         <parameter key="filesystem.templating.twig.loader.class"
             >\Twig_Loader_Filesystem</parameter>
-        <parameter key="filesystem.exporter.class"
+        <parameter key="filesystem.site_exporter.class"
             >Meinhof\Exporter\FilesystemSiteExporter</parameter>
         <parameter key="filesystem.action.load_translation_resources.class"
             >Meinhof\Action\LoadFilesystemTranslationResourcesAction</parameter>
@@ -80,7 +80,7 @@
             <argument type="service" id="matter_loader.yaml"/>
             <argument>%site.post%</argument>
         </service>
-        <service id="exporter" class="%filesystem.exporter.class%">
+        <service id="site_exporter" class="%filesystem.site_exporter.class%">
             <argument type="service" id="templating.view"/>
             <argument type="service" id="url_helper"/>
             <argument>%filesystem.paths.web%</argument>

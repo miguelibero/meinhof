@@ -19,7 +19,7 @@ class LocalizedSiteExporter implements SiteExporterInterface
     protected $exporter;
     protected $url_helper;
 
-    public function __construct(array $locales, ExporterInterface $exporter, UrlHelperInterface $url_helper=null)
+    public function __construct(array $locales, SiteExporterInterface $exporter, UrlHelperInterface $url_helper=null)
     {
         $this->locales = $locales;
         $this->exporter = $exporter;

@@ -30,6 +30,9 @@ class SetupSiteAction extends OutputAction
         $this->input = $input;
     }
 
+    /**
+     * {@inheritDoc}
+     */
     protected function getOutput()
     {
         return $this->output;
@@ -55,6 +58,16 @@ class SetupSiteAction extends OutputAction
         $this->writeOutputLine("done", 2);
     }
 
+    /**
+     * Fixes the author setup parameter.
+     *
+     * In the setup you can specify an author as `Author Name <author@email.com>`.
+     * This function separates this into two different keys, `author` and `author_email`.
+     *
+     * @param array $params setup parameter array
+     *
+     * @return array fixed setup parameter array
+     */
     protected function fixAuthorSetupParameters(array $params)
     {
         if(!isset($params['author'])){

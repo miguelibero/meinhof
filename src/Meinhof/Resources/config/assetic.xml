@@ -75,6 +75,9 @@
             <argument type="service" id="assetic.resource_loader"/>
             <argument type="service" id="assetic.formula_loader_manager"/>
             <argument type="service" id="output"/>
+            <call method="addAssets">
+                <argument>%assetic.assets%</argument>
+            </call>
             <tag name="event_listener" event="update" method="take" priority="0"/>
         </service>
 

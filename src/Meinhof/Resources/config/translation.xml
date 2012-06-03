@@ -9,8 +9,8 @@
             >Symfony\Component\Translation\Translator</parameter>
         <parameter key="translation.twig.extension.class"
             >Meinhof\Templating\Twig\Extension\TranslationExtension</parameter>
-        <parameter key="translation.exporter.class"
-            >Meinhof\Exporter\LocalizedExporter</parameter>
+        <parameter key="translation.site_exporter.class"
+            >Meinhof\Exporter\LocalizedSiteExporter</parameter>
         <parameter key="translation.loader.yml.class"
             >Symfony\Component\Translation\Loader\YamlFileLoader</parameter>
     </parameters>
@@ -26,9 +26,9 @@
             <argument type="service" id="translator"/>
             <tag name="twig.extension"/>
         </service>
-        <service id="exporter" class="%translation.exporter.class%">
+        <service id="site_exporter" class="%translation.site_exporter.class%">
             <argument>%translation.locales%</argument>
-            <argument type="service" id="translation.internal_exporter" />
+            <argument type="service" id="translation.internal_site_exporter" />
             <argument type="service" id="url_helper" />
         </service>
     </services>

@@ -40,9 +40,9 @@ class TranslationExtension implements ExtensionInterface
         $container->setParameter($prefix.'default_locale', $data['default_locale']);
         $container->setParameter($prefix.'locales', $data['locales']);
 
-        if ($container->hasDefinition('exporter')) {
-            $def = $container->getDefinition('exporter');
-            $container->setDefinition($prefix.'internal_exporter', $def);
+        if ($container->hasDefinition('site_exporter')) {
+            $def = $container->getDefinition('site_exporter');
+            $container->setDefinition($prefix.'internal_site_exporter', $def);
         }
 
         // load translation services

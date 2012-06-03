@@ -34,6 +34,12 @@ class AsseticExtension implements ExtensionInterface
         $processor = new Processor();
         $data = $processor->processConfiguration($configuration, $configs);
 
+        // set configuration parameters
+        $prefix = 'assetic.';
+        foreach ($data as $k=>$v) {
+            $container->setParameter($prefix.$k, $v);
+        }        
+
         // load assetic services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('assetic.xml');

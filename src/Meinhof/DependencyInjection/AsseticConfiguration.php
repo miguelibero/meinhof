@@ -19,6 +19,21 @@ class AsseticConfiguration implements ConfigurationInterface
                     ->prototype('scalar')
                     ->end()
                 ->end()
+                ->arrayNode('assets')
+                    ->prototype('array')
+                        ->beforeNormalization()
+                            ->ifString()
+                            ->then(function($v) {
+                                return array('input' => $v);
+                            })
+                        ->end()
+                        ->children()
+                            ->scalarNode('input')->end()
+                            ->scalarNode('filter')->end()
+                            ->scalarNode('output')->end()
+                        ->end()
+                    ->end()
+                ->end()                
             ->end()
         ->end();
 
