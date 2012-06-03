@@ -19,9 +19,9 @@ class SetupSiteAction extends OutputAction
     protected $output;
 
     /**
-     * @param SetupWriterInterface  $writer    the setup writer
-     * @param InputInterface        $input     the command line input to read the parameters
-     * @param OutputInterface       $output    the command line output to write log
+     * @param SetupWriterInterface $writer the setup writer
+     * @param InputInterface       $input  the command line input to read the parameters
+     * @param OutputInterface      $output the command line output to write log
      */
     public function __construct(SetupWriterInterface $writer, InputInterface $input, OutputInterface $output=null)
     {
@@ -70,30 +70,32 @@ class SetupSiteAction extends OutputAction
      */
     protected function fixAuthorSetupParameters(array $params)
     {
-        if(!isset($params['author'])){
+        if (!isset($params['author'])) {
             $params['author'] = null;
         }
-        if(preg_match('/(.*) <(.+)>/', $params['author'], $m)){
+        if (preg_match('/(.*) <(.+)>/', $params['author'], $m)) {
             $params['author'] = $m[1];
             $params['author-email'] = $m[2];
-        }else{
+        } else {
             $params['author-email'] = null;
         }
-        return $params;        
+
+        return $params;
     }
 
     protected function fixCategoriesSetupParameters(array $params)
     {
-        if(!isset($params['categories']) || !is_array($params['categories'])){
+        if (!isset($params['categories']) || !is_array($params['categories'])) {
             return $params;
         }
         $categories = array();
-        foreach($params['categories'] as $name){
+        foreach ($params['categories'] as $name) {
             $slug = preg_replace('/[^a-z0-9]+/',' ', mb_strtolower($name));
             $slug = str_replace(' ','-', trim($slug));
             $categories[$slug] = $name;
         }
         $params['categories'] = $categories;
+
         return $params;
     }
 }

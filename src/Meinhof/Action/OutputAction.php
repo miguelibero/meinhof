@@ -22,8 +22,8 @@ abstract class OutputAction implements ActionInterface
     /**
      * Checks if the output verbositiy is between two given levels
      *
-     * @param  integer $min minimum verbosity level
-     * @param  integer $max maximum verbosity level or null for no maximum
+     * @param integer $min minimum verbosity level
+     * @param integer $max maximum verbosity level or null for no maximum
      *
      * @return boolean if output should be written
      */
@@ -41,9 +41,9 @@ abstract class OutputAction implements ActionInterface
     /**
      * Prints a text line if the output verbositiy is between two given levels
      *
-     * @param string    $msg    the text to print
-     * @param integer   $min    minimum verbosity level
-     * @param integer   $max    maximum verbosity level or null for no maximum
+     * @param string  $msg the text to print
+     * @param integer $min minimum verbosity level
+     * @param integer $max maximum verbosity level or null for no maximum
      */
     protected function writeOutputLine($msg, $min=0, $max=null)
     {
@@ -72,9 +72,9 @@ abstract class OutputAction implements ActionInterface
     /**
      * Prints a text if the output verbositiy is between two given levels
      *
-     * @param string    $msg    the text to print
-     * @param integer   $min    minimum verbosity level
-     * @param integer   $max    maximum verbosity level or null for no maximum
+     * @param string  $msg the text to print
+     * @param integer $min minimum verbosity level
+     * @param integer $max maximum verbosity level or null for no maximum
      */
     protected function writeOutput($msg, $min=0, $max=null)
     {

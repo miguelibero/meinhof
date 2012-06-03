@@ -16,7 +16,7 @@ class WatchCommand extends MeinhofCommand
 
     /**
      * @{inheritDoc}
-     */    
+     */
     protected function configure()
     {
         $this

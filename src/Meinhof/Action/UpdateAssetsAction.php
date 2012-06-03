@@ -46,8 +46,8 @@ class UpdateAssetsAction extends OutputAction
      */
     public function addAssets(array $assets)
     {
-        foreach($assets as $asset){
-            if(!is_array($asset)){
+        foreach ($assets as $asset) {
+            if (!is_array($asset)) {
                 throw new \InvalidArgumentException('Each element needs to be an array.');
             }
             $this->addAsset($asset);
@@ -68,22 +68,22 @@ class UpdateAssetsAction extends OutputAction
      */
     public function addAsset(array $asset)
     {
-        if(!isset($asset['input'])){
+        if (!isset($asset['input'])) {
             throw new \InvalidArgumentException('Asset needs an input.');
         }
-        if(!isset($asset['name'])){
+        if (!isset($asset['name'])) {
             $asset['name'] = uniqid();
         }
-        if(!isset($asset['filter'])){
+        if (!isset($asset['filter'])) {
             $asset['filter'] = array();
         }
-        if(!is_array($asset['filter'])){
+        if (!is_array($asset['filter'])) {
             $asset['filter'] = explode(',', $asset['filter']);
         }
-        if(!isset($asset['options']) || !is_array($asset['options'])){
+        if (!isset($asset['options']) || !is_array($asset['options'])) {
             $asset['options'] = array();
         }
-        if(!isset($asset['options']['output']) && isset($asset['output'])){
+        if (!isset($asset['options']['output']) && isset($asset['output'])) {
             $asset['options']['output'] = $asset['output'];
         }
 

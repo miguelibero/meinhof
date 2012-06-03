@@ -73,7 +73,8 @@ class Meinhof
     {
         if (!$this->container) {
             throw new \RuntimeException("The container has not been set up.");
-        }        
+        }
+
         return $this->container->get($id);
     }
 
@@ -132,7 +133,7 @@ class Meinhof
      * Dispatches an event
      *
      * @throws \RuntimeException when the container is not present
-     * @throws \RuntimeException when the site directory is not readable    
+     * @throws \RuntimeException when the site directory is not readable
      */
     protected function dispatchEvent($event)
     {
@@ -142,7 +143,7 @@ class Meinhof
         $dir = $this->container->getParameter('base_dir');
         if (!is_dir($dir) || !is_readable($dir)) {
             throw new \RuntimeException("'${dir}' is not a valid readable directory.");
-        }        
+        }
         $dispatcher = $this->container->get('event_dispatcher');
         $dispatcher->dispatch($event);
     }

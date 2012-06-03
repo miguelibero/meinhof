@@ -14,7 +14,7 @@ use Meinhof\Templating\Storage\MatterStorage;
  * are then passed to a config loader to obtain the configuration array.
  *
  * @author Miguel Ibero <miguel@ibero.me>
- * 
+ *
  * @see Meinhof\Templating\Storage\MatterStorage
  */
 class TemplateMatterLoader extends ConfigLoader
@@ -26,10 +26,10 @@ class TemplateMatterLoader extends ConfigLoader
     protected $defaults = array();
 
     /**
-     * @param TemplateNameParserInterface   $parser             parses the template name to get the logical name
-     * @param TemplateLoaderInterface       $template_loader    loads the template and should return a matter storage
-     * @param ConfigLoaderInterface         $config_loader      the real configuration loader that will read the matter
-     * @param array|null                    $defaults           the default values
+     * @param TemplateNameParserInterface $parser          parses the template name to get the logical name
+     * @param TemplateLoaderInterface     $template_loader loads the template and should return a matter storage
+     * @param ConfigLoaderInterface       $config_loader   the real configuration loader that will read the matter
+     * @param array|null                  $defaults        the default values
      */
     public function __construct(
         TemplateNameParserInterface $parser,

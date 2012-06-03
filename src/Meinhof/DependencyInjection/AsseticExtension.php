@@ -38,7 +38,7 @@ class AsseticExtension implements ExtensionInterface
         $prefix = 'assetic.';
         foreach ($data as $k=>$v) {
             $container->setParameter($prefix.$k, $v);
-        }        
+        }
 
         // load assetic services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));

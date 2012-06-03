@@ -8,6 +8,12 @@ use Symfony\Component\Templating\Loader\LoaderInterface;
 use Symfony\Component\Templating\TemplateNameParserInterface;
 use Symfony\Component\Templating\TemplateReferenceInterface;
 
+/**
+ * This is a basic templating engine.
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
+ *
+ */
 abstract class AbstractEngine implements EngineInterface
 {
     protected $loader;

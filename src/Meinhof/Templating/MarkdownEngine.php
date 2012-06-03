@@ -6,6 +6,11 @@ use Symfony\Component\Templating\Storage\Storage;
 
 use dflydev\markdown\MarkdownExtraParser;
 
+/**
+ * This engine renders Markdown formatted text.
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
+ */
 class MarkdownEngine extends AbstractEngine
 {
     protected function getName()

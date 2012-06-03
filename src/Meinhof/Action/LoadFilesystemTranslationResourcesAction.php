@@ -24,7 +24,7 @@ class LoadFilesystemTranslationResourcesAction implements ActionInterface
 
     public function take()
     {
-        if(!is_readable($this->path) || !is_dir($this->path)){
+        if (!is_readable($this->path) || !is_dir($this->path)) {
             return;
         }
 

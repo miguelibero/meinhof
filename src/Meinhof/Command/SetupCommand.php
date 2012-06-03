@@ -6,7 +6,6 @@ use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\Process\Process;
 
 /**
  * This command will setup a base site configuration for you.
@@ -41,7 +40,7 @@ class SetupCommand extends MeinhofCommand
         parent::initialize($input, $output);
 
         $writer = $this->getMeinhof()->get('setup_writer');
-        foreach($writer->read() as $k=>$v){
+        foreach ($writer->read() as $k=>$v) {
             $input->setOption($k, $v);
         }
     }

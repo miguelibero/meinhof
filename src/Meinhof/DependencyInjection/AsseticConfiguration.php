@@ -33,7 +33,7 @@ class AsseticConfiguration implements ConfigurationInterface
                             ->scalarNode('output')->end()
                         ->end()
                     ->end()
-                ->end()                
+                ->end()
             ->end()
         ->end();
 

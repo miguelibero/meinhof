@@ -4,6 +4,11 @@ namespace Meinhof\Templating;
 
 use Symfony\Component\Templating\Storage\Storage;
 
+/**
+ * This simple engine replaces variables in a text.
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
+ */
 class SimpleEngine extends AbstractEngine
 {
     protected function getName()
