@@ -6,8 +6,16 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * Add new assetic resource loaders using the `assetic.resource_loader`tag.
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
+ */
 class AsseticResourceLoaderPass implements CompilerPassInterface
 {
+    /**
+     * {@inheritDoc}
+     */
     public function process(ContainerBuilder $container)
     {
         $defid = 'assetic.resource_loader';
@@ -23,6 +31,15 @@ class AsseticResourceLoaderPass implements CompilerPassInterface
         }
     }
 
+    /**
+     * Returns the assetic resource loader type from the tag attributes.
+     *
+     * @param mixed $attrs tag attributes
+     *
+     * @return string alias
+     *
+     * @throws \InvalidArgumentException if the attributes are invalid
+     */
     protected function getTypeFromAttributes($attrs)
     {
         if (!is_array($attrs) || !isset($attrs['type'])) {

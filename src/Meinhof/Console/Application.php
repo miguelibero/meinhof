@@ -42,28 +42,7 @@ class Application extends BaseApplication
     }
 
     /**
-     * @return Meinhof
-     */
-    public function getMeinhof($required = true)
-    {
-        if (null === $this->meinhof) {
-            try {
-                $this->meinhof = Factory::create($this->io);
-            } catch (\InvalidArgumentException $e) {
-                if ($required) {
-                    $this->io->write($e->getMessage());
-                    exit(1);
-                }
-
-                return;
-            }
-        }
-
-        return $this->meinhof;
-    }
-
-    /**
-     * Initializes all the meinhof commands
+     * {@inheritDoc}
      */
     protected function registerCommands()
     {

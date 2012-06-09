@@ -6,8 +6,16 @@ use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\Reference;
 
+/**
+ * Add new assetic formula loaders using the `assetic.formula_loader`tag.
+ *
+ * @author Miguel Ibero <miguel@ibero.me>
+ */
 class AsseticFormulaLoaderPass implements CompilerPassInterface
 {
+    /**
+     * {@inheritDoc}
+     */
     public function process(ContainerBuilder $container)
     {
         $defid = 'assetic.formula_loader_manager';
@@ -23,6 +31,15 @@ class AsseticFormulaLoaderPass implements CompilerPassInterface
         }
     }
 
+    /**
+     * Returns the assetic formula loader type from the tag attributes.
+     *
+     * @param mixed $attrs tag attributes
+     *
+     * @return string alias
+     *
+     * @throws \InvalidArgumentException if the attributes are invalid
+     */
     protected function getTypeFromAttributes($attrs)
     {
         if (!is_array($attrs) || !isset($attrs['type'])) {

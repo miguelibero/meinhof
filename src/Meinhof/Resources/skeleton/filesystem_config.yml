@@ -13,13 +13,14 @@ site:
         info:
             author: ~
             author_email: ~
+assetic:
+    assets: []
 translation:
     default_locale: ~
     locales: []
 filesystem:
     pages:
         - index
-    assets: []
     categories:
         default:
             name: Default

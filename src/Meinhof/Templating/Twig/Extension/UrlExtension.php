@@ -42,6 +42,9 @@ class UrlExtension extends \Twig_Extension
 
     public function getUrl($obj)
     {
+        if (!$obj) {
+            return "";
+        }
         if ($obj instanceof PostInterface) {
             $obj = $this->helper->getPostUrl($obj);
         }
