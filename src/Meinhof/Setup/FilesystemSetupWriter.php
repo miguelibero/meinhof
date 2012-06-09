@@ -34,11 +34,17 @@ class FilesystemSetupWriter implements SetupWriterInterface
         }
         $data = $this->getTemplate();
 
-        $data['site']['info']['name'] = $params['name'];
-        $data['site']['post']['info']['author'] = $params['author'];
-        $data['site']['post']['info']['author_email'] = $params['author-email'];
+        if(isset($params['name'])){
+            $data['site']['info']['name'] = $params['name'];
+        }
+        if(isset($params['author'])){
+            $data['site']['post']['info']['author'] = $params['author'];
+        }
+        if(isset($params['author-email'])){
+            $data['site']['post']['info']['author_email'] = $params['author-email'];
+        }
 
-        if (is_array($params['categories']) && count($params['categories']) > 0) {
+        if (isset($params['categories']) && is_array($params['categories']) && count($params['categories']) > 0) {
             foreach ($params['categories'] as $k=>$v) {
                 $data['filesystem']['categories'][$k] = array('name'=>$v);
             }

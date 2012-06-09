@@ -15,8 +15,6 @@
             >Symfony\Component\DependencyInjection\Loader\XmlFileLoader</parameter>
         <parameter key="config_loader.yaml.class"
             >Symfony\Component\DependencyInjection\Loader\YamlFileLoader</parameter>
-        <parameter key="extension.site.class"
-            >Meinhof\DependencyInjection\SiteExtension</parameter>
         <parameter key="extension.filesystem.class"
             >Meinhof\DependencyInjection\FilesystemExtension</parameter>
         <parameter key="extension.assetic.class"
@@ -27,19 +25,16 @@
             >Meinhof\DependencyInjection\MarkdownExtension</parameter>
         <parameter key="extension.translation.class"
             >Meinhof\DependencyInjection\TranslationExtension</parameter>
+        <parameter key="extension.site.class"
+            >Meinhof\DependencyInjection\SiteExtension</parameter>            
         <parameter key="templating.class"
             >Symfony\Component\Templating\DelegatingEngine</parameter>
         <parameter key="templating.name_parser.class"
             >Symfony\Component\Templating\TemplateNameParser</parameter>
         <parameter key="event_dispatcher.class"
             >Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher</parameter>
-        <parameter key="url_helper.class"
-            >Meinhof\Helper\UrlHelper</parameter>
-
-        <parameter key="action.update_posts.class"
-            >Meinhof\Action\UpdatePostsAction</parameter>
-        <parameter key="action.update_pages.class"
-            >Meinhof\Action\UpdatePagesAction</parameter>
+        <parameter key="setup_writer.class"
+            >Meinhof\Setup\FilesystemSetupWriter</parameter>            
         <parameter key="action.setup_site.class"
             >Meinhof\Action\SetupSiteAction</parameter>
     </parameters>
@@ -67,6 +62,11 @@
         <service id="config_loader" class="%config_loader.class%">
             <argument type="service" id="config_loader.resolver"/>
         </service>
+
+        <!-- setup base -->
+        <service id="setup_writer" class="%setup_writer.class%">
+            <argument>%config_dir%</argument>
+        </service>        
 
         <!-- extension base -->
         <service id="extension.site" class="%extension.site.class%">
@@ -100,25 +100,10 @@
         </service>
         <service id="templating.view" class="%templating.class%">
         </service>
-        <service id="url_helper" class="%url_helper.class%">
-            <argument>%site.urls%</argument>
-        </service>
 
         <!-- event dispatcher base -->
         <service id="event_dispatcher" class="%event_dispatcher.class%">
             <argument type="service" id="service_container"/>
-        </service>
-        <service id="action.update_posts" class="%action.update_posts.class%">
-            <argument type="service" id="site"/>
-            <argument type="service" id="site_exporter"/>
-            <argument type="service" id="output"/>
-            <tag name="event_listener" event="update" method="take"/>
-        </service>
-        <service id="action.update_pages" class="%action.update_pages.class%">
-            <argument type="service" id="site"/>
-            <argument type="service" id="site_exporter"/>
-            <argument type="service" id="output"/>
-            <tag name="event_listener" event="update" method="take"/>
         </service>
         <service id="action.setup_site" class="%action.setup_site.class%">
             <argument type="service" id="setup_writer"/>

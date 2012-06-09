@@ -18,6 +18,8 @@ assetic:
 translation:
     default_locale: ~
     locales: []
+twig: ~
+markdown: ~
 filesystem:
     pages:
         - index

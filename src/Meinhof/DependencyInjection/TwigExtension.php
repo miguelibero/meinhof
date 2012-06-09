@@ -18,10 +18,6 @@ class TwigExtension implements ExtensionInterface
     {
         // load compiler
         $container->addCompilerPass(new TwigExtensionPass());
-
-        // load twig services
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('twig.xml');
     }
 
     /**
@@ -32,6 +28,10 @@ class TwigExtension implements ExtensionInterface
         if (!class_exists('Twig_Environment')) {
             throw new \RuntimeException("The twig library was not loaded.");
         }
+
+        // load twig services
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('twig.xml');        
 
         // load configuration
         $configuration = new TwigConfiguration();

@@ -54,8 +54,7 @@ class SetupCommand extends MeinhofCommand
 
         if ($input->getOption('update')) {
             $update = new UpdateCommand();
-            $update->initialize($input, $output);
-            $update->execute($input, $output);
+            $update->run($input, $output);
         }
     }
 

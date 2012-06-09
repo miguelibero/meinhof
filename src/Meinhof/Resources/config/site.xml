@@ -1,0 +1,32 @@
+<?xml version="1.0" ?>
+<!-- basic services -->
+<container xmlns="http://symfony.com/schema/dic/services"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
+
+    <parameters>
+        <parameter key="url_helper.class"
+            >Meinhof\Helper\UrlHelper</parameter>        
+        <parameter key="action.update_posts.class"
+            >Meinhof\Action\UpdatePostsAction</parameter>
+        <parameter key="action.update_pages.class"
+            >Meinhof\Action\UpdatePagesAction</parameter>
+    </parameters>
+    <services>
+        <service id="url_helper" class="%url_helper.class%">
+            <argument>%site.urls%</argument>
+        </service>        
+        <service id="action.update_posts" class="%action.update_posts.class%">
+            <argument type="service" id="site"/>
+            <argument type="service" id="site_exporter"/>
+            <argument type="service" id="output"/>
+            <tag name="event_listener" event="update" method="take"/>
+        </service>
+        <service id="action.update_pages" class="%action.update_pages.class%">
+            <argument type="service" id="site"/>
+            <argument type="service" id="site_exporter"/>
+            <argument type="service" id="output"/>
+            <tag name="event_listener" event="update" method="take"/>
+        </service>
+    </services>
+</container>

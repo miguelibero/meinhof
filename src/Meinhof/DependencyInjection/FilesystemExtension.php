@@ -25,10 +25,6 @@ class FilesystemExtension implements ExtensionInterface
      */
     public function preload(ContainerBuilder $container)
     {
-        // load filesystem services
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('filesystem.xml');
-
         // load the site configuration files
         $resources = $this->getConfigurationResources($this->base_path);
         foreach ($resources as $resource) {
@@ -43,6 +39,10 @@ class FilesystemExtension implements ExtensionInterface
      */
     public function load(array $configs, ContainerBuilder $container)
     {
+        // load filesystem services
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('filesystem.xml');
+        
         // load configuration
         $configuration = new FilesystemConfiguration();
         $processor = new Processor();

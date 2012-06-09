@@ -20,10 +20,6 @@ class TranslationExtension implements ExtensionInterface
         // load compilers
         $container->addCompilerPass(new TranslationLoaderPass());
         $container->addCompilerPass(new LocalizedSiteExporterPass());
-
-        // load translation services
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('translation.xml');
     }
 
     /**
@@ -34,6 +30,10 @@ class TranslationExtension implements ExtensionInterface
         if (!class_exists('Symfony\\Component\\Translation\\Translator')) {
             throw new \RuntimeException("Symfony translator component not loaded.");
         }
+
+        // load translation services
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('translation.xml');        
 
         // load configuration
         $configuration = new TranslationConfiguration();
@@ -48,8 +48,9 @@ class TranslationExtension implements ExtensionInterface
         }
 
         $prefix = 'translation.';
-        $container->setParameter($prefix.'default_locale', $data['default_locale']);
-        $container->setParameter($prefix.'locales', $data['locales']);
+        foreach($data as $k=>$v){
+            $container->setParameter($prefix.$k, $v);    
+        }
     }
 
     public function getNamespace()

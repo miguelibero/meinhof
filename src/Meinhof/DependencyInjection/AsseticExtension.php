@@ -22,10 +22,6 @@ class AsseticExtension implements ExtensionInterface
         $container->addCompilerPass(new AsseticFilterPass());
         $container->addCompilerPass(new AsseticResourceLoaderPass());
         $container->addCompilerPass(new AsseticFormulaLoaderPass());
-
-        // load assetic services
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('assetic.xml');
     }
 
     /**
@@ -34,9 +30,12 @@ class AsseticExtension implements ExtensionInterface
     public function load(array $configs, ContainerBuilder $container)
     {
         if (!class_exists('Assetic\\AssetManager')) {
-            // do not load if library not present
-            return;
+            throw new \RuntimeException("Assetic library not loaded.");
         }
+
+        // load assetic services
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('assetic.xml');        
 
         // load configuration
         $configuration = new AsseticConfiguration();
@@ -47,6 +46,11 @@ class AsseticExtension implements ExtensionInterface
         $prefix = 'assetic.';
         foreach ($data as $k=>$v) {
             $container->setParameter($prefix.$k, $v);
+        }
+
+        if(isset($data['assets'])){
+            $def = $container->getDefinition('action.update_assets');
+            $def->addMethodCall('addAssets', array($data['assets']));
         }
     }
 

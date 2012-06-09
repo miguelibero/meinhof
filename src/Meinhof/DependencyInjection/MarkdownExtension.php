@@ -14,9 +14,6 @@ class MarkdownExtension implements ExtensionInterface
      */
     public function preload(ContainerBuilder $container)
     {
-        // load twig services
-        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('markdown.xml');
     }
 
     /**
@@ -27,6 +24,10 @@ class MarkdownExtension implements ExtensionInterface
         if (!class_exists('dflydev\\markdown\\MarkdownParser')) {
             throw new \RuntimeException("Markdown library not loaded.");
         }
+
+        // load twig services
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('markdown.xml');        
 
         // load configuration
         $configuration = new TwigConfiguration();

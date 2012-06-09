@@ -30,8 +30,6 @@
             >Meinhof\Exporter\FilesystemSiteExporter</parameter>
         <parameter key="filesystem.action.load_translation_resources.class"
             >Meinhof\Action\LoadFilesystemTranslationResourcesAction</parameter>
-        <parameter key="filesystem.setup_writer.class"
-            >Meinhof\Setup\FilesystemSetupWriter</parameter>
 
         <parameter key="assetic.paths.read_from"
             >%filesystem.paths.public%</parameter>
@@ -50,9 +48,6 @@
             <call method="setPostMatterLoader">
                 <argument type="service" id="matter_loader.post"/>
             </call>
-        </service>
-        <service id="setup_writer" class="%filesystem.setup_writer.class%">
-            <argument>%filesystem.paths.config%</argument>
         </service>
         <service id="templating.post.content_loader"
             class="%filesystem.templating.loader.class%" public="false">

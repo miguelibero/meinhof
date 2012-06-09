@@ -4,6 +4,8 @@ namespace Meinhof\DependencyInjection;
 
 use Symfony\Component\DependencyInjection\ContainerBuilder;
 use Symfony\Component\Config\Definition\Processor;
+use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
+use Symfony\Component\Config\FileLocator;
 
 class SiteExtension implements ExtensionInterface
 {
@@ -12,8 +14,6 @@ class SiteExtension implements ExtensionInterface
      */
     public function preload(ContainerBuilder $container)
     {
-        // make shure this extension will be loaded
-        $container->loadFromExtension($this->getAlias(), array());
     }
 
     /**
@@ -31,6 +31,10 @@ class SiteExtension implements ExtensionInterface
         foreach ($data as $k=>$v) {
             $container->setParameter($prefix.$k, $v);
         }
+
+        // load site services
+        $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
+        $loader->load('site.xml');        
     }
 
     public function getNamespace()

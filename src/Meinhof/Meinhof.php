@@ -95,11 +95,13 @@ class Meinhof
         $container->addCompilerPass(new EventListenerPass());
         $container->addCompilerPass(new TemplatingEnginePass());
 
+        $configDir = $dir.'/config';
         // set the key as a parameter
         $container->setParameter('base_dir', $dir);
+        $container->setParameter('config_dir', $configDir);
 
         // load base services
-        $configdirs = array(__DIR__.'/Resources/config', $dir, $dir.'/config');
+        $configdirs = array(__DIR__.'/Resources/config', $dir, $configDir);
         $loader = new XmlFileLoader($container, new FileLocator($configdirs));
         $loader->load('services.xml');
 
@@ -157,6 +159,11 @@ class Meinhof
     public function update()
     {
         $this->dispatchEvent('update');
+    }
+
+    public function isSiteConfigured()
+    {
+        return $this->container->hasDefinition('site');
     }
 
 }

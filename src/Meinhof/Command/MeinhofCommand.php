@@ -42,9 +42,13 @@ abstract class MeinhofCommand extends Command
      */
     protected function getDialogHelper()
     {
-        $dialog = $this->getHelperSet()->get('dialog');
+        $helper = $this->getHelperSet();
+        if(!$helper){
+            return;
+        }
+        $dialog = $helper->get('dialog');
         if (!$dialog || get_class($dialog) !== 'Meinhof\Command\Helper\DialogHelper') {
-            $this->getHelperSet()->set($dialog = new DialogHelper());
+            $helper->set($dialog = new DialogHelper());
         }
 
         return $dialog;
