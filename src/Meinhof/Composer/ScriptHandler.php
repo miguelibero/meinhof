@@ -29,7 +29,7 @@ class ScriptHandler
         $options = self::getOptions($event);
         $siteDir = $options['meinhof-site-dir'];
 
-        if (!is_dir($appDir)) {
+        if (!is_dir($siteDir)) {
             echo 'The meinhof-site-dir ('.$siteDir.') specified in composer.json was not found in '.getcwd().PHP_EOL;
             return;
         }
