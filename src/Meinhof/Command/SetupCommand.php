@@ -50,7 +50,8 @@ class SetupCommand extends MeinhofCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->getMeinhof()->setup();
+        $meinhof = $this->getMeinhof();
+        $meinhof->setup();
 
         if ($input->getOption('update')) {
             $update = new UpdateCommand();
@@ -92,8 +93,11 @@ class SetupCommand extends MeinhofCommand
             $input->getOption('categories')), $input->getOption('categories'));
         $input->setOption('categories', $categories);
 
-        $update = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want to update the site after the setup', 'yes', '?'), true);
-        $input->setOption('update', $update);
+        $update = $input->getOption('update');
+        if($update !== false){
+            $update = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want to update the site after the setup', 'yes', '?'), true);
+            $input->setOption('update', $update);
+        }
     }
 
 }

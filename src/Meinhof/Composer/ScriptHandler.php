@@ -2,9 +2,14 @@
 
 namespace Meinhof\Composer;
 
-use Symfony\Component\ClassLoader\ClassCollectionLoader;
-use Symfony\Component\Process\Process;
-use Symfony\Component\Process\PhpExecutableFinder;
+use Meinhof\Command\UpdateCommand;
+
+use Symfony\Component\Console\Command\Command;
+use Symfony\Component\Console\Input\ArrayInput;
+use Symfony\Component\Console\Output\ConsoleOutput;
+use Symfony\Component\Console\Helper\HelperSet;
+use Symfony\Component\Console\Helper\DialogHelper;
+use Symfony\Component\Console\Helper\FormatterHelper;
 
 /**
  * The methods of this class are called
@@ -16,12 +21,20 @@ class ScriptHandler
 {
     public static function onInstall($event)
     {
-        self::executeUpdate($event);        
+        try{
+            self::executeUpdate($event);
+        }catch(\Exception $e){
+            echo $e->getMessage().PHP_EOL;
+        }     
     }
 
     public static function onUpdate($event)
     {
-        self::executeUpdate($event);
+        try{
+            self::executeUpdate($event);
+        }catch(\Exception $e){
+            echo $e->getMessage().PHP_EOL;
+        }
     }
 
     protected static function executeUpdate($event)
@@ -29,26 +42,26 @@ class ScriptHandler
         $options = self::getOptions($event);
         $siteDir = $options['meinhof-site-dir'];
 
-        if (!is_dir($siteDir)) {
-            echo 'The meinhof-site-dir ('.$siteDir.') specified in composer.json was not found in '.getcwd().PHP_EOL;
-            return;
-        }
-
-        static::executeCommand($event, $siteDir, 'update');        
+        $command = new UpdateCommand();    
+        self::executeCommand($command, $siteDir);
     }
 
-    protected static function executeCommand($event, $siteDir, $cmd)
+    protected static function executeCommand(Command $command, $siteDir)
     {
-        $phpFinder = new PhpExecutableFinder;
-        $php = escapeshellarg($phpFinder->find());
-        $meinhof = escapeshellarg($siteDir.'/bin/meinhof');
-        if ($event->getIO()->isDecorated()) {
-            $meinhof.= ' --ansi';
+        if (!is_dir($siteDir)) {
+            throw new \RuntimeException('The meinhof-site-dir ('.$siteDir.') specified in composer.json was not found in '.getcwd());
         }
 
-        $process = new Process($php.' '.$meinhof.' '.$cmd);
-        $process->run(function ($type, $buffer) { echo $buffer; });
-    }
+        $helpers = new HelperSet(array(
+            new FormatterHelper(),
+            new DialogHelper(),
+        ));
+
+        $command->setHelperSet($helpers);
+        $input = new ArrayInput(array('dir'=>$siteDir));
+        $output = new ConsoleOutput();
+        $command->run($input, $output);        
+    }    
 
     protected static function getOptions($event)
     {

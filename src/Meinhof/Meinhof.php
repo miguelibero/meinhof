@@ -35,6 +35,10 @@ class Meinhof
      */
     protected $container;
 
+    protected $dir;
+    protected $input;
+    protected $output;
+
     /**
      * @param string          $dir    the path to the base of the site configuration
      * @param InputInterface  $Input  the command line input
@@ -48,16 +52,27 @@ class Meinhof
             require_once($autoload);
         }
 
-        $this->container = $this->buildContainer($dir);
+        $this->dir = $dir;
+        $this->input = $input;
+        $this->output = $output;
+        $this->reload();
+
+        $this->dispatchEvent('load');
+    }
+
+    /**
+     * Reload the dependency container
+     */
+    public function reload()
+    {
+        $this->container = $this->buildContainer($this->dir);
 
         // load input and output
-        $this->container->set('input', $input);
-        $this->container->set('output', $output);
+        $this->container->set('input', $this->input);
+        $this->container->set('output', $this->output);
 
         // freeze the container
         $this->container->compile();
-
-        $this->dispatchEvent('load');
     }
 
     /**
