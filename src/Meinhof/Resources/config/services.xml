@@ -95,10 +95,13 @@
             class="%templating.name_parser.class%" public="false">
         </service>
         <service id="templating.post" class="%templating.class%">
+            <tag name="templating" type="post"/>
         </service>
         <service id="templating.content" class="%templating.class%">
+            <tag name="templating" type="content"/>
         </service>
         <service id="templating.view" class="%templating.class%">
+            <tag name="templating" type="view"/>
         </service>
 
         <!-- event dispatcher base -->

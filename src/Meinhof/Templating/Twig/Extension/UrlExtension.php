@@ -6,6 +6,7 @@ use Meinhof\Helper\UrlHelperInterface;
 
 use Meinhof\Model\Post\PostInterface;
 use Meinhof\Model\Page\PageInterface;
+use Meinhof\Model\Category\CategoryInterface;
 use Meinhof\Exporter\ExportEvent;
 
 class UrlExtension extends \Twig_Extension
@@ -51,6 +52,9 @@ class UrlExtension extends \Twig_Extension
         if ($obj instanceof PageInterface) {
             $obj = $this->helper->getPageUrl($obj);
         }
+        if ($obj instanceof CategoryInterface) {
+            $obj = $this->helper->getCategoryUrl($obj);
+        }        
         if (is_string($obj)) {
             return $this->webroot.$obj;
         }

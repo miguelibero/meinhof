@@ -36,8 +36,11 @@ class Post extends AbstractPost
     {
         $this->categories = array();
         foreach ($categories as $category) {
-            if (is_string($category)) {
+            if(is_string($category)){
                 $category = new Category($category);
+            }
+            if (is_array($category)) {
+                $category = Category::fromArray($category);
             }
             if (!$category instanceof CategoryInterface) {
                 throw new \RuntimeException("Invalid category.");

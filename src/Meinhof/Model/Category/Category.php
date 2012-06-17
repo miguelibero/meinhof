@@ -8,11 +8,15 @@ class Category implements CategoryInterface
     protected $name;
     protected $slug;
 
-    public function __construct($key, $name, $slug)
+    public function __construct($key, $name=null, $slug=null)
     {
         $this->key = $key;
-        $this->name = $name;
-        $this->slug = $slug;
+        if($name){
+            $this->name = $name;
+        }
+        if($slug){
+            $this->slug = $slug;
+        }
     }
 
     public function getName()

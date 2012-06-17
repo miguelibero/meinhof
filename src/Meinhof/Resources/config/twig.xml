@@ -17,9 +17,11 @@
     <services>
         <service id="twig.environment.post" class="%twig.environment.class%">
             <argument type="service" id="twig.templating.post.loader"/>
+            <tag name="twig.environment" type="view"/>
         </service>
         <service id="twig.environment.view" class="%twig.environment.class%">
             <argument type="service" id="twig.templating.view.loader"/>
+            <tag name="twig.environment" type="view"/>
         </service>
         <service id="twig.templating.post"
             class="%twig.templating.class%" public="false">

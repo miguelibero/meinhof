@@ -4,13 +4,15 @@ namespace Meinhof\Helper;
 
 use Meinhof\Model\Post\PostInterface;
 use Meinhof\Model\Page\PageInterface;
+use Meinhof\Model\Category\CategoryInterface;
 
 class UrlHelper implements UrlHelperInterface
 {
     protected $config = array(
-        'post'  => 'post/{date}/{slug}.html',
-        'page'  => '{slug}.html',
-        'date'  => 'Y-m-d',
+        'post'      => 'post/{date}/{slug}.html',
+        'category'  => 'category/{slug}.html',
+        'page'      => '{slug}.html',
+        'date'      => 'Y-m-d',
     );
     protected $parameters = array();
 
@@ -43,6 +45,13 @@ class UrlHelper implements UrlHelperInterface
             'date'    => $this->formatDate($page->getUpdated()),
         );
     }
+
+    protected function getCategoryParameters(CategoryInterface $cat)
+    {
+        return array(
+            'slug'    => $cat->getSlug(),
+        );
+    }    
 
     public function generateUrl($name, array $params)
     {
@@ -78,4 +87,12 @@ class UrlHelper implements UrlHelperInterface
 
         return $this->generateUrl('page', $params);
     }
+
+    public function getCategoryUrl(CategoryInterface $cat)
+    {
+        $params = array_merge($this->parameters,
+            $this->getCategoryParameters($cat));
+
+        return $this->generateUrl('category', $params);
+    }    
 }

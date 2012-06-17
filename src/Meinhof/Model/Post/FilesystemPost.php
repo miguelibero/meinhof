@@ -10,13 +10,6 @@ class FilesystemPost extends Post
 {
     protected $site;
 
-    public function __construct($slug, $key, $updated=null,
-        $title=null, $view=null, array $info=array(), array $paths=array())
-    {
-        parent::__construct($slug, $key, $updated, $title, $view, $info);
-        $this->paths = $paths;
-    }
-
     public function setSite(FilesystemSite $site)
     {
         $this->site = $site;
