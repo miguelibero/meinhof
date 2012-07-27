@@ -44,6 +44,10 @@ class Category implements CategoryInterface
         return $slug;
     }
 
+    public function getPosts()
+    {
+    }
+
     public function __toString()
     {
         return (string) $this->getName();

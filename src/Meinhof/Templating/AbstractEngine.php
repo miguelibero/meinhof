@@ -17,7 +17,7 @@ use Symfony\Component\Templating\TemplateReferenceInterface;
 abstract class AbstractEngine implements EngineInterface
 {
     protected $loader;
-    protected $parser;
+    protected $nameParser;
     protected $cache = array();
 
     /**
@@ -28,7 +28,7 @@ abstract class AbstractEngine implements EngineInterface
      */
     public function __construct(TemplateNameParserInterface $parser, LoaderInterface $loader)
     {
-        $this->parser  = $parser;
+        $this->nameParser  = $parser;
         $this->loader  = $loader;
     }
 
@@ -90,7 +90,7 @@ abstract class AbstractEngine implements EngineInterface
      */
     public function supports($name)
     {
-        $template = $this->parser->parse($name);
+        $template = $this->nameParser->parse($name);
 
         return $this->getName() === $template->get('engine');
     }
@@ -118,7 +118,7 @@ abstract class AbstractEngine implements EngineInterface
      */
     protected function load($name)
     {
-        $template = $this->parser->parse($name);
+        $template = $this->nameParser->parse($name);
 
         if (!$template instanceof TemplateReferenceInterface) {
             throw new \RuntimeException(sprintf('The template "%s" could not be parsed.', $name));

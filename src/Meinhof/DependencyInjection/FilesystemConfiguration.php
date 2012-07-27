@@ -25,6 +25,7 @@ class FilesystemConfiguration implements ConfigurationInterface
                     ->end()
                 ->end()
                 ->arrayNode('pages')
+                    ->useAttributeAsKey('key')
                     ->prototype('array')
                         ->beforeNormalization()
                             ->ifString()

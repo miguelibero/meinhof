@@ -20,6 +20,11 @@ interface CategoryInterface
     public function getSlug();
 
     /**
+     * @return array the posts
+     */
+    public function getPosts();
+
+    /**
      * @return string meaningful description
      */
     public function __toString();
