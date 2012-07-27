@@ -5,6 +5,7 @@ namespace Meinhof\Exporter;
 use Meinhof\Model\Site\SiteInterface;
 use Meinhof\Model\Post\PostInterface;
 use Meinhof\Model\Page\PageInterface;
+use Meinhof\Model\Category\CategoryInterface;
 
 use Meinhof\Helper\UrlHelperInterface;
 
@@ -54,4 +55,12 @@ class LocalizedSiteExporter implements SiteExporterInterface
             $this->exporter->exportPage($page, $site);
         }
     }
+
+    public function exportCategory(CategoryInterface $category, SiteInterface $site)
+    {
+        foreach ($this->locales as $locale) {
+            $this->setLocale($locale);
+            $this->exporter->exportCategory($category, $site);
+        }
+    }    
 }

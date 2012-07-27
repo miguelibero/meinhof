@@ -25,7 +25,7 @@ class Post extends AbstractPost
         $this->key = $key;
         $this->title = $title;
         $this->view = $view;
-        if ($this->updated !== null) {
+        if ($updated !== null) {
             $this->setUpdated($updated);
         }
         $this->setCategories($categories);
@@ -55,11 +55,12 @@ class Post extends AbstractPost
             $this->updated = new \DateTime();
             $this->updated->setTimestamp($updated);
         } elseif (is_string($updated)) {
-            $this->updated = new \DateTime($updated);
+            $this->updated = new \DateTime();
+            $this->updated->setTimestamp(strtotime($updated));
         } elseif ($updated instanceof \DateTime) {
             $this->updated = $updated;
         } else {
-            throw new \InvalidArgumentException("Could not set updated time.");
+            throw new \InvalidArgumentException("Could not set updated time '${updated}'.");
         }
     }
 

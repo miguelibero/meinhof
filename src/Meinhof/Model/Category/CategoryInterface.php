@@ -25,6 +25,11 @@ interface CategoryInterface
     public function getPosts();
 
     /**
+     * @return string templating key for the category view
+     */
+    public function getViewTemplatingKey();    
+
+    /**
      * @return string meaningful description
      */
     public function __toString();

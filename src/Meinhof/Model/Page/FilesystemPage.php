@@ -17,6 +17,9 @@ class FilesystemPage extends Page
 
     protected function getSitePath($name)
     {
+        if(!$this->site){
+            throw new \RuntimeException("No site configured");
+        }        
         return $this->site->getPath($name);
     }
 

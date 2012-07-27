@@ -5,6 +5,7 @@ namespace Meinhof\Exporter;
 use Meinhof\Model\Site\SiteInterface;
 use Meinhof\Model\Post\PostInterface;
 use Meinhof\Model\Page\PageInterface;
+use Meinhof\Model\Category\CategoryInterface;
 
 use Meinhof\Helper\UrlHelperInterface;
 use Symfony\Component\Templating\EngineInterface;
@@ -68,8 +69,10 @@ abstract class AbstractSiteExporter implements SiteExporterInterface
             $url = $this->url_helper->getPostUrl($model);
         } elseif ($model instanceof PageInterface) {
             $url = $this->url_helper->getPageUrl($model);
+        } elseif ($model instanceof CategoryInterface) {
+            $url = $this->url_helper->getCategoryUrl($model);            
         } else {
-            throw new \RuntimeException("unknown model type");
+            throw new \RuntimeException("unknown model type '".get_class($model)."'.");
         }
         $url = trim(parse_url($url, PHP_URL_PATH),'/');
 
@@ -115,4 +118,16 @@ abstract class AbstractSiteExporter implements SiteExporterInterface
         $this->exportUrl($url, $key, $params);
         $this->dispatchEvent($url, $page, $site, 'after_export');
     }
+    
+    public function exportCategory(CategoryInterface $category, SiteInterface $site)
+    {
+        $url = $this->getModelUrl($category);
+        $this->dispatchEvent($url, $category, $site, 'before_export');
+
+        $params = $this->getSiteParameters($site);
+        $params['category'] = $category;
+        $key = $category->getViewTemplatingKey();
+        $this->exportUrl($url, $key, $params);
+        $this->dispatchEvent($url, $category, $site, 'after_export');
+    }    
 }

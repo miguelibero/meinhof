@@ -2,55 +2,24 @@
 
 namespace Meinhof\Model\Category;
 
-class Category implements CategoryInterface
+class Category extends AbstractCategory
 {
-    protected $key;
-    protected $name;
-    protected $slug;
+    protected $posts = array();
 
-    public function __construct($key, $name=null, $slug=null)
+    public function __construct($key, $name=null, $slug=null, array $posts=array())
     {
-        $this->key = $key;
-        if($name){
-            $this->name = $name;
-        }
-        if($slug){
-            $this->slug = $slug;
-        }
+        $this->setPosts($posts);
+        parent::__construct($key, $name, $slug);
     }
 
-    public function getName()
+    public function setPosts(array $posts)
     {
-        if ($this->name) {
-            return $this->name;
-        }
-
-        return $this->getKey();
-    }
-
-    public function getKey()
-    {
-        return $this->key;
-    }
-
-    public function getSlug()
-    {
-        if ($this->slug) {
-            return $this->slug;
-        }
-        $slug = mb_strtolower($this->getName());
-        $slug = preg_replace('/[^a-z0-9]/', '-', $slug);
-
-        return $slug;
+        $this->posts = $posts;
     }
 
     public function getPosts()
     {
-    }
-
-    public function __toString()
-    {
-        return (string) $this->getName();
+        return $this->posts;
     }
 
     public static function fromArray(array $config)
@@ -61,7 +30,10 @@ class Category implements CategoryInterface
             'slug'  => null
         ), $config);
 
-        return new Category($config['key'], $config['name'], $config['slug']);
-    }
+        if (!isset($config['posts']) || !is_array($config['posts'])) {
+            $config['posts'] = array();
+        }
 
+        return new static($config['key'], $config['name'], $config['slug'], $config['posts']);
+    }
 }

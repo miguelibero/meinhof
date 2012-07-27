@@ -11,7 +11,7 @@ use Meinhof\Model\Post\FilesystemPost;
 use Meinhof\Model\Page\PageInterface;
 use Meinhof\Model\Page\FilesystemPage;
 use Meinhof\Model\Category\CategoryInterface;
-use Meinhof\Model\Category\Category;
+use Meinhof\Model\Category\FilesystemCategory;
 
 class FilesystemSite extends AbstractSite
 {
@@ -33,13 +33,19 @@ class FilesystemSite extends AbstractSite
     protected function setCategories(array $categories)
     {
         $this->categories = array();
-        foreach ($categories as $category) {
+        foreach ($categories as $k=>$category) {
             if (is_array($category)) {
-                $category = Category::fromArray($category);
+                if (!isset($category['key'])) {
+                    $category['key'] = $k;
+                }                
+                $category = FilesystemCategory::fromArray($category);
             }
             if (!$category instanceof CategoryInterface) {
                 throw new \RuntimeException("Invalid category.");
             }
+            if ($category instanceof FilesystemCategory) {
+                $category->setSite($this);
+            }            
             $this->categories[] = $category;
         }
     }

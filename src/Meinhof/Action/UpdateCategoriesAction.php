@@ -4,7 +4,7 @@ namespace Meinhof\Action;
 
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Meinhof\Model\Post\PostInterface;
+use Meinhof\Model\Category\CategoryInterface;
 use Meinhof\Model\Site\SiteInterface;
 use Meinhof\Exporter\SiteExporterInterface;
 
@@ -34,14 +34,14 @@ class UpdateCategoriesAction extends OutputAction
 
     public function take()
     {
-        $posts = $this->site->getPosts();
-        $this->writeOutputLine(sprintf("updating %d posts...", count($posts)), 2);
+        $cats = $this->site->getCategories();
+        $this->writeOutputLine(sprintf("updating %d categories...", count($cats)), 2);
 
-        foreach ($posts as $post) {
-            if (!$post instanceof PostInterface) {
-                throw new \RuntimeException("Site returned invalid post.");
+        foreach ($cats as $cat) {
+            if (!$cat instanceof CategoryInterface) {
+                throw new \RuntimeException("Site returned invalid category.");
             }
-            $this->exporter->exportPost($post, $this->site);
+            $this->exporter->exportCategory($cat, $this->site);
             $this->writeOutput(".", 1);
         }
         $this->writeOutputLine("", 1);
