@@ -48,7 +48,7 @@ class UrlExtension extends \Twig_Extension
         }
 
         if (is_object($obj)) {
-            return $this->helper->getUrl($obj, $params);
+            $obj = $this->helper->getUrl($obj, $params);
         }        
         if (is_string($obj)) {
             return $this->webroot.$obj;
