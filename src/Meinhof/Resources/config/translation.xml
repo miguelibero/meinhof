@@ -29,6 +29,7 @@
         <service id="translation.exporter" class="%translation.exporter.class%" >
             <argument>%translation.locales%</argument>
             <argument type="service" id="exporter" />
+            <argument type="service" id="translator" />
         </service>
     </services>
 </container>
