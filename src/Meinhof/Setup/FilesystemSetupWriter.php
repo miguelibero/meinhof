@@ -18,9 +18,21 @@ class FilesystemSetupWriter implements SetupWriterInterface
         $this->dir = $dir;
     }
 
-    protected function getTemplate()
+    protected function loadTemplate($path)
     {
-        return Yaml::parse(file_get_contents(__DIR__.'/../Resources/skeleton/filesystem_config.yml'));
+        if(!is_file($path) || !is_readable($path)){
+            return array();
+        }
+        return Yaml::parse(file_get_contents($path));
+    }
+
+    protected function saveTemplate($path, array $data)
+    {
+        try{
+            return @file_put_contents($path, Yaml::dump($data, 4));
+        }catch(\Exception $e){
+            return false;
+        }
     }
 
     /**
@@ -32,7 +44,8 @@ class FilesystemSetupWriter implements SetupWriterInterface
         if (!is_writable($this->dir)) {
             throw new \RuntimeException("The directory '".$this->dir."' is not writable.");
         }
-        $data = $this->getTemplate();
+        $path = $this->dir.'/config.yml';
+        $data = array_merge($this->loadSkeleton(), $this->loadTemplate($path));
 
         if(isset($params['name'])){
             $data['site']['info']['name'] = $params['name'];
@@ -50,10 +63,15 @@ class FilesystemSetupWriter implements SetupWriterInterface
             }
         }
 
-        $path = $this->dir.'/config.yml';
-        if (!@file_put_contents($path, Yaml::dump($data, 4))) {
+        if (!$this->saveTemplate($path, $data)) {
             throw new \RuntimeException("Cannot write the setup to file '".$path."'.");
         }
+    }
+
+    protected function loadSkeleton()
+    {
+        $path = __DIR__.'/../Resources/skeleton/filesystem_config.yml';
+        return $this->loadTemplate($path);
     }
 
     public function read()
@@ -62,7 +80,7 @@ class FilesystemSetupWriter implements SetupWriterInterface
         if (!is_readable($path)) {
             return array();
         }
-        $data = array_merge($this->getTemplate(), Yaml::parse(file_get_contents($path)));
+        $data = array_merge($this->loadSkeleton(), $this->loadTemplate($path));
         $params = array();
 
         if (isset($data['site']['info']['name'])) {

@@ -5,7 +5,7 @@ site:
         slogan: a website build using meinhof
         disqus_shortname: ~
     urls:
-        post: 'post/{date|Y-m-d}/{slug}.html'
+        post: 'post/{updated|Y-m-d}/{slug}.html'
         page: '{slug}.html'
         category: 'categories/{slug}.html'
     post:
