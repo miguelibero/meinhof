@@ -50,6 +50,11 @@ class SetupCommand extends MeinhofCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
+        $output->writeln(array(
+            '',
+            'Updating your site setup...',
+            ''
+        ));
         $meinhof = $this->getMeinhof();
         $meinhof->setup();
 

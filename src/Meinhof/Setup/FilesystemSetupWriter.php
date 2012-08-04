@@ -15,7 +15,7 @@ class FilesystemSetupWriter implements SetupWriterInterface
 
     public function __construct($dir)
     {
-        $this->dir = realpath($dir);
+        $this->dir = $dir;
     }
 
     protected function getTemplate()

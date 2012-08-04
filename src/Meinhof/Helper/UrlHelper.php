@@ -27,6 +27,9 @@ class UrlHelper implements UrlHelperInterface
     public function stringify($value, $format)
     {
         if($value instanceof \DateTime){
+            if(!$format){
+                $format = 'Y-m-d';
+            }
             return $value->format($format);
         }
         if(!$format){

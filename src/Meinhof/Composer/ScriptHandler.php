@@ -60,7 +60,7 @@ class ScriptHandler
         $command->setHelperSet($helpers);
         $input = new ArrayInput(array('dir'=>$siteDir));
         $output = new ConsoleOutput();
-        $command->run($input, $output);        
+        $command->run($input, $output);
     }    
 
     protected static function getOptions($event)
