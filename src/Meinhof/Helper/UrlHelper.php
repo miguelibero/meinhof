@@ -2,97 +2,99 @@
 
 namespace Meinhof\Helper;
 
-use Meinhof\Model\Post\PostInterface;
-use Meinhof\Model\Page\PageInterface;
-use Meinhof\Model\Category\CategoryInterface;
+use Symfony\Component\DependencyInjection\Container;
 
+/**
+ * Helper class that returns an url for a given model.
+ * THe helper class uses a url template in the form of:
+ * `/posts/{date|Y-m-d}/{slug}`
+ * Where the variables are resolved using PropertyPath on
+ * the passed model.
+ */
 class UrlHelper implements UrlHelperInterface
 {
-    protected $config = array(
-        'post'      => 'post/{date}/{slug}.html',
-        'category'  => 'category/{slug}.html',
-        'page'      => '{slug}.html',
-        'date'      => 'Y-m-d',
-    );
-    protected $parameters = array();
+    protected $template;
+    protected $parameters;
 
-    const PARAMETER_TEMPLATE = '{%s}';
+    const PARAMETER_REGEX = '/{(?P<name>.*)(\|(?P<format>.*))?}/U';
 
-    public function __construct(array $config)
+    public function __construct($template, array $parameters=array())
     {
-        $this->config = array_merge($this->config, $config);
+        $this->template = $template;
+        $this->parameters = $parameters;
     }
 
-    protected function formatDate($date)
+    public function stringify($value, $format)
     {
-        if ($date instanceof \DateTime) {
-            return $date->format($this->config['date']);
+        if($value instanceof \DateTime){
+            return $value->format($format);
+        }
+        if(!$format){
+            $format = "%s";
+        }
+        return sprintf($format, $value);
+    }
+
+    public function getUrl($model, array $parameters)
+    {
+        $url = $this->template;
+        $parameters = array_merge($parameters, $this->parameters);
+
+        preg_match_all(self::PARAMETER_REGEX, $this->template, $m);
+
+        if(!isset($m['name']) || !is_array($m['name'])){
+            return $url;
+        }
+        if(!isset($m[0]) || !is_array($m[0])){
+            return $url;
+        }        
+        foreach($m[0] as $k=>$str){
+            if(!isset($m['name'][$k])){
+                continue;
+            }
+            $name = $m['name'][$k];
+            $format = null;
+            if(isset($m['format'][$k])){
+                $format = $m['format'][$k];
+            }
+            if(isset($parameters[$name])){
+                $value = $parameters[$name];
+            }else{
+                $value = $this->getPropertyPath($model, $name);
+            }
+            $value = $this->stringify($value, $format);
+            $url = str_replace($str, $value, $url);
+        }
+        return $url;
+    }
+
+    protected function getPropertyPath($model, $path, $sep = '.')
+    {
+        $parts = explode($sep, $path);
+        $name = reset($parts);
+        $path = implode($sep, array_slice($parts, 1));
+        $part = null;
+        $found = false;
+        if(is_array($model)){
+            if(isset($model[$name])){
+                $part = $model[$name]; 
+                $found = true;
+            }
+        }else if(is_object($model)){
+            $method = 'get'.Container::camelize($name);
+            if(is_callable(array($model, $method))){
+                $part = $model->$method();
+                $found = true;
+            }
+        }
+        if($found){
+            if($path){
+                return $this->getPropertyPath($part, $path, $sep);
+            }else{
+                return $part;
+            }
+        }else{
+            throw new \RuntimeException("Could not find part $name.");
         }
     }
-
-    protected function getPostParameters(PostInterface $post)
-    {
-        return array(
-            'slug'    => $post->getSlug(),
-            'date'    => $this->formatDate($post->getUpdated()),
-        );
-    }
-
-    protected function getPageParameters(PageInterface $page)
-    {
-        return array(
-            'slug'    => $page->getSlug(),
-            'date'    => $this->formatDate($page->getUpdated()),
-        );
-    }
-
-    protected function getCategoryParameters(CategoryInterface $cat)
-    {
-        return array(
-            'slug'    => $cat->getSlug(),
-        );
-    }    
-
-    public function generateUrl($name, array $params)
-    {
-        if (!isset($this->config[$name])) {
-            throw new \InvalidArgumentException("Unknown url template '${name}'.");
-        }
-        $tparams = array();
-        foreach ($params as $k=>$v) {
-            $k = sprintf(self::PARAMETER_TEMPLATE, $k);
-            $tparams[$k] = $v;
-        }
-
-        return strtr($this->config[$name], $tparams);
-    }
-
-    public function setParameter($name, $value)
-    {
-        $this->parameters[$name] = $value;
-    }
-
-    public function getPostUrl(PostInterface $post)
-    {
-        $params = array_merge($this->parameters,
-            $this->getPostParameters($post));
-
-        return $this->generateUrl('post', $params);
-    }
-
-    public function getPageUrl(PageInterface $page)
-    {
-        $params = array_merge($this->parameters,
-            $this->getPageParameters($page));
-
-        return $this->generateUrl('page', $params);
-    }
-
-    public function getCategoryUrl(CategoryInterface $cat)
-    {
-        $params = array_merge($this->parameters,
-            $this->getCategoryParameters($cat));
-
-        return $this->generateUrl('category', $params);
-    }    
 }

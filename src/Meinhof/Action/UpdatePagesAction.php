@@ -6,7 +6,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Meinhof\Model\Page\PageInterface;
 use Meinhof\Model\Site\SiteInterface;
-use Meinhof\Exporter\SiteExporterInterface;
+use Meinhof\Export\ExporterInterface;
 
 /**
  * Generates the site pages
@@ -20,7 +20,7 @@ class UpdatePagesAction extends OutputAction
     protected $output;
 
     public function __construct(SiteInterface $site,
-        SiteExporterInterface $exporter, OutputInterface $output=null)
+        ExporterInterface $exporter, OutputInterface $output=null)
     {
         $this->site = $site;
         $this->exporter = $exporter;
@@ -44,7 +44,11 @@ class UpdatePagesAction extends OutputAction
             if (!$page instanceof PageInterface) {
                 throw new \RuntimeException("Site returned invalid page.");
             }
-            $this->exporter->exportPage($page, $this->site);
+            $params = array(
+                'page'  => $page,
+                'site'  => $this->site
+            );
+            $this->exporter->export($page, $page->getViewTemplatingKey(), $params);
             $this->writeOutput(".", 1);
         }
         $this->writeOutputLine("", 1);

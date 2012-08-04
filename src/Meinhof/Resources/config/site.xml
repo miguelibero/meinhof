@@ -6,7 +6,11 @@
 
     <parameters>
         <parameter key="url_helper.class"
-            >Meinhof\Helper\UrlHelper</parameter>        
+            >Meinhof\Helper\DelegatingUrlHelper</parameter>        
+        <parameter key="url_helper.type.class"
+            >Meinhof\Helper\UrlHelper</parameter>  
+        <parameter key="exporter.class"
+            >Meinhof\Export\Exporter</parameter>
         <parameter key="action.update_posts.class"
             >Meinhof\Action\UpdatePostsAction</parameter>
         <parameter key="action.update_pages.class"
@@ -16,23 +20,41 @@
     </parameters>
     <services>
         <service id="url_helper" class="%url_helper.class%">
-            <argument>%site.urls%</argument>
-        </service>        
+        </service>
+        <service id="url_helper.post" class="%url_helper.type.class%">
+            <argument>%site.urls.post%</argument>
+            <tag name="url_helper" class="Meinhof\Model\Post\PostInterface" />
+        </service>
+        <service id="url_helper.page" class="%url_helper.type.class%">
+            <argument>%site.urls.page%</argument>
+            <tag name="url_helper" class="Meinhof\Model\Page\PageInterface" />
+        </service>
+        <service id="url_helper.category" class="%url_helper.type.class%">
+            <argument>%site.urls.category%</argument>
+            <tag name="url_helper" class="Meinhof\Model\Category\CategoryInterface" />
+        </service>
+        <service id="exporter" class="%exporter.class%">
+            <argument type="service" id="templating.view"/>
+            <argument type="service" id="url_helper"/>
+            <argument type="service" id="store"/>
+            <argument type="service" id="event_dispatcher"/>
+        </service>
+             
         <service id="action.update_posts" class="%action.update_posts.class%">
             <argument type="service" id="site"/>
-            <argument type="service" id="site_exporter"/>
+            <argument type="service" id="exporter"/>
             <argument type="service" id="output"/>
             <tag name="event_listener" event="update" method="take"/>
         </service>
         <service id="action.update_pages" class="%action.update_pages.class%">
             <argument type="service" id="site"/>
-            <argument type="service" id="site_exporter"/>
+            <argument type="service" id="exporter"/>
             <argument type="service" id="output"/>
             <tag name="event_listener" event="update" method="take"/>
         </service>
         <service id="action.update_categories" class="%action.update_categories.class%">
             <argument type="service" id="site"/>
-            <argument type="service" id="site_exporter"/>
+            <argument type="service" id="exporter"/>
             <argument type="service" id="output"/>
             <tag name="event_listener" event="update" method="take"/>
         </service>        

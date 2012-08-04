@@ -8,11 +8,5 @@ use Meinhof\Model\Category\CategoryInterface;
 
 interface UrlHelperInterface
 {
-    public function getPostUrl(PostInterface $post);
-
-    public function getPageUrl(PageInterface $page);
-
-    public function getCategoryUrl(CategoryInterface $cat);
-
-    public function setParameter($name, $value);
+    public function getUrl($model, array $parameters);
 }

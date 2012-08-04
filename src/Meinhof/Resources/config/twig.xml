@@ -39,8 +39,7 @@
             class="%twig.extension.url.class%">
             <argument type="service" id="url_helper"/>
             <tag name="twig.extension" />
-            <tag name="event_listener" event="before_export" method="beforeExport" priority="0"/>
-            <tag name="event_listener" event="after_export" method="afterExport" priority="0"/>
+            <tag name="event_listener" event="export" method="onExport" priority="0"/>
         </service>
         <service id="twig.extension.content"
             class="%twig.extension.content.class%">

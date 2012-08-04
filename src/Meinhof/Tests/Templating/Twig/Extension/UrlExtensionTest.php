@@ -17,17 +17,11 @@ class UrlExtensionTest extends \PHPUnit_Framework_TestCase
         $helper = $this->getMock('Meinhof\\Helper\\UrlHelperInterface');
 
         $this->post = $this->getMock('Meinhof\\Model\\Post\\PostInterface');
-        $this->page = $this->getMock('Meinhof\\Model\\Page\\PageInterface');
 
         $helper->expects($this->any())
-            ->method('getPostUrl')
+            ->method('getUrl')
             ->with($this->equalTo($this->post))
             ->will($this->returnValue('post_url'));
-
-        $helper->expects($this->any())
-            ->method('getPageUrl')
-            ->with($this->equalTo($this->page))
-            ->will($this->returnValue('page_url'));
 
         $this->extension = new UrlExtension($helper);
     }
@@ -43,7 +37,7 @@ class UrlExtensionTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetUrlFail()
     {
-        $this->extension->getUrl(new \stdClass());
+        $this->extension->getUrl(1);
     }
 
     public function testGetUrl()
@@ -56,7 +50,5 @@ class UrlExtensionTest extends \PHPUnit_Framework_TestCase
         $url = $this->extension->getUrl($this->post);
         $this->assertEquals('post_url', $url);
 
-        $url = $this->extension->getUrl($this->page);
-        $this->assertEquals('page_url', $url);
     }
 }

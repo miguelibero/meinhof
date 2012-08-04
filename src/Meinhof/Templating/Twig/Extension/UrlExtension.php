@@ -7,27 +7,24 @@ use Meinhof\Helper\UrlHelperInterface;
 use Meinhof\Model\Post\PostInterface;
 use Meinhof\Model\Page\PageInterface;
 use Meinhof\Model\Category\CategoryInterface;
-use Meinhof\Exporter\ExportEvent;
+use Meinhof\Export\ExportEvent;
 
 class UrlExtension extends \Twig_Extension
 {
     protected $helper;
     protected $webroot;
+    protected $parameters;
 
     public function __construct(UrlHelperInterface $helper)
     {
         $this->helper = $helper;
     }
 
-    public function beforeExport(ExportEvent $event)
+    public function onExport(ExportEvent $event)
     {
         $this->webroot = $event->getRelativeRoot();
-    }
-
-    public function afterExport(ExportEvent $event)
-    {
-        $this->webroot = '';
-    }
+        $this->parameters = $event->getParameters();
+    }    
 
     public function getName()
     {
@@ -41,19 +38,17 @@ class UrlExtension extends \Twig_Extension
         );
     }
 
-    public function getUrl($obj)
+    public function getUrl($obj, array $params=array())
     {
         if (!$obj) {
             return "";
         }
-        if ($obj instanceof PostInterface) {
-            $obj = $this->helper->getPostUrl($obj);
+        if(is_array($this->parameters)){
+            $params = array_merge($this->parameters, $params);
         }
-        if ($obj instanceof PageInterface) {
-            $obj = $this->helper->getPageUrl($obj);
-        }
-        if ($obj instanceof CategoryInterface) {
-            $obj = $this->helper->getCategoryUrl($obj);
+
+        if (is_object($obj)) {
+            return $this->helper->getUrl($obj, $params);
         }        
         if (is_string($obj)) {
             return $this->webroot.$obj;

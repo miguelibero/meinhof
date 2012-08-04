@@ -7,6 +7,8 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
+use Meinhof\DependencyInjection\Compiler\UrlHelperPass;
+
 class SiteExtension implements ExtensionInterface
 {
     /**
@@ -14,6 +16,8 @@ class SiteExtension implements ExtensionInterface
      */
     public function preload(ContainerBuilder $container)
     {
+        // load compiler
+        $container->addCompilerPass(new UrlHelperPass());        
     }
 
     /**
@@ -30,6 +34,12 @@ class SiteExtension implements ExtensionInterface
         $prefix = 'site.';
         foreach ($data as $k=>$v) {
             $container->setParameter($prefix.$k, $v);
+        }
+        if(isset($data['urls']) && is_array($data['urls'])){
+            $prefix = 'site.urls.';
+            foreach ($data['urls'] as $k=>$v) {
+                $container->setParameter($prefix.$k, $v);
+            }            
         }
 
         // load site services

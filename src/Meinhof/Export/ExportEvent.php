@@ -1,6 +1,6 @@
 <?php
 
-namespace Meinhof\Exporter;
+namespace Meinhof\Export;
 
 use Symfony\Component\EventDispatcher\Event;
 
@@ -8,13 +8,13 @@ class ExportEvent extends Event
 {
     protected $url;
     protected $model;
-    protected $site;
+    protected $parameters;
 
-    public function __construct($url, $model, $site)
+    public function __construct($url, $model, array $params)
     {
         $this->url = $url;
         $this->model = $model;
-        $this->site = $site;
+        $this->parameters = $params;
     }
 
     public function getUrl()
@@ -32,15 +32,14 @@ class ExportEvent extends Event
         return $this->model;
     }
 
-    public function getSite()
+    public function getParameters()
     {
-        return $this->site;
+        return $this->parameters;
     }
 
     public static function getRelativeRootUrl($url)
     {
         $times = count(explode('/', $url))-1;
-
         return str_repeat('../', $times);
     }
 }

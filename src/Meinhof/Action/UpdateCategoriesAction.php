@@ -6,7 +6,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Meinhof\Model\Category\CategoryInterface;
 use Meinhof\Model\Site\SiteInterface;
-use Meinhof\Exporter\SiteExporterInterface;
+use Meinhof\Export\ExporterInterface;
 
 /**
  * This action calls the exporter on all the categories.
@@ -20,7 +20,7 @@ class UpdateCategoriesAction extends OutputAction
     protected $output;
 
     public function __construct(SiteInterface $site,
-        SiteExporterInterface $exporter, OutputInterface $output=null)
+        ExporterInterface $exporter, OutputInterface $output=null)
     {
         $this->site = $site;
         $this->exporter = $exporter;
@@ -34,14 +34,18 @@ class UpdateCategoriesAction extends OutputAction
 
     public function take()
     {
-        $cats = $this->site->getCategories();
-        $this->writeOutputLine(sprintf("updating %d categories...", count($cats)), 2);
+        $categories = $this->site->getCategories();
+        $this->writeOutputLine(sprintf("updating %d categories...", count($categories)), 2);
 
-        foreach ($cats as $cat) {
-            if (!$cat instanceof CategoryInterface) {
+        foreach ($categories as $category) {
+            if (!$category instanceof CategoryInterface) {
                 throw new \RuntimeException("Site returned invalid category.");
             }
-            $this->exporter->exportCategory($cat, $this->site);
+            $params = array(
+                'category'  => $category,
+                'site'  => $this->site
+            );
+            $this->exporter->export($category, $category->getViewTemplatingKey(), $params);
             $this->writeOutput(".", 1);
         }
         $this->writeOutputLine("", 1);

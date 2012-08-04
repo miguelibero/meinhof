@@ -8,7 +8,7 @@ use Symfony\Component\Config\Definition\Processor;
 use Symfony\Component\Config\FileLocator;
 
 use Meinhof\DependencyInjection\Compiler\TranslationLoaderPass;
-use Meinhof\DependencyInjection\Compiler\LocalizedSiteExporterPass;
+use Meinhof\DependencyInjection\Compiler\LocalizedExporterPass;
 
 class TranslationExtension implements ExtensionInterface
 {
@@ -19,7 +19,7 @@ class TranslationExtension implements ExtensionInterface
     {
         // load compilers
         $container->addCompilerPass(new TranslationLoaderPass());
-        $container->addCompilerPass(new LocalizedSiteExporterPass());
+        $container->addCompilerPass(new LocalizedExporterPass());
     }
 
     /**
