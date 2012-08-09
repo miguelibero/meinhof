@@ -27,7 +27,7 @@ interface CategoryInterface
     /**
      * @return string templating key for the category view
      */
-    public function getViewTemplatingKey();    
+    public function getViewTemplatingKey();
 
     /**
      * @return string meaningful description

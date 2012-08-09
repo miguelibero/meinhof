@@ -35,6 +35,7 @@ class Exporter implements ExporterInterface
         if (!$this->templating->supports($key)) {
             throw new \InvalidArgumentException("View template '${key}' does not have a valid format.");
         }
+
         return $this->templating->render($key, $params);
     }
 
@@ -42,6 +43,7 @@ class Exporter implements ExporterInterface
     {
         $url = $this->urlHelper->getUrl($model, $params);
         $url = trim(parse_url($url, PHP_URL_PATH),'/');
+
         return $url;
     }
 
@@ -49,7 +51,7 @@ class Exporter implements ExporterInterface
     {
         $url = $this->getUrl($model, $params);
         $params['webroot'] = ExportEvent::getRelativeRootUrl($url);
-        if($this->dispatcher){
+        if ($this->dispatcher) {
             $this->dispatcher->dispatch('export', new ExportEvent($url, $model, $params));
         }
         $content = $this->render($template, $params);

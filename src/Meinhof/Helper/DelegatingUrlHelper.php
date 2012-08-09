@@ -2,7 +2,6 @@
 
 namespace Meinhof\Helper;
 
-use Symfony\Component\Form\Util\PropertyPath;
 
 /**
  * Helper class that delegates to a list of helpers.
@@ -13,8 +12,8 @@ class DelegatingUrlHelper implements UrlHelperInterface
 
     public function __construct(array $helpers=array())
     {
-        foreach($this->helpers as $class=>$helper){
-            if(!$helper instanceof UrlHelperInterface){
+        foreach ($this->helpers as $class=>$helper) {
+            if (!$helper instanceof UrlHelperInterface) {
                 throw new \InvalidArgumentException("Invalid helper.");
             }
             $this->addHelper($class, $helper);
@@ -28,11 +27,11 @@ class DelegatingUrlHelper implements UrlHelperInterface
 
     public function getUrl($model, array $parameters)
     {
-        if(!is_object($model)){
+        if (!is_object($model)) {
             throw new \InvalidArgumentException("Model needs to be an object.");
         }
-        foreach($this->helpers as $class=>$helper){
-            if($model instanceof $class){
+        foreach ($this->helpers as $class=>$helper) {
+            if ($model instanceof $class) {
                 return $helper->getUrl($model, $parameters);
             }
         }

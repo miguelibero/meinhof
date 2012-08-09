@@ -40,6 +40,7 @@ class ExportEvent extends Event
     public static function getRelativeRootUrl($url)
     {
         $times = count(explode('/', $url))-1;
+
         return str_repeat('../', $times);
     }
 }

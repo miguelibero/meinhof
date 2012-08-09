@@ -37,7 +37,7 @@ class FilesystemSite extends AbstractSite
             if (is_array($category)) {
                 if (!isset($category['key'])) {
                     $category['key'] = $k;
-                }                
+                }
                 $category = FilesystemCategory::fromArray($category);
             }
             if (!$category instanceof CategoryInterface) {
@@ -45,7 +45,7 @@ class FilesystemSite extends AbstractSite
             }
             if ($category instanceof FilesystemCategory) {
                 $category->setSite($this);
-            }            
+            }
             $this->categories[] = $category;
         }
     }

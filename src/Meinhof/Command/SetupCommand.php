@@ -99,7 +99,7 @@ class SetupCommand extends MeinhofCommand
         $input->setOption('categories', $categories);
 
         $update = $input->getOption('update');
-        if($update !== false){
+        if ($update !== false) {
             $update = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want to update the site after the setup', 'yes', '?'), true);
             $input->setOption('update', $update);
         }

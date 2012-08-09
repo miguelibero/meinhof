@@ -6,7 +6,7 @@
 
     <parameters>
         <parameter key="markdown.parser.class"
-            >Mdflydev\markdown\MarkdownExtraParser</parameter>        
+            >Mdflydev\markdown\MarkdownExtraParser</parameter>
         <parameter key="markdown.templating.class"
             >Meinhof\Templating\MarkdownEngine</parameter>
     </parameters>
@@ -28,7 +28,7 @@
             <argument type="service" id="templating.content.loader"/>
             <call method="setParser">
                 <argument type="service" id="markdown.parser" />
-            </call>            
+            </call>
             <tag name="templating.engine" type="content" />
         </service>
     </services>

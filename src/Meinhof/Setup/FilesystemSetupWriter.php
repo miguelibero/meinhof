@@ -20,17 +20,18 @@ class FilesystemSetupWriter implements SetupWriterInterface
 
     protected function loadTemplate($path)
     {
-        if(!is_file($path) || !is_readable($path)){
+        if (!is_file($path) || !is_readable($path)) {
             return array();
         }
+
         return Yaml::parse(file_get_contents($path));
     }
 
     protected function saveTemplate($path, array $data)
     {
-        try{
+        try {
             return @file_put_contents($path, Yaml::dump($data, 4));
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             return false;
         }
     }
@@ -47,13 +48,13 @@ class FilesystemSetupWriter implements SetupWriterInterface
         $path = $this->dir.'/config.yml';
         $data = array_merge($this->loadSkeleton(), $this->loadTemplate($path));
 
-        if(isset($params['name'])){
+        if (isset($params['name'])) {
             $data['site']['info']['name'] = $params['name'];
         }
-        if(isset($params['author'])){
+        if (isset($params['author'])) {
             $data['site']['post']['info']['author'] = $params['author'];
         }
-        if(isset($params['author-email'])){
+        if (isset($params['author-email'])) {
             $data['site']['post']['info']['author_email'] = $params['author-email'];
         }
 
@@ -71,6 +72,7 @@ class FilesystemSetupWriter implements SetupWriterInterface
     protected function loadSkeleton()
     {
         $path = __DIR__.'/../Resources/skeleton/filesystem_config.yml';
+
         return $this->loadTemplate($path);
     }
 

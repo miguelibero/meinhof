@@ -4,9 +4,6 @@ namespace Meinhof\Templating\Twig\Extension;
 
 use Meinhof\Helper\UrlHelperInterface;
 
-use Meinhof\Model\Post\PostInterface;
-use Meinhof\Model\Page\PageInterface;
-use Meinhof\Model\Category\CategoryInterface;
 use Meinhof\Export\ExportEvent;
 
 class UrlExtension extends \Twig_Extension
@@ -24,7 +21,7 @@ class UrlExtension extends \Twig_Extension
     {
         $this->webroot = $event->getRelativeRoot();
         $this->parameters = $event->getParameters();
-    }    
+    }
 
     public function getName()
     {
@@ -43,13 +40,13 @@ class UrlExtension extends \Twig_Extension
         if (!$obj) {
             return "";
         }
-        if(is_array($this->parameters)){
+        if (is_array($this->parameters)) {
             $params = array_merge($this->parameters, $params);
         }
 
         if (is_object($obj)) {
             $obj = $this->helper->getUrl($obj, $params);
-        }        
+        }
         if (is_string($obj)) {
             return $this->webroot.$obj;
         }

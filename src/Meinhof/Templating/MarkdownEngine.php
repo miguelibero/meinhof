@@ -28,9 +28,10 @@ class MarkdownEngine extends AbstractEngine
 
     protected function getParser()
     {
-        if($this->parser){
+        if ($this->parser) {
             return $this->parser;
         }
+
         return new MarkdownExtraParser();
     }
 
@@ -40,6 +41,7 @@ class MarkdownEngine extends AbstractEngine
     protected function parse(Storage $template, array $parameters = array())
     {
         $parser = $this->getParser();
+
         return $parser->transformMarkdown($template->getContent());
     }
 }

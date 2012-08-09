@@ -16,31 +16,40 @@ class FilesystemCategory extends AbstractCategory
         $this->site = $site;
     }
 
-    protected function getSitePath($name)
+    protected function getSite()
     {
-        if(!$this->site){
-            throw new \RuntimeException("No site configured");
-        }
-        return $this->site->getPath($name);
+        return $this->site;
     }
 
     public function getPosts()
     {
+        $site = $this->getSite();
         $posts = array();
-        if($this->site){
-            foreach($this->site->getPosts() as $post){
-                if(!$post instanceof PostInterface){
-                    continue;
-                }
-                foreach($post->getCategories() as $cat){
-                    if($cat->getKey() === $this->getKey()){
-                        $posts[] = $post;
-                        break;
-                    }
+        if (!$site instanceof SiteInterface) {
+            return $posts;
+        }
+        foreach ($site->getPosts() as $post) {
+            if (!$post instanceof PostInterface) {
+                continue;
+            }
+            foreach ($post->getCategories() as $cat) {
+                if ($cat->getKey() === $this->getKey()) {
+                    $posts[] = $post;
+                    break;
                 }
             }
         }
+
         return $posts;
+    }
+
+    protected function getSitePath($name)
+    {
+        if (!$this->site) {
+            throw new \RuntimeException("No site configured");
+        }
+
+        return $this->site->getPath($name);
     }
 
     public function getViewTemplatingKey()
@@ -58,7 +67,6 @@ class FilesystemCategory extends AbstractCategory
         throw new \RuntimeException("Could not find template '${name}'.");
     }
 
-
     public static function fromArray(array $config)
     {
         $config = array_merge(array(
@@ -68,5 +76,5 @@ class FilesystemCategory extends AbstractCategory
         ), $config);
 
         return new static($config['key'], $config['name'], $config['slug']);
-    }    
+    }
 }

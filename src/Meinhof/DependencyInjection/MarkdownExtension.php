@@ -27,7 +27,7 @@ class MarkdownExtension implements ExtensionInterface
 
         // load twig services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('markdown.xml');        
+        $loader->load('markdown.xml');
 
         // load configuration
         $configuration = new TwigConfiguration();

@@ -43,7 +43,7 @@ abstract class MeinhofCommand extends Command
     protected function getDialogHelper()
     {
         $helper = $this->getHelperSet();
-        if(!$helper){
+        if (!$helper) {
             return;
         }
         $dialog = $helper->get('dialog');

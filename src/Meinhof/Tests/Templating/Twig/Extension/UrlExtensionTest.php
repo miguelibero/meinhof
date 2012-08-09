@@ -6,7 +6,6 @@ use Meinhof\Helper\UrlHelperInterface;
 use Meinhof\Templating\Twig\Extension\UrlExtension;
 
 use Meinhof\Model\Post\PostInterface;
-use Meinhof\Model\Page\PageInterface;
 
 class UrlExtensionTest extends \PHPUnit_Framework_TestCase
 {

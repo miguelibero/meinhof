@@ -42,7 +42,7 @@ class FilesystemExtension implements ExtensionInterface
         // load filesystem services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('filesystem.xml');
-        
+
         // load configuration
         $configuration = new FilesystemConfiguration();
         $processor = new Processor();

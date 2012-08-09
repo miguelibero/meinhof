@@ -2,6 +2,7 @@
 
 namespace Meinhof\Model\Category;
 
+
 abstract class AbstractCategory implements CategoryInterface
 {
     protected $key;
@@ -11,10 +12,10 @@ abstract class AbstractCategory implements CategoryInterface
     public function __construct($key, $name=null, $slug=null)
     {
         $this->key = $key;
-        if($name){
+        if ($name) {
             $this->name = $name;
         }
-        if($slug){
+        if ($slug) {
             $this->slug = $slug;
         }
     }
@@ -47,7 +48,7 @@ abstract class AbstractCategory implements CategoryInterface
     public function getViewTemplatingKey()
     {
         return 'category';
-    }    
+    }
 
     public function __toString()
     {

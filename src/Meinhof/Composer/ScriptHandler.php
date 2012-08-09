@@ -21,18 +21,18 @@ class ScriptHandler
 {
     public static function onInstall($event)
     {
-        try{
+        try {
             self::executeUpdate($event);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             echo $e->getMessage().PHP_EOL;
-        }     
+        }
     }
 
     public static function onUpdate($event)
     {
-        try{
+        try {
             self::executeUpdate($event);
-        }catch(\Exception $e){
+        } catch (\Exception $e) {
             echo $e->getMessage().PHP_EOL;
         }
     }
@@ -42,7 +42,7 @@ class ScriptHandler
         $options = self::getOptions($event);
         $siteDir = $options['meinhof-site-dir'];
 
-        $command = new UpdateCommand();    
+        $command = new UpdateCommand();
         self::executeCommand($command, $siteDir);
     }
 
@@ -61,14 +61,15 @@ class ScriptHandler
         $input = new ArrayInput(array('dir'=>$siteDir));
         $output = new ConsoleOutput();
         $command->run($input, $output);
-    }    
+    }
 
     protected static function getOptions($event)
     {
         $options = array_merge(array(
             'meinhof-site-dir' => '.',
         ), $event->getComposer()->getPackage()->getExtra());
+
         return $options;
-    }    
+    }
 
 }

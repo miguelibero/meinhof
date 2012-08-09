@@ -35,7 +35,7 @@ class AsseticExtension implements ExtensionInterface
 
         // load assetic services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('assetic.xml');        
+        $loader->load('assetic.xml');
 
         // load configuration
         $configuration = new AsseticConfiguration();
@@ -48,7 +48,7 @@ class AsseticExtension implements ExtensionInterface
             $container->setParameter($prefix.$k, $v);
         }
 
-        if(isset($data['assets'])){
+        if (isset($data['assets'])) {
             $def = $container->getDefinition('action.update_assets');
             $def->addMethodCall('addAssets', array($data['assets']));
         }

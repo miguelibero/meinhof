@@ -6,9 +6,9 @@
 
     <parameters>
         <parameter key="url_helper.class"
-            >Meinhof\Helper\DelegatingUrlHelper</parameter>        
+            >Meinhof\Helper\DelegatingUrlHelper</parameter>
         <parameter key="url_helper.type.class"
-            >Meinhof\Helper\UrlHelper</parameter>  
+            >Meinhof\Helper\UrlHelper</parameter>
         <parameter key="exporter.class"
             >Meinhof\Export\Exporter</parameter>
         <parameter key="action.update_posts.class"
@@ -16,7 +16,7 @@
         <parameter key="action.update_pages.class"
             >Meinhof\Action\UpdatePagesAction</parameter>
         <parameter key="action.update_categories.class"
-            >Meinhof\Action\UpdateCategoriesAction</parameter>            
+            >Meinhof\Action\UpdateCategoriesAction</parameter>
     </parameters>
     <services>
         <service id="url_helper" class="%url_helper.class%">
@@ -39,7 +39,7 @@
             <argument type="service" id="store"/>
             <argument type="service" id="event_dispatcher"/>
         </service>
-             
+
         <service id="action.update_posts" class="%action.update_posts.class%">
             <argument type="service" id="site"/>
             <argument type="service" id="exporter"/>
@@ -57,6 +57,6 @@
             <argument type="service" id="exporter"/>
             <argument type="service" id="output"/>
             <tag name="event_listener" event="update" method="take"/>
-        </service>        
+        </service>
     </services>
 </container>

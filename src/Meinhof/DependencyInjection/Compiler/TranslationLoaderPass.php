@@ -17,7 +17,7 @@ class TranslationLoaderPass implements CompilerPassInterface
 {
     /**
      * {@inheritDoc}
-     */    
+     */
     public function process(ContainerBuilder $container)
     {
         $method = 'addLoader';

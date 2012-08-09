@@ -36,7 +36,7 @@ class TwigExtensionPass implements CompilerPassInterface
 
         $method = 'addExtension';
         $prefix = 'twig.environment.';
-        $tag = 'twig.extension';        
+        $tag = 'twig.extension';
 
         foreach ($container->findTaggedServiceIds($tag) as $id => $tags) {
             foreach ($tags as $attributes) {

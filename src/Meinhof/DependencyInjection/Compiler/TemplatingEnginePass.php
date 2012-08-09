@@ -29,7 +29,7 @@ class TemplatingEnginePass implements CompilerPassInterface
         // load templating environments
         $defs = array();
         foreach ($container->findTaggedServiceIds($tag) as $id=>$tags) {
-            foreach($tags as $attributes){
+            foreach ($tags as $attributes) {
                 $type = $this->getTypeFromAttributes($attributes);
                 $defs[$type] = $container->getDefinition($id);
             }

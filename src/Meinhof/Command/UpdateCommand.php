@@ -35,7 +35,7 @@ class UpdateCommand extends MeinhofCommand
     protected function execute(InputInterface $input, OutputInterface $output)
     {
         $meinhof = $this->getMeinhof();
-        if(!$meinhof->isSiteConfigured()){
+        if (!$meinhof->isSiteConfigured()) {
             $output->writeln('looks like your site needs to be set up first...');
             $this->runSetup($input, $output);
             $meinhof->reload();
@@ -46,13 +46,13 @@ class UpdateCommand extends MeinhofCommand
     protected function runSetup(InputInterface $input, OutputInterface $output)
     {
         $command = new SetupCommand();
-        if($helper = $this->getHelperSet()){
+        if ($helper = $this->getHelperSet()) {
             $command->setHelperSet($helper);
         }
         $input = new ArrayInput(array(
             'dir'       => $input->getArgument('dir'),
             '--update'  => false,
         ));
-        $command->run($input, $output); 
+        $command->run($input, $output);
     }
 }

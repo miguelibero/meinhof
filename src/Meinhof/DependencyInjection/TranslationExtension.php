@@ -33,7 +33,7 @@ class TranslationExtension implements ExtensionInterface
 
         // load translation services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('translation.xml');        
+        $loader->load('translation.xml');
 
         // load configuration
         $configuration = new TranslationConfiguration();
@@ -48,8 +48,8 @@ class TranslationExtension implements ExtensionInterface
         }
 
         $prefix = 'translation.';
-        foreach($data as $k=>$v){
-            $container->setParameter($prefix.$k, $v);    
+        foreach ($data as $k=>$v) {
+            $container->setParameter($prefix.$k, $v);
         }
     }
 

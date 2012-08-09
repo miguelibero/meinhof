@@ -17,7 +17,7 @@ class SiteExtension implements ExtensionInterface
     public function preload(ContainerBuilder $container)
     {
         // load compiler
-        $container->addCompilerPass(new UrlHelperPass());        
+        $container->addCompilerPass(new UrlHelperPass());
     }
 
     /**
@@ -35,16 +35,16 @@ class SiteExtension implements ExtensionInterface
         foreach ($data as $k=>$v) {
             $container->setParameter($prefix.$k, $v);
         }
-        if(isset($data['urls']) && is_array($data['urls'])){
+        if (isset($data['urls']) && is_array($data['urls'])) {
             $prefix = 'site.urls.';
             foreach ($data['urls'] as $k=>$v) {
                 $container->setParameter($prefix.$k, $v);
-            }            
+            }
         }
 
         // load site services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
-        $loader->load('site.xml');        
+        $loader->load('site.xml');
     }
 
     public function getNamespace()

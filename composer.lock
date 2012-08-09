@@ -22,8 +22,8 @@
         {
             "package": "symfony/console",
             "version": "dev-master",
-            "source-reference": "v2.1.0-RC1",
-            "commit-date": "1343512949"
+            "source-reference": "d68f45aaf4f5d074c3ac7c0f2d27951a11ecc04c",
+            "commit-date": "1344326863"
         },
         {
             "package": "symfony/dependency-injection",

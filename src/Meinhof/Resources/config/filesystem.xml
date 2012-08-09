@@ -78,7 +78,7 @@
             <argument type="service" id="matter_loader.yaml"/>
             <argument>%site.post%</argument>
         </service>
-        
+
         <!-- twig -->
         <service id="twig.templating.content.loader" class="%filesystem.templating.twig.loader.class%" public="false">
             <argument>%filesystem.paths.posts%</argument>

@@ -26,15 +26,17 @@ class UrlHelper implements UrlHelperInterface
 
     public function stringify($value, $format)
     {
-        if($value instanceof \DateTime){
-            if(!$format){
+        if ($value instanceof \DateTime) {
+            if (!$format) {
                 $format = 'Y-m-d';
             }
+
             return $value->format($format);
         }
-        if(!$format){
+        if (!$format) {
             $format = "%s";
         }
+
         return sprintf($format, $value);
     }
 
@@ -45,29 +47,30 @@ class UrlHelper implements UrlHelperInterface
 
         preg_match_all(self::PARAMETER_REGEX, $this->template, $m);
 
-        if(!isset($m['name']) || !is_array($m['name'])){
+        if (!isset($m['name']) || !is_array($m['name'])) {
             return $url;
         }
-        if(!isset($m[0]) || !is_array($m[0])){
+        if (!isset($m[0]) || !is_array($m[0])) {
             return $url;
-        }        
-        foreach($m[0] as $k=>$str){
-            if(!isset($m['name'][$k])){
+        }
+        foreach ($m[0] as $k=>$str) {
+            if (!isset($m['name'][$k])) {
                 continue;
             }
             $name = $m['name'][$k];
             $format = null;
-            if(isset($m['format'][$k])){
+            if (isset($m['format'][$k])) {
                 $format = $m['format'][$k];
             }
-            if(isset($parameters[$name])){
+            if (isset($parameters[$name])) {
                 $value = $parameters[$name];
-            }else{
+            } else {
                 $value = $this->getPropertyPath($model, $name);
             }
             $value = $this->stringify($value, $format);
             $url = str_replace($str, $value, $url);
         }
+
         return $url;
     }
 
@@ -78,25 +81,25 @@ class UrlHelper implements UrlHelperInterface
         $path = implode($sep, array_slice($parts, 1));
         $part = null;
         $found = false;
-        if(is_array($model)){
-            if(isset($model[$name])){
-                $part = $model[$name]; 
+        if (is_array($model)) {
+            if (isset($model[$name])) {
+                $part = $model[$name];
                 $found = true;
             }
-        }else if(is_object($model)){
+        } elseif (is_object($model)) {
             $method = 'get'.Container::camelize($name);
-            if(is_callable(array($model, $method))){
+            if (is_callable(array($model, $method))) {
                 $part = $model->$method();
                 $found = true;
             }
         }
-        if($found){
-            if($path){
+        if ($found) {
+            if ($path) {
                 return $this->getPropertyPath($part, $path, $sep);
-            }else{
+            } else {
                 return $part;
             }
-        }else{
+        } else {
             throw new \RuntimeException("Could not find part $name.");
         }
     }

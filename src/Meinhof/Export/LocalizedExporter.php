@@ -28,5 +28,5 @@ class LocalizedExporter implements ExporterInterface
             $this->translator->setLocale($locale);
             $this->exporter->export($model, $template, $parameters);
         }
-    }  
+    }
 }
