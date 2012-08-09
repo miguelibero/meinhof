@@ -15,6 +15,11 @@ interface PostInterface
     public function getUpdated();
 
     /**
+     * @return Boolean if this post should be published
+     */
+    public function getPublish();
+
+    /**
      * @return string the slug of the post
      */
     public function getSlug();

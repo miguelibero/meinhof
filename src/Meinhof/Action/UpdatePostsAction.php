@@ -41,6 +41,9 @@ class UpdatePostsAction extends OutputAction
             if (!$post instanceof PostInterface) {
                 throw new \RuntimeException("Site returned invalid post.");
             }
+            if(!$post->getPublish() == true) {
+                continue;
+            }
             $params = array(
                 'post'  => $post,
                 'site'  => $this->site

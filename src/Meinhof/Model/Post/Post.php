@@ -14,12 +14,14 @@ class Post extends AbstractPost
     protected $key;
     protected $title;
     protected $view;
+    protected $publish = true;
     protected $updated = null;
     protected $categories;
     protected $info = array();
 
     public function __construct($slug, $key, $updated=null,
-        $title=null, $view=null, array $info=array(), array $categories=array())
+        $title=null, $view=null, array $info=array(),
+        array $categories=array(), $publish=null)
     {
         $this->slug = $slug;
         $this->key = $key;
@@ -27,6 +29,9 @@ class Post extends AbstractPost
         $this->view = $view;
         if ($updated !== null) {
             $this->setUpdated($updated);
+        }
+        if($publish !== null) {
+            $this->publish = $publish;
         }
         $this->setCategories($categories);
         $this->info = $info;
@@ -55,7 +60,9 @@ class Post extends AbstractPost
             if (!$category instanceof CategoryInterface) {
                 throw new \RuntimeException("Invalid category.");
             }
-            $this->categories[] = $category;
+            if(!isset($this->categories[$category->getKey()])) {
+                $this->categories[$category->getKey()] = $category;
+            }
         }
     }
 
@@ -81,6 +88,11 @@ class Post extends AbstractPost
         }
 
         return parent::getTitle();
+    }
+
+    public function getPublish()
+    {
+        return $this->publish;
     }
 
     public function getUpdated()
@@ -137,12 +149,13 @@ class Post extends AbstractPost
             'slug'      => null,
             'title'     => null,
             'updated'   => null,
-            'view'      => null
+            'view'      => null,
+            'publish'   => null
         ), $config);
 
         return new static($config['slug'], $config['key'],
             $config['updated'], $config['title'], $config['view'],
-            $config['info'], $config['categories']);
+            $config['info'], $config['categories'], $config['publish']);
     }
 
     protected static function loadMatter($key, LoaderInterface $loader)
