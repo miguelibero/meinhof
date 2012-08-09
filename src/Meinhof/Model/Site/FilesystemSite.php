@@ -33,6 +33,11 @@ class FilesystemSite extends AbstractSite
     protected function setCategories(array $categories)
     {
         $this->categories = array();
+        $this->addCategories($categories);
+    }
+
+    protected function addCategories(array $categories)
+    {
         foreach ($categories as $k=>$category) {
             if (is_array($category)) {
                 if (!isset($category['key'])) {
@@ -43,11 +48,16 @@ class FilesystemSite extends AbstractSite
             if (!$category instanceof CategoryInterface) {
                 throw new \RuntimeException("Invalid category.");
             }
-            if ($category instanceof FilesystemCategory) {
-                $category->setSite($this);
-            }
-            $this->categories[] = $category;
+            $this->addCategory($category);
+        }        
+    }
+
+    protected function addCategory(CategoryInterface $category)
+    {
+        if ($category instanceof FilesystemCategory) {
+            $category->setSite($this);
         }
+        $this->categories[$category->getKey()] = $category;  
     }
 
     protected function setPages(array $pages)
@@ -134,7 +144,13 @@ class FilesystemSite extends AbstractSite
 
     public function getCategories()
     {
-        return $this->categories;
+        $categories = $this->categories;
+        foreach(parent::getCategories() as $category){
+            if($category instanceof CategoryInterface && !isset($categories[$category->getKey()])){
+                $categories[$category->getKey()] = $category;
+            }
+        }
+        return $categories;
     }
 
     public function getViews()

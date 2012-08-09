@@ -5,6 +5,7 @@ namespace Meinhof\Model\Category;
 use Symfony\Component\Finder\Finder;
 
 use Meinhof\Model\Site\FilesystemSite;
+use Meinhof\Model\Site\SiteInterface;
 use Meinhof\Model\Post\PostInterface;
 
 class FilesystemCategory extends AbstractCategory

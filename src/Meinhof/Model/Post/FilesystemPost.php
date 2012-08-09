@@ -5,6 +5,7 @@ namespace Meinhof\Model\Post;
 use Symfony\Component\Finder\Finder;
 
 use Meinhof\Model\Site\FilesystemSite;
+use Meinhof\Model\Category\FilesystemCategory;
 
 class FilesystemPost extends Post
 {
@@ -13,6 +14,11 @@ class FilesystemPost extends Post
     public function setSite(FilesystemSite $site)
     {
         $this->site = $site;
+        foreach($this->getCategories() as $category) {
+            if($category instanceof FilesystemCategory){
+                $category->setSite($site);
+            }
+        }
     }
 
     protected function getSitePath($name)
@@ -24,6 +30,17 @@ class FilesystemPost extends Post
     {
         return $this->getSitePath('posts').'/'.$this->key;
     }
+
+    protected function createCategory($category)
+    {
+        if (is_string($category)) {
+            $category = new FilesystemCategory($category);
+        }
+        if (is_array($category)) {
+            $category = FilesystemCategory::fromArray($category);
+        }
+        return $category;
+    }    
 
     public function getUpdated()
     {

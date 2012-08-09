@@ -32,15 +32,25 @@ class Post extends AbstractPost
         $this->info = $info;
     }
 
+    protected function createCategory($category)
+    {
+        if (is_string($category)) {
+            return new Category($category);
+        }
+        if (is_array($category)) {
+            return Category::fromArray($category);
+        }        
+    }
+
     protected function setCategories(array $categories)
     {
         $this->categories = array();
-        foreach ($categories as $category) {
-            if (is_string($category)) {
-                $category = new Category($category);
+        foreach ($categories as $k=>$category) {
+            if(is_array($category) && !isset($category['key'])){
+                $category['key'] = $k;
             }
-            if (is_array($category)) {
-                $category = Category::fromArray($category);
+            if (!$category instanceof CategoryInterface) {
+                $category = $this->createCategory($category);
             }
             if (!$category instanceof CategoryInterface) {
                 throw new \RuntimeException("Invalid category.");
