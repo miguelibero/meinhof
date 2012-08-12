@@ -2,9 +2,6 @@
 
 namespace Meinhof\Model\Post;
 
-use Symfony\Component\Config\Loader\LoaderInterface;
-use Symfony\Component\Config\Definition\Processor;
-
 use Meinhof\Model\Category\Category;
 use Meinhof\Model\Category\CategoryInterface;
 
@@ -19,19 +16,20 @@ class Post extends AbstractPost
     protected $categories;
     protected $info = array();
 
-    public function __construct($slug, $key, $updated=null,
-        $title=null, $view=null, array $info=array(),
+    public function __construct($key, $slug=null, $updated=null,
+        $title=null, $content=null, $view=null, array $info=array(),
         array $categories=array(), $publish=null)
     {
+        $this->key = $key;        
         $this->slug = $slug;
-        $this->key = $key;
         $this->title = $title;
+        $this->content = $content;
         $this->view = $view;
         if ($updated !== null) {
             $this->setUpdated($updated);
         }
         if($publish !== null) {
-            $this->publish = $publish;
+            $this->publish = (bool) $publish;
         }
         $this->setCategories($categories);
         $this->info = $info;
@@ -102,7 +100,15 @@ class Post extends AbstractPost
 
     public function getSlug()
     {
-        return $this->slug;
+        if($this->slug){
+            return $this->slug;
+        }
+        return parent::getSlug();
+    }
+
+    public function getKey()
+    {
+        return $this->key;
     }
 
     public function getInfo()
@@ -110,9 +116,9 @@ class Post extends AbstractPost
         return $this->info;
     }
 
-    protected function getContentTemplatingKey()
+    public function getContent()
     {
-        return $this->key;
+        return $this->content;
     }
 
     public function getViewTemplatingKey()
@@ -129,15 +135,8 @@ class Post extends AbstractPost
         return $this->categories;
     }
 
-    public static function fromArray(array $config, LoaderInterface $loader=null)
+    public static function fromArray(array $config)
     {
-        if ($loader && isset($config['key'])) {
-            $matter = self::loadMatter($config['key'], $loader);
-            if ($matter) {
-                $config = array_merge($matter, $config);
-            }
-        }
-
         if (!isset($config['info']) || !is_array($config['info'])) {
             $config['info'] = array();
         }
@@ -150,27 +149,14 @@ class Post extends AbstractPost
             'title'     => null,
             'updated'   => null,
             'view'      => null,
-            'publish'   => null
+            'publish'   => null,
+            'content'   => null,
         ), $config);
 
-        return new static($config['slug'], $config['key'],
-            $config['updated'], $config['title'], $config['view'],
+        return new static($config['key'], $config['slug'],
+            $config['updated'], $config['title'], $config['content'], $config['view'],
             $config['info'], $config['categories'], $config['publish']);
     }
 
-    protected static function loadMatter($key, LoaderInterface $loader)
-    {
-        if (!$loader->supports($key)) {
-            return null;
-        }
-        $matter = $loader->load($key);
-        if (!is_array($matter)) {
-            return null;
-        }
-        $matter = array('post' => $matter);
-        $processor = new Processor();
-        $configuration = new PostMatterConfiguration();
 
-        return $processor->processConfiguration($configuration, $matter);
-    }
 }

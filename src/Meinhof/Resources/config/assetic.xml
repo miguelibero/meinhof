@@ -71,9 +71,9 @@
             </argument>
         </service>
         <service id="action.update_assets" class="%assetic.action.update_assets.class%">
-            <argument type="service" id="site"/>
             <argument type="service" id="assetic.asset_manager"/>
             <argument type="service" id="assetic.asset_writer"/>
+            <argument type="service" id="assetic.resource_lister"/>
             <argument type="service" id="assetic.resource_loader"/>
             <argument type="service" id="assetic.formula_loader_manager"/>
             <argument type="service" id="output"/>

@@ -3,11 +3,11 @@
 namespace Meinhof\Setup;
 
 /**
- * Write the setup of a site
+ * Read and write the setup of a site
  *
  * @author Miguel Ibero <miguel@ibero.me>
  */
-interface SetupWriterInterface
+interface SetupStoreInterface
 {
     /**
      * Writes the setup of a site

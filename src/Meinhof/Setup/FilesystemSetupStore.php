@@ -9,7 +9,7 @@ use Symfony\Component\Yaml\Yaml;
  *
  * @author Miguel Ibero <miguel@ibero.me>
  */
-class FilesystemSetupWriter implements SetupWriterInterface
+class FilesystemSetupStore implements SetupStoreInterface
 {
     protected $dir;
 

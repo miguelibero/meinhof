@@ -5,6 +5,11 @@ namespace Meinhof\Model\Post;
 interface PostInterface
 {
     /**
+     * @return string the key of the post
+     */
+    public function getKey();
+
+    /**
      * @return string the title of the post
      */
     public function getTitle();

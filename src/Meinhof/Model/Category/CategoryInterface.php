@@ -25,6 +25,11 @@ interface CategoryInterface
     public function getPosts();
 
     /**
+     * @return Boolean if the category should be published
+     */
+    public function getPublish();
+
+    /**
      * @return string templating key for the category view
      */
     public function getViewTemplatingKey();

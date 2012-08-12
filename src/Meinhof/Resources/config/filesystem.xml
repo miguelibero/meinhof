@@ -5,9 +5,8 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
-        <parameter key="filesystem.site.class"
-            >Meinhof\Model\Site\FilesystemSite</parameter>
-
+        <parameter key="filesystem.assetic.resource_lister.class"
+            >Meinhof\Assetic\FilesystemResourceLister</parameter>
         <parameter key="filesystem.templating.loader.class"
             >Meinhof\Templating\Loader\FilesystemLoader</parameter>
         <parameter key="filesystem.templating.post.loader.class"
@@ -31,27 +30,43 @@
         <parameter key="filesystem.action.load_translation_resources.class"
             >Meinhof\Action\LoadFilesystemTranslationResourcesAction</parameter>
 
+        <parameter key="filesystem.model.loader.page.class"
+            >Meinhof\Model\Page\FilesystemPageLoader</parameter>
+        <parameter key="filesystem.model.loader.post.class"
+            >Meinhof\Model\Post\FilesystemPostLoader</parameter>
+        <parameter key="filesystem.model.loader.category.class"
+            >Meinhof\Model\Category\FilesystemCategoryLoader</parameter>
+
         <parameter key="assetic.paths.read_from"
             >%filesystem.paths.public%</parameter>
         <parameter key="assetic.paths.write_to"
             >%filesystem.paths.web%</parameter>
     </parameters>
     <services>
+        <service id="assetic.resource_lister" class="%filesystem.assetic.resource_lister.class%">
+            <argument>%filesystem.paths.views%</argument>
+        </service>
         <service id="store" class="%filesystem.store.class%">
             <argument>%filesystem.paths.web%</argument>
         </service>
-        <service id="site" class="%filesystem.site.class%">
-            <argument>%filesystem.paths%</argument>
-            <argument>%site.info%</argument>
-            <argument>%filesystem.pages%</argument>
+        <service id="model.loader.category" class="%filesystem.model.loader.category.class%">
             <argument>%filesystem.categories%</argument>
-            <call method="setPostTemplatingEngine">
-                <argument type="service" id="templating.post"/>
-            </call>
-            <call method="setPostMatterLoader">
-                <argument type="service" id="matter_loader.post"/>
-            </call>
+            <argument type="service" id="model.loader.post" />
+            <argument>%filesystem.paths.views%</argument>
+            <tag name="model.loader"/>
         </service>
+        <service id="model.loader.page" class="%filesystem.model.loader.page.class%">
+            <argument>%filesystem.pages%</argument>
+            <argument>%filesystem.paths.views%</argument>           
+            <tag name="model.loader"/>
+        </service>
+        <service id="model.loader.post" class="%filesystem.model.loader.post.class%">
+            <argument type="service" id="templating.post" />
+            <argument>%filesystem.paths.posts%</argument>
+            <argument>%filesystem.paths.views%</argument>
+            <argument type="service" id="matter_loader.post" />           
+            <tag name="model.loader"/>
+        </service>                
         <service id="templating.post.content_loader"
             class="%filesystem.templating.loader.class%" public="false">
             <argument>%filesystem.paths.posts%</argument>

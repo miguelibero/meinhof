@@ -33,8 +33,8 @@
             >Symfony\Component\Templating\TemplateNameParser</parameter>
         <parameter key="event_dispatcher.class"
             >Symfony\Component\EventDispatcher\ContainerAwareEventDispatcher</parameter>
-        <parameter key="setup_writer.class"
-            >Meinhof\Setup\FilesystemSetupWriter</parameter>
+        <parameter key="setup_store.class"
+            >Meinhof\Setup\FilesystemSetupStore</parameter>
         <parameter key="action.setup_site.class"
             >Meinhof\Action\SetupSiteAction</parameter>
     </parameters>
@@ -64,7 +64,7 @@
         </service>
 
         <!-- setup base -->
-        <service id="setup_writer" class="%setup_writer.class%">
+        <service id="setup_store" class="%setup_store.class%">
             <argument>%config_dir%</argument>
         </service>
 
@@ -109,7 +109,7 @@
             <argument type="service" id="service_container"/>
         </service>
         <service id="action.setup_site" class="%action.setup_site.class%">
-            <argument type="service" id="setup_writer"/>
+            <argument type="service" id="setup_store"/>
             <argument type="service" id="input"/>
             <argument type="service" id="output"/>
             <tag name="event_listener" event="setup" method="take"/>

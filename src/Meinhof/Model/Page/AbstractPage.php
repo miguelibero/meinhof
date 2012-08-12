@@ -15,7 +15,7 @@ abstract class AbstractPage implements PageInterface
 
     public function getSlug()
     {
-        return $this->key;
+        return $this->getKey();
     }
 
     public function getViewTemplatingKey()
@@ -24,7 +24,6 @@ abstract class AbstractPage implements PageInterface
         if ($key) {
             return $key;
         }
-
         return 'page';
     }
 }

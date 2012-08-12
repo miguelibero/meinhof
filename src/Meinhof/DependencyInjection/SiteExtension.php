@@ -8,6 +8,7 @@ use Symfony\Component\DependencyInjection\Loader\XmlFileLoader;
 use Symfony\Component\Config\FileLocator;
 
 use Meinhof\DependencyInjection\Compiler\UrlHelperPass;
+use Meinhof\DependencyInjection\Compiler\ModelLoaderPass;
 
 class SiteExtension implements ExtensionInterface
 {
@@ -18,6 +19,7 @@ class SiteExtension implements ExtensionInterface
     {
         // load compiler
         $container->addCompilerPass(new UrlHelperPass());
+        $container->addCompilerPass(new ModelLoaderPass());
     }
 
     /**

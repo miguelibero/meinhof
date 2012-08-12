@@ -10,8 +10,10 @@ class Page extends AbstractPage
     protected $title;
     protected $view;
     protected $info;
+    protected $publish = false;
 
-    public function __construct($key, $slug=null, $updated=null, $title=null, $view=null, array $info=array())
+    public function __construct($key, $slug=null, $updated=null, $title=null,
+        $view=null, array $info=array(), $publish=null)
     {
         $this->key = $key;
         $this->slug = $slug;
@@ -21,6 +23,9 @@ class Page extends AbstractPage
         $this->title = $title;
         $this->view = $view;
         $this->info = $info;
+        if($publish !== null) {
+            $this->publish = (bool) $publish;
+        }
     }
 
     protected function setUpdated($updated)
@@ -35,6 +40,11 @@ class Page extends AbstractPage
         } else {
             throw new \InvalidArgumentException("Could not set updated time.");
         }
+    }
+
+    public function getPublish()
+    {
+        return $this->publish;
     }
 
     public function getTitle()
@@ -96,9 +106,11 @@ class Page extends AbstractPage
             'updated'   => null,
             'title'     => null,
             'view'      => null,
+            'publish'   => null
         ), $data);
 
-        return new static($data['key'], $data['slug'], $data['updated'], $data['title'], $data['view'], $data['info']);
+        return new static($data['key'], $data['slug'], $data['updated'],
+            $data['title'], $data['view'], $data['info'], $data['publish']);
     }
 
 }

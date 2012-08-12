@@ -45,6 +45,11 @@ abstract class AbstractCategory implements CategoryInterface
         return $slug;
     }
 
+    public function getPublish()
+    {
+        return true;
+    }
+
     public function getViewTemplatingKey()
     {
         return 'category';

@@ -5,20 +5,21 @@
     xsi:schemaLocation="http://symfony.com/schema/dic/services http://symfony.com/schema/dic/services/services-1.0.xsd">
 
     <parameters>
+        <parameter key="site.class"
+            >Meinhof\Model\Site\Site</parameter>        
         <parameter key="url_helper.class"
             >Meinhof\Helper\DelegatingUrlHelper</parameter>
         <parameter key="url_helper.type.class"
             >Meinhof\Helper\UrlHelper</parameter>
         <parameter key="exporter.class"
             >Meinhof\Export\Exporter</parameter>
-        <parameter key="action.update_posts.class"
-            >Meinhof\Action\UpdatePostsAction</parameter>
-        <parameter key="action.update_pages.class"
-            >Meinhof\Action\UpdatePagesAction</parameter>
-        <parameter key="action.update_categories.class"
-            >Meinhof\Action\UpdateCategoriesAction</parameter>
+        <parameter key="action.update_models.class"
+            >Meinhof\Action\UpdateModelsAction</parameter>
     </parameters>
     <services>
+        <service id="site" class="%site.class%">
+            <argument>%site.info%</argument>          
+        </service>        
         <service id="url_helper" class="%url_helper.class%">
         </service>
         <service id="url_helper.post" class="%url_helper.type.class%">
@@ -40,22 +41,31 @@
             <argument type="service" id="event_dispatcher"/>
         </service>
 
-        <service id="action.update_posts" class="%action.update_posts.class%">
-            <argument type="service" id="site"/>
+        <service id="action.update_posts" class="%action.update_models.class%">
+            <argument type="service" id="model.loader.post"/>
             <argument type="service" id="exporter"/>
             <argument type="service" id="output"/>
+            <argument type="collection">
+                <argument key="site" type="service" id="site" />
+            </argument>            
             <tag name="event_listener" event="update" method="take"/>
         </service>
-        <service id="action.update_pages" class="%action.update_pages.class%">
-            <argument type="service" id="site"/>
+        <service id="action.update_pages" class="%action.update_models.class%">
+            <argument type="service" id="model.loader.page"/>
             <argument type="service" id="exporter"/>
             <argument type="service" id="output"/>
+            <argument type="collection">
+                <argument key="site" type="service" id="site" />
+            </argument>            
             <tag name="event_listener" event="update" method="take"/>
         </service>
-        <service id="action.update_categories" class="%action.update_categories.class%">
-            <argument type="service" id="site"/>
+        <service id="action.update_categories" class="%action.update_models.class%">
+            <argument type="service" id="model.loader.category"/>
             <argument type="service" id="exporter"/>
             <argument type="service" id="output"/>
+            <argument type="collection">
+                <argument key="site" type="service" id="site" />
+            </argument>            
             <tag name="event_listener" event="update" method="take"/>
         </service>
     </services>

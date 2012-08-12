@@ -25,6 +25,11 @@ interface PageInterface
     public function getSlug();
 
     /**
+     * @return Boolean if the page should be published
+     */
+    public function getPublish();    
+
+    /**
      * @return array of additional page info
      */
     public function getInfo();

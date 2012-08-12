@@ -9,6 +9,7 @@ use Symfony\Component\Console\Output\OutputInterface;
 
 use Meinhof\Model\Site\SiteInterface;
 use Meinhof\Assetic\ResourceLoaderInterface;
+use Meinhof\Assetic\ResourceListerInterface;
 use Meinhof\Assetic\FormulaLoaderManagerInterface;
 
 /**
@@ -18,24 +19,25 @@ use Meinhof\Assetic\FormulaLoaderManagerInterface;
  */
 class UpdateAssetsAction extends OutputAction
 {
-    protected $site;
     protected $manager;
     protected $writer;
-    protected $resource_loader;
-    protected $formula_loader;
+    protected $resourceLoader;
+    protected $resourceLister;
+    protected $formulaLoaderManager;
     protected $output;
     protected $assets = array();
 
-    public function __construct(SiteInterface $site, LazyAssetManager $manager,
-        AssetWriter $writer, ResourceLoaderInterface $resource_loader,
-        FormulaLoaderManagerInterface $formula_loader_manager,
+    public function __construct(LazyAssetManager $manager,
+        AssetWriter $writer, ResourceListerInterface $resourceLister,
+        ResourceLoaderInterface $resourceLoader,
+        FormulaLoaderManagerInterface $formulaLoaderManager,
         OutputInterface $output=null)
     {
-        $this->site = $site;
         $this->manager = $manager;
         $this->writer = $writer;
-        $this->resource_loader = $resource_loader;
-        $this->formula_loader_manager = $formula_loader_manager;
+        $this->resourceLoader = $resourceLoader;
+        $this->resourceLister = $resourceLister;
+        $this->formulaLoaderManager = $formulaLoaderManager;
         $this->output = $output;
     }
 
@@ -110,16 +112,15 @@ class UpdateAssetsAction extends OutputAction
         $this->writeOutputLine("updating assets...", 2);
 
         // load formula loaders, done lazily to avoid circular dependencies
-        foreach ($this->formula_loader_manager->getTypes() as $type) {
-            $this->manager->setLoader($type, $this->formula_loader_manager->getLoader($type));
+        foreach ($this->formulaLoaderManager->getTypes() as $type) {
+            $loader = $this->formulaLoaderManager->getLoader($type);
+            $this->manager->setLoader($type, $loader);
         }
 
         // load template resources
-        foreach ($this->site->getViews() as $view) {
-            $this->resource_loader->load($view, $this->manager);
+        foreach ($this->resourceLister->getResources() as $resource) {
+            $this->resourceLoader->load($resource, $this->manager);
         }
-
-        // load configuration assets
 
         // write output assets
         $this->writer->writeManagerAssets($this->manager);

@@ -1,6 +1,6 @@
 <?php
 
-namespace Meinhof\Model\Post;
+namespace Meinhof\DependencyInjection;
 
 use Symfony\Component\Config\Definition\Builder\TreeBuilder;
 use Symfony\Component\Config\Definition\ConfigurationInterface;
