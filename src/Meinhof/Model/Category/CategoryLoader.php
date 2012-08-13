@@ -12,8 +12,8 @@ class CategoryLoader implements LoaderInterface
 
     public function __construct(array $categories, LoaderInterface $postLoader=null)
     {
-        $this->setCategories($categories);
         $this->postLoader = $postLoader;
+        $this->setCategories($categories);
     }
 
     public function getModelName()
