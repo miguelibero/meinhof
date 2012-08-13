@@ -51,6 +51,7 @@ class Application extends BaseApplication
         $this->add(new Command\UpdateCommand());
         $this->add(new Command\WatchCommand());
         $this->add(new Command\ServerCommand());
+        $this->add(new Command\ServicesCommand());
     }
 
 }

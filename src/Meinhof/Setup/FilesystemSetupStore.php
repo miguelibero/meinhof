@@ -58,12 +58,6 @@ class FilesystemSetupStore implements SetupStoreInterface
             $data['site']['post']['info']['author_email'] = $params['author-email'];
         }
 
-        if (isset($params['categories']) && is_array($params['categories']) && count($params['categories']) > 0) {
-            foreach ($params['categories'] as $k=>$v) {
-                $data['filesystem']['categories'][$k] = array('name'=>$v);
-            }
-        }
-
         if (!$this->saveTemplate($path, $data)) {
             throw new \RuntimeException("Cannot write the setup to file '".$path."'.");
         }

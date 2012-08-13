@@ -88,16 +88,6 @@ class SetupCommand extends MeinhofCommand
             $input->getOption('name')), $input->getOption('name'));
         $input->setOption('name', $name);
 
-        $output->writeln(array(
-            '',
-            'Please enter the names of the post categories of your site separated by commas.',
-            '',
-        ));
-
-        $categories = $dialog->askForArray($output, $dialog->getQuestion('Categories',
-            $input->getOption('categories')), $input->getOption('categories'));
-        $input->setOption('categories', $categories);
-
         $update = $input->getOption('update');
         if ($update !== false) {
             $update = $dialog->askConfirmation($output, $dialog->getQuestion('Do you want to update the site after the setup', 'yes', '?'), true);

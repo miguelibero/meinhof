@@ -101,7 +101,7 @@ class Meinhof
      *
      * @throws \RuntimeException when a service tagged as an extension does not implement ExtensionInterface
      */
-    protected function buildContainer($dir)
+    public function buildContainer($dir)
     {
         // load the container
         $container = new ContainerBuilder();
