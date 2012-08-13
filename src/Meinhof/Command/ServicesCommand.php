@@ -43,14 +43,6 @@ class ServicesCommand extends MeinhofCommand
     }
 
     /**
-     * @see ContainerAwareInterface::setContainer()
-     */
-    public function setContainer(ContainerInterface $container = null)
-    {
-        $this->container = $container;
-    }    
-
-    /**
      * @see Command
      */
     protected function configure()
@@ -89,8 +81,7 @@ EOF
         $name = $input->getArgument('name');
         $dir = $input->getArgument('dir');
 
-        $this->containerBuilder = $this->getContainerBuilder($dir);
-        $serviceIds = $this->containerBuilder->getServiceIds();
+        $serviceIds = $this->getContainer()->getServiceIds();
 
         // sort so that it reads like an index of services
         asort($serviceIds);
@@ -197,16 +188,6 @@ EOF
     }
 
     /**
-     * Loads the ContainerBuilder from the cache.
-     *
-     * @return ContainerBuilder
-     */
-    protected function getContainerBuilder($dir)
-    {
-        return $this->meinhof->buildContainer($dir);
-    }
-
-    /**
      * Given an array of service IDs, this returns the array of corresponding
      * Definition and Alias objects that those ids represent.
      *
@@ -216,16 +197,17 @@ EOF
      */
     private function resolveServiceDefinition($serviceId)
     {
-        if ($this->containerBuilder->hasDefinition($serviceId)) {
-            return $this->containerBuilder->getDefinition($serviceId);
+        $container = $this->getContainer();
+        if ($container->hasDefinition($serviceId)) {
+            return $container->getDefinition($serviceId);
         }
 
         // Some service IDs don't have a Definition, they're simply an Alias
-        if ($this->containerBuilder->hasAlias($serviceId)) {
-            return $this->containerBuilder->getAlias($serviceId);
+        if ($container->hasAlias($serviceId)) {
+            return $container->getAlias($serviceId);
         }
 
         // the service has been injected in some special way, just return the service
-        return $this->containerBuilder->get($serviceId);
+        return $container->get($serviceId);
     }
 }
