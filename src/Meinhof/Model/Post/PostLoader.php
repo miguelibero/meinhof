@@ -102,6 +102,11 @@ class PostLoader implements LoaderInterface
 
     public function getModels()
     {
+        uksort($this->posts, function(PostInterface $a, PostInterface $b){
+            $ua = $a->getUpdated();
+            $ub = $b->getUpdated();
+            return  $ua === $ub ? 0 : ($ua > $ub ? 1 : -1);
+        });
         return $this->posts;
     } 
 }
