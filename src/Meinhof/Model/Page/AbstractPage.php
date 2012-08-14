@@ -24,6 +24,7 @@ abstract class AbstractPage implements PageInterface
         if ($key) {
             return $key;
         }
+
         return 'page';
     }
 }

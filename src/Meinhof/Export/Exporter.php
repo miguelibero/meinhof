@@ -22,13 +22,13 @@ class Exporter implements ExporterInterface
         $this->templating = $engine;
         $this->store = $store;
         $this->urlHelper = $url;
-        $this->finder = $finder;        
+        $this->finder = $finder;
         $this->dispatcher = $dispatcher;
     }
 
     protected function render($key, array $params)
     {
-        if($this->finder){
+        if ($this->finder) {
             $key = $this->finder->find($key);
         }
         if (!$this->templating->exists($key)) {

@@ -27,6 +27,7 @@ class FilesystemResourceLister implements ResourceListerInterface
         foreach ($finder as $file) {
             $paths[] = $file->getRelativePathname();
         }
+
         return $paths;
     }
 }

@@ -12,7 +12,7 @@ class Category extends AbstractCategory
         array $posts=array(), $view=null, $publish=null)
     {
         $this->setPosts($posts);
-        if($publish !== null){
+        if ($publish !== null) {
             $this->publish = (bool) $publish;
         }
         $this->view = $view;
@@ -31,21 +31,23 @@ class Category extends AbstractCategory
 
     public function getPublish()
     {
-        if($this->publish !== null){
+        if ($this->publish !== null) {
             return $this->publish;
         }
+
         return parent::getPublish();
     }
 
     public function getViewTemplatingKey()
     {
-        if($this->view){
+        if ($this->view) {
             return $this->view;
         }
+
         return parent::getViewTemplatingKey();
     }
 
-    static function toArray(CategoryInterface $category)
+    public static function toArray(CategoryInterface $category)
     {
         return array(
             'key'       => $category->getKey(),

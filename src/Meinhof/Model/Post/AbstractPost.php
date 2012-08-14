@@ -2,7 +2,6 @@
 
 namespace Meinhof\Model\Post;
 
-use Symfony\Component\Templating\EngineInterface;
 
 abstract class AbstractPost implements PostInterface
 {
@@ -31,6 +30,7 @@ abstract class AbstractPost implements PostInterface
     public function getExcerpt()
     {
         $parts = explode(self::EXCERPT_SEPARATOR, $this->getContent());
+
         return reset($parts);
     }
 

@@ -2,7 +2,6 @@
 
 namespace Meinhof\Helper;
 
-
 /**
  * Helper class that delegates to a list of helpers.
  */

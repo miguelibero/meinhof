@@ -6,7 +6,7 @@
 
     <parameters>
         <parameter key="site.class"
-            >Meinhof\Model\Site\Site</parameter>        
+            >Meinhof\Model\Site\Site</parameter>
         <parameter key="url_helper.class"
             >Meinhof\Helper\DelegatingUrlHelper</parameter>
         <parameter key="url_helper.type.class"
@@ -18,8 +18,8 @@
     </parameters>
     <services>
         <service id="site" class="%site.class%">
-            <argument>%site.info%</argument>          
-        </service>        
+            <argument>%site.info%</argument>
+        </service>
         <service id="url_helper" class="%url_helper.class%">
         </service>
         <service id="url_helper.post" class="%url_helper.type.class%">
@@ -48,7 +48,7 @@
             <argument type="service" id="output"/>
             <argument type="collection">
                 <argument key="site" type="service" id="site" />
-            </argument>            
+            </argument>
             <tag name="event_listener" event="update" method="take"/>
         </service>
         <service id="action.update_pages" class="%action.update_models.class%">
@@ -57,7 +57,7 @@
             <argument type="service" id="output"/>
             <argument type="collection">
                 <argument key="site" type="service" id="site" />
-            </argument>            
+            </argument>
             <tag name="event_listener" event="update" method="take"/>
         </service>
         <service id="action.update_categories" class="%action.update_models.class%">
@@ -66,7 +66,7 @@
             <argument type="service" id="output"/>
             <argument type="collection">
                 <argument key="site" type="service" id="site" />
-            </argument>            
+            </argument>
             <tag name="event_listener" event="update" method="take"/>
         </service>
     </services>

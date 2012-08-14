@@ -23,7 +23,7 @@ class Page extends AbstractPage
         $this->title = $title;
         $this->view = $view;
         $this->info = $info;
-        if($publish !== null) {
+        if ($publish !== null) {
             $this->publish = (bool) $publish;
         }
     }

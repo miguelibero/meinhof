@@ -20,7 +20,7 @@ class Post extends AbstractPost
         $title=null, $content=null, $view=null, array $info=array(),
         array $categories=array(), $publish=null)
     {
-        $this->key = $key;        
+        $this->key = $key;
         $this->slug = $slug;
         $this->title = $title;
         $this->content = $content;
@@ -28,7 +28,7 @@ class Post extends AbstractPost
         if ($updated !== null) {
             $this->setUpdated($updated);
         }
-        if($publish !== null) {
+        if ($publish !== null) {
             $this->publish = (bool) $publish;
         }
         $this->setCategories($categories);
@@ -42,14 +42,14 @@ class Post extends AbstractPost
         }
         if (is_array($category)) {
             return Category::fromArray($category);
-        }        
+        }
     }
 
     protected function setCategories(array $categories)
     {
         $this->categories = array();
         foreach ($categories as $k=>$category) {
-            if(is_array($category) && !isset($category['key'])){
+            if (is_array($category) && !isset($category['key'])) {
                 $category['key'] = $k;
             }
             if (!$category instanceof CategoryInterface) {
@@ -58,7 +58,7 @@ class Post extends AbstractPost
             if (!$category instanceof CategoryInterface) {
                 throw new \RuntimeException("Invalid category.");
             }
-            if(!isset($this->categories[$category->getKey()])) {
+            if (!isset($this->categories[$category->getKey()])) {
                 $this->categories[$category->getKey()] = $category;
             }
         }
@@ -100,9 +100,10 @@ class Post extends AbstractPost
 
     public function getSlug()
     {
-        if($this->slug){
+        if ($this->slug) {
             return $this->slug;
         }
+
         return parent::getSlug();
     }
 
@@ -157,6 +158,5 @@ class Post extends AbstractPost
             $config['updated'], $config['title'], $config['content'], $config['view'],
             $config['info'], $config['categories'], $config['publish']);
     }
-
 
 }

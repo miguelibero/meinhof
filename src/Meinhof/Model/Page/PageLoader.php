@@ -11,7 +11,7 @@ class PageLoader implements LoaderInterface
     public function __construct(array $pages)
     {
         $this->setPages($pages);
-    }    
+    }
 
     public function getModelName()
     {
@@ -25,7 +25,7 @@ class PageLoader implements LoaderInterface
 
     public function getViewTemplatingKey($model)
     {
-        if($model instanceof PageInterface){
+        if ($model instanceof PageInterface) {
             return $model->getViewTemplatingKey();
         }
     }
@@ -33,9 +33,9 @@ class PageLoader implements LoaderInterface
     public function getModel($key)
     {
         $models = $this->getModels();
-        foreach($models as $model){
-            if($model instanceof PageInterface){
-                if($model->getKey() == $key){
+        foreach ($models as $model) {
+            if ($model instanceof PageInterface) {
+                if ($model->getKey() == $key) {
                     return $model;
                 }
             }
@@ -62,23 +62,23 @@ class PageLoader implements LoaderInterface
                 throw new \RuntimeException("Invalid page.");
             }
             $this->addPage($page);
-        }        
+        }
     }
 
     protected function createPage($data)
     {
-        if(is_array($data)){
+        if (is_array($data)) {
             return Page::fromArray($data);
         }
     }
 
     protected function addPage(PageInterface $page)
     {
-        $this->pages[$page->getKey()] = $page;  
-    }    
+        $this->pages[$page->getKey()] = $page;
+    }
 
     public function getModels()
     {
         return $this->pages;
-    }        
+    }
 }

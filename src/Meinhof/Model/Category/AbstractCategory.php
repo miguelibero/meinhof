@@ -2,7 +2,6 @@
 
 namespace Meinhof\Model\Category;
 
-
 abstract class AbstractCategory implements CategoryInterface
 {
     protected $key;

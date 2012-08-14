@@ -63,7 +63,8 @@
         <service id="model.loader.post" class="%filesystem.model.loader.post.class%">
             <argument type="service" id="templating.post" />
             <argument>%filesystem.paths.posts%</argument>
-            <argument type="service" id="matter_loader.post" />           
+            <argument type="service" id="matter_loader.post" />
+            <argument type="service" id="templating.post.finder" />
             <tag name="model.loader"/>
         </service>
         <service id="templating.view.finder"
@@ -77,7 +78,7 @@
         <service id="templating.content.finder"
             class="%filesystem.templating.finder.class%" public="false">
             <argument>%filesystem.paths.content%</argument>
-        </service>        
+        </service>
         <service id="templating.post.content_loader"
             class="%filesystem.templating.loader.class%" public="false">
             <argument>%filesystem.paths.posts%</argument>

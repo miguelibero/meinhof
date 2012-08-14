@@ -3,7 +3,6 @@
 namespace Meinhof\Action;
 
 use Symfony\Component\Console\Output\OutputInterface;
-use Symfony\Component\DependencyInjection\Container;
 
 use Meinhof\Model\LoaderInterface;
 use Meinhof\Export\ExporterInterface;

@@ -27,7 +27,7 @@ interface PageInterface
     /**
      * @return Boolean if the page should be published
      */
-    public function getPublish();    
+    public function getPublish();
 
     /**
      * @return array of additional page info

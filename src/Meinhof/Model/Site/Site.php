@@ -27,21 +27,22 @@ class Site implements SiteInterface
 
     public function getModels($name)
     {
-        if(substr($name, 0, 3) === 'get'){
+        if (substr($name, 0, 3) === 'get') {
             // getCamelCase -> camel_case
             $name = Container::underscore(substr($name, 3));
         }
-        if(!isset($this->modelLoaders[$name])){
+        if (!isset($this->modelLoaders[$name])) {
             throw new \InvalidArgumentException("Could not find models of type ${name}.");
         }
+
         return $this->modelLoaders[$name]->getModels();
     }
 
     public function __call($method, array $params)
     {
-        if(count($params) === 0){
+        if (count($params) === 0) {
             return $this->getModels($method);
-        }else{
+        } else {
             throw new \InvalidParameterException("Method `${method}` not found.");
         }
     }
