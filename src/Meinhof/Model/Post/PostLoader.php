@@ -4,10 +4,10 @@ namespace Meinhof\Model\Post;
 
 use Symfony\Component\Templating\EngineInterface;
 
-use Meinhof\Model\LoaderInterface;
+use Meinhof\Model\AbstractLoader;
 use Meinhof\Templating\Finder\FinderInterface;
 
-class PostLoader implements LoaderInterface
+class PostLoader extends AbstractLoader
 {
     protected $templating;
     protected $finder;
@@ -35,26 +35,6 @@ class PostLoader implements LoaderInterface
     public function getModelsName()
     {
         return 'posts';
-    }
-
-    public function getViewTemplatingKey($model)
-    {
-        if ($model instanceof PostInterface) {
-            return $model->getViewTemplatingKey();
-        }
-    }
-
-    public function getModel($key)
-    {
-        $models = $this->getModels();
-        foreach ($models as $model) {
-            if ($model instanceof PostInterface) {
-                if ($model->getKey() == $key) {
-                    return $model;
-                }
-            }
-        }
-        throw new \RuntimeException("Post with key '${key}' not found.");
     }
 
     protected function renderContent($key, array $params)

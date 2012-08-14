@@ -2,10 +2,11 @@
 
 namespace Meinhof\Model\Category;
 
+use Meinhof\Model\AbstractLoader;
 use Meinhof\Model\LoaderInterface;
 use Meinhof\Model\Post\PostInterface;
 
-class CategoryLoader implements LoaderInterface
+class CategoryLoader extends AbstractLoader
 {
     protected $categories = array();
     protected $postLoader = null;
@@ -45,26 +46,6 @@ class CategoryLoader implements LoaderInterface
     public function getModelsName()
     {
         return 'categories';
-    }
-
-    public function getViewTemplatingKey($model)
-    {
-        if ($model instanceof CategoryInterface) {
-            return $model->getViewTemplatingKey();
-        }
-    }
-
-    public function getModel($key)
-    {
-        $models = $this->getModels();
-        foreach ($models as $model) {
-            if ($model instanceof CategoryInterface) {
-                if ($model->getKey() == $key) {
-                    return $model;
-                }
-            }
-        }
-        throw new \RuntimeException("Category with key '${key}' not found.");
     }
 
     protected function setCategories(array $categories)

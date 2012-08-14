@@ -2,9 +2,9 @@
 
 namespace Meinhof\Model\Page;
 
-use Meinhof\Model\LoaderInterface;
+use Meinhof\Model\AbstractLoader;
 
-class PageLoader implements LoaderInterface
+class PageLoader extends AbstractLoader
 {
     protected $pages = array();
 
@@ -21,26 +21,6 @@ class PageLoader implements LoaderInterface
     public function getModelsName()
     {
         return 'pages';
-    }
-
-    public function getViewTemplatingKey($model)
-    {
-        if ($model instanceof PageInterface) {
-            return $model->getViewTemplatingKey();
-        }
-    }
-
-    public function getModel($key)
-    {
-        $models = $this->getModels();
-        foreach ($models as $model) {
-            if ($model instanceof PageInterface) {
-                if ($model->getKey() == $key) {
-                    return $model;
-                }
-            }
-        }
-        throw new \RuntimeException("Page with key '${key}' not found.");
     }
 
     protected function setPages(array $pages)
