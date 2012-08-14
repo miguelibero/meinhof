@@ -5,7 +5,7 @@ namespace Meinhof\Action;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-use Meinhof\Setup\SetupWriterInterface;
+use Meinhof\Setup\SetupStoreInterface;
 
 /**
  * This action creates a new site configuration structure from a generator.
@@ -14,18 +14,18 @@ use Meinhof\Setup\SetupWriterInterface;
  */
 class SetupSiteAction extends OutputAction
 {
-    protected $writer;
+    protected $store;
     protected $input;
     protected $output;
 
     /**
-     * @param SetupWriterInterface $writer the setup writer
+     * @param SetupWriterInterface $store the setup store
      * @param InputInterface       $input  the command line input to read the parameters
      * @param OutputInterface      $output the command line output to write log
      */
-    public function __construct(SetupWriterInterface $writer, InputInterface $input, OutputInterface $output=null)
+    public function __construct(SetupStoreInterface $store, InputInterface $input, OutputInterface $output=null)
     {
-        $this->writer = $writer;
+        $this->store = $store;
         $this->output = $output;
         $this->input = $input;
     }
@@ -53,7 +53,7 @@ class SetupSiteAction extends OutputAction
 
         $this->writeOutputLine("writing site configuration...", 2);
 
-        $this->writer->write($params);
+        $this->store->write($params);
 
         $this->writeOutputLine("done", 2);
     }

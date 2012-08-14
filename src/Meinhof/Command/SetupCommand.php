@@ -39,8 +39,8 @@ class SetupCommand extends MeinhofCommand
     {
         parent::initialize($input, $output);
 
-        $writer = $this->getMeinhof()->get('setup_writer');
-        foreach ($writer->read() as $k=>$v) {
+        $store = $this->getMeinhof()->get('setup_store');
+        foreach ($store->read() as $k=>$v) {
             $input->setOption($k, $v);
         }
     }
