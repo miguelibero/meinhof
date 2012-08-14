@@ -2,7 +2,6 @@
 
 namespace Meinhof\Model\Post;
 
-
 abstract class AbstractPost implements PostInterface
 {
     protected $content;

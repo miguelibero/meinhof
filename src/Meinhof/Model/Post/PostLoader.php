@@ -12,13 +12,19 @@ class PostLoader implements LoaderInterface
     protected $templating;
     protected $finder;
     protected $posts = array();
+    protected $fixDate = true;
 
     public function __construct(array $posts,
-        EngineInterface $templating, FinderInterface $finder=null)
+        EngineInterface $templating,
+        FinderInterface $finder=null,
+        $fixDate=null)
     {
         $this->finder = $finder;
         $this->templating = $templating;
         $this->setPosts($posts);
+        if ($fixDate !== null) {
+            $this->fixDate = $fixDate;
+        }
     }
 
     public function getModelName()
@@ -95,6 +101,10 @@ class PostLoader implements LoaderInterface
     protected function createPost($data)
     {
         if (is_array($data)) {
+            if (isset($data['updated']) && $this->fixDate && preg_match('@(\d+)/(\d+)/(\d+)@', $data['updated'], $m)) {
+                // fix date format d/m/Y
+                $data['updated'] = str_replace($m[0], $m[2].'/'.$m[1].'/'.$m[3], $data['updated']);
+            }
             if (!isset($data['content']) && isset($data['key'])) {
                 $template = $data['key'];
                 $data['content'] = $this->renderContent($template, $data);
@@ -107,17 +117,17 @@ class PostLoader implements LoaderInterface
     protected function addPost(PostInterface $post)
     {
         $this->posts[$post->getKey()] = $post;
-        uksort($this->posts, function($a, $b){
+        usort($this->posts, function($a, $b){
             if (!$a instanceof PostInterface) {
-                return -1;
+                return 1;
             }
             if (!$b instanceof PostInterface) {
-                return 1;
+                return -1;
             }
             $ua = $a->getUpdated();
             $ub = $b->getUpdated();
 
-            return  $ua === $ub ? 0 : ($ua > $ub ? 1 : -1);
+            return  $ua === $ub ? 0 : ($ua > $ub ? -1 : 1);
         });
     }
 
