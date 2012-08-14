@@ -53,6 +53,7 @@ class PostLoader implements LoaderInterface
             throw new \RuntimeException("No templating engine loaded");
         }
         if (!$this->templating->exists($key)) {
+            print_r($this->templating);
             throw new \RuntimeException("Post template '${key}' does not exist.");
         }
         if (!$this->templating->supports($key)) {
@@ -98,15 +99,21 @@ class PostLoader implements LoaderInterface
     protected function addPost(PostInterface $post)
     {
         $this->posts[$post->getKey()] = $post;  
+        uksort($this->posts, function($a, $b){
+            if(!$a instanceof PostInterface){
+                return -1;
+            }
+            if(!$b instanceof PostInterface){
+                return 1;
+            }            
+            $ua = $a->getUpdated();
+            $ub = $b->getUpdated();
+            return  $ua === $ub ? 0 : ($ua > $ub ? 1 : -1);
+        });        
     }
 
     public function getModels()
     {
-        uksort($this->posts, function(PostInterface $a, PostInterface $b){
-            $ua = $a->getUpdated();
-            $ub = $b->getUpdated();
-            return  $ua === $ub ? 0 : ($ua > $ub ? 1 : -1);
-        });
         return $this->posts;
-    } 
+    }
 }

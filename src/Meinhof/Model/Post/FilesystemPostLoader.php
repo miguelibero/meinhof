@@ -11,16 +11,14 @@ use Meinhof\DependencyInjection\PostMatterConfiguration;
 
 class FilesystemPostLoader extends PostLoader
 {
-    protected $postsPath;
-    protected $viewsPath;
+    protected $path;
     protected $templating;
     protected $configLoader;
 
     public function __construct(EngineInterface $templating,
-        $postsPath, $viewsPath, ConfigLoaderInterface $loader)
+        $path, ConfigLoaderInterface $loader)
     {
-        $this->postsPath = $postsPath;
-        $this->viewsPath = $viewsPath;
+        $this->path = $path;
         $this->configLoader = $loader;
         $posts = $this->loadFilesystemPosts();
         parent::__construct($posts, $templating);
@@ -47,7 +45,7 @@ class FilesystemPostLoader extends PostLoader
         $finder = new Finder();
         $finder->files()
             ->ignoreVCS(true)
-            ->in($this->postsPath);
+            ->in($this->path);
 
         $posts = array();
         foreach ($finder as $file) {
@@ -66,19 +64,15 @@ class FilesystemPostLoader extends PostLoader
     {
         if(is_array($data)){
             if(!isset($data['updated']) && isset($data['key'])){
-                $data['updated'] = $this->getKeyUpdated($data['key']);
-            }
-            if(!isset($data['view'])){
-                $data['view'] = 'post';
-            }
-            $data['view'] = $this->findView($data['view']);       
+                $data['updated'] = $this->getKeyPathUpdated($data['key']);
+            }   
         }
         return parent::createPost($data);
     }
 
-    protected function getKeyUpdated($key)
+    protected function getKeyPathUpdated($key)
     {
-        $path = $this->postsPath.'/'.$key;
+        $path = $this->path.'/'.$key;
         if(!is_readable($path)){
             return null;
         }
@@ -86,17 +80,5 @@ class FilesystemPostLoader extends PostLoader
         $date = new \DateTime();
         $date->setTimestamp($timestamp);
         return $date;
-    }
-
-    protected function findView($key)
-    {
-        $finder = new Finder();
-        $finder->files()
-            ->name($key.'.*')
-            ->ignoreVCS(true)
-            ->in($this->viewsPath);
-        foreach ($finder as $file) {
-            return $file->getRelativePathname();
-        }
-    }  
+    } 
 }

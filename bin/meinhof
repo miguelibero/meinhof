@@ -1,6 +1,11 @@
 #!/usr/bin/env php
 <?php
 
+$autoload = "vendor/autoload.php";
+if(is_readable($autoload)){
+    include $autoload;
+}
+
 require __DIR__.'/../src/bootstrap.php';
 
 use Meinhof\Console\Application;

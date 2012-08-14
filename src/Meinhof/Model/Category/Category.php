@@ -45,6 +45,17 @@ class Category extends AbstractCategory
         return parent::getViewTemplatingKey();
     }
 
+    static function toArray(CategoryInterface $category)
+    {
+        return array(
+            'key'       => $category->getKey(),
+            'name'      => $category->getName(),
+            'slug'      => $category->getSlug(),
+            'publish'   => $category->getPublish(),
+            'view'      => $category->getViewTemplatingKey(),
+        );
+    }
+
     public static function fromArray(array $config)
     {
         $config = array_merge(array(

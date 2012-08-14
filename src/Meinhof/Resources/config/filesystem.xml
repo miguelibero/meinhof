@@ -7,6 +7,8 @@
     <parameters>
         <parameter key="filesystem.assetic.resource_lister.class"
             >Meinhof\Assetic\FilesystemResourceLister</parameter>
+        <parameter key="filesystem.templating.finder.class"
+            >Meinhof\Templating\Finder\FilesystemFinder</parameter>
         <parameter key="filesystem.templating.loader.class"
             >Meinhof\Templating\Loader\FilesystemLoader</parameter>
         <parameter key="filesystem.templating.post.loader.class"
@@ -31,11 +33,11 @@
             >Meinhof\Action\LoadFilesystemTranslationResourcesAction</parameter>
 
         <parameter key="filesystem.model.loader.page.class"
-            >Meinhof\Model\Page\FilesystemPageLoader</parameter>
+            >Meinhof\Model\Page\PageLoader</parameter>
         <parameter key="filesystem.model.loader.post.class"
             >Meinhof\Model\Post\FilesystemPostLoader</parameter>
         <parameter key="filesystem.model.loader.category.class"
-            >Meinhof\Model\Category\FilesystemCategoryLoader</parameter>
+            >Meinhof\Model\Category\CategoryLoader</parameter>
 
         <parameter key="assetic.paths.read_from"
             >%filesystem.paths.public%</parameter>
@@ -52,21 +54,30 @@
         <service id="model.loader.category" class="%filesystem.model.loader.category.class%">
             <argument>%filesystem.categories%</argument>
             <argument type="service" id="model.loader.post" />
-            <argument>%filesystem.paths.views%</argument>
             <tag name="model.loader"/>
         </service>
         <service id="model.loader.page" class="%filesystem.model.loader.page.class%">
             <argument>%filesystem.pages%</argument>
-            <argument>%filesystem.paths.views%</argument>           
             <tag name="model.loader"/>
         </service>
         <service id="model.loader.post" class="%filesystem.model.loader.post.class%">
             <argument type="service" id="templating.post" />
             <argument>%filesystem.paths.posts%</argument>
-            <argument>%filesystem.paths.views%</argument>
             <argument type="service" id="matter_loader.post" />           
             <tag name="model.loader"/>
-        </service>                
+        </service>
+        <service id="templating.view.finder"
+            class="%filesystem.templating.finder.class%" public="false">
+            <argument>%filesystem.paths.views%</argument>
+        </service>
+        <service id="templating.post.finder"
+            class="%filesystem.templating.finder.class%" public="false">
+            <argument>%filesystem.paths.posts%</argument>
+        </service>
+        <service id="templating.content.finder"
+            class="%filesystem.templating.finder.class%" public="false">
+            <argument>%filesystem.paths.content%</argument>
+        </service>        
         <service id="templating.post.content_loader"
             class="%filesystem.templating.loader.class%" public="false">
             <argument>%filesystem.paths.posts%</argument>

@@ -38,6 +38,7 @@
             <argument type="service" id="templating.view"/>
             <argument type="service" id="url_helper"/>
             <argument type="service" id="store"/>
+            <argument type="service" id="templating.view.finder"/>
             <argument type="service" id="event_dispatcher"/>
         </service>
 

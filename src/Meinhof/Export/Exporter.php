@@ -3,6 +3,8 @@
 namespace Meinhof\Export;
 
 use Meinhof\Helper\UrlHelperInterface;
+use Meinhof\Templating\Finder\FinderInterface;
+
 use Symfony\Component\Templating\EngineInterface;
 use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 
@@ -12,23 +14,23 @@ class Exporter implements ExporterInterface
     protected $urlHelper;
     protected $store;
     protected $dispatcher;
+    protected $finder;
 
-    public function __construct(EngineInterface $engine,
-        UrlHelperInterface $url, StoreInterface $store, EventDispatcherInterface $dispatcher=null)
+    public function __construct(EngineInterface $engine, UrlHelperInterface $url, StoreInterface $store,
+        FinderInterface $finder=null, EventDispatcherInterface $dispatcher=null)
     {
         $this->templating = $engine;
         $this->store = $store;
         $this->urlHelper = $url;
-        $this->dispatcher = $dispatcher;
-    }
-
-    public function setEventDispatcher(EventDispatcherInterface $dispatcher)
-    {
+        $this->finder = $finder;        
         $this->dispatcher = $dispatcher;
     }
 
     protected function render($key, array $params)
     {
+        if($this->finder){
+            $key = $this->finder->find($key);
+        }
         if (!$this->templating->exists($key)) {
             throw new \InvalidArgumentException("View template '${key}' does not exist.");
         }

@@ -12,8 +12,29 @@ class CategoryLoader implements LoaderInterface
 
     public function __construct(array $categories, LoaderInterface $postLoader=null)
     {
-        $this->postLoader = $postLoader;
-        $this->setCategories($categories);
+        $this->postLoader = $postLoader;        
+        $this->addCategories($categories);
+        // add categories defined in posts
+        if($this->postLoader){
+            foreach($this->postLoader->getModels() as $post){
+                if(!$post instanceof PostInterface){
+                    continue;
+                }
+                $this->addPostCategories($post);
+            }
+        }        
+    }
+
+    protected function addPostCategories(PostInterface $post)
+    {
+        foreach($post->getCategories() as $cat){
+            if(!$cat instanceof CategoryInterface){
+                continue;
+            }
+            $data = Category::toArray($cat);
+            $cat = $this->createCategory($data);
+            $this->addCategory($cat);
+        }
     }
 
     public function getModelName()
@@ -55,6 +76,9 @@ class CategoryLoader implements LoaderInterface
     protected function addCategories(array $categories)
     {
         foreach ($categories as $k=>$category) {
+            if(is_string($category)){
+                $category = array('key' => $category);
+            }
             if (is_array($category) && !isset($category['key'])) {
                 $category['key'] = $k;
             }
@@ -101,32 +125,18 @@ class CategoryLoader implements LoaderInterface
 
     protected function addCategory(CategoryInterface $category)
     {
-        $this->categories[$category->getKey()] = $category;  
+        $key = $category->getKey();
+        if(isset($this->categories[$key])){
+            // combine categories
+            $data = Category::toArray($this->categories[$key]);
+            $data = array_merge($data, Category::toArray($category));
+            $category = $this->createCategory($data);
+        }
+        $this->categories[$key] = $category;
     }    
 
     public function getModels()
     {
-        $categories = $this->categories;
-
-        // add categories defined in posts
-        if($this->postLoader){
-            foreach($this->postLoader->getModels() as $post){
-                if(!$post instanceof PostInterface){
-                    continue;
-                }
-                foreach($post->getCategories() as $cat){
-                    if(!$cat instanceof CategoryInterface){
-                        continue;
-                    }
-                    if(!isset($categories[$cat->getKey()])) {
-                        $categories[$cat->getKey()] = $cat;
-                    }
-                }
-            }
-        }
-
-        // sort categories by updated time
-
-        return $categories;
+        return $this->categories;
     }    
 }
