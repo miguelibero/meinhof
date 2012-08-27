@@ -43,14 +43,13 @@ class UrlExtension extends \Twig_Extension
         if (is_array($this->parameters)) {
             $params = array_merge($this->parameters, $params);
         }
-
         if (is_object($obj)) {
             $obj = $this->helper->getUrl($obj, $params);
         }
         if (is_string($obj)) {
             return $this->webroot.$obj;
         }
-        throw new \InvalidArgumentException("Do not know the parameter.");
+        throw new \InvalidArgumentException("Could not get the url.");
     }
 
 }

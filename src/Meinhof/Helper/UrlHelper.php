@@ -42,6 +42,13 @@ class UrlHelper implements UrlHelperInterface
 
     public function getUrl($model, array $parameters)
     {
+        try{
+            $url = $this->getPropertyPath($model, 'url');
+            if(is_string($url) && $url){
+                return $url;
+            }
+        }catch(\Exception $e){
+        }
         $url = $this->template;
         $parameters = array_merge($parameters, $this->parameters);
 

@@ -10,6 +10,11 @@ interface PageInterface
     public function getKey();
 
     /**
+     * @return string the url of the page
+     */
+    public function getUrl();    
+
+    /**
      * @return string the title of the page
      */
     public function getTitle();

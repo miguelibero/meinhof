@@ -6,17 +6,19 @@ class Page extends AbstractPage
 {
     protected $key;
     protected $slug;
+    protected $url;    
     protected $updated;
     protected $title;
     protected $view;
     protected $info;
     protected $publish = false;
 
-    public function __construct($key, $slug=null, $updated=null, $title=null,
-        $view=null, array $info=array(), $publish=null)
+    public function __construct($key, $slug=null, $updated=null,
+        $title=null, $view=null, array $info=array(), $publish=null, $url=null)
     {
         $this->key = $key;
         $this->slug = $slug;
+        $this->url = $url;
         if ($updated !== null) {
             $this->setUpdated($updated);
         }
@@ -80,6 +82,11 @@ class Page extends AbstractPage
         return $this->key;
     }
 
+    public function getUrl()
+    {
+        return $this->url;
+    }    
+
     public function getViewTemplatingKey()
     {
         if ($this->view) {
@@ -102,6 +109,7 @@ class Page extends AbstractPage
         }
         $data = array_merge(array(
             'key'       => null,
+            'url'       => null,
             'slug'      => null,
             'updated'   => null,
             'title'     => null,
@@ -110,7 +118,7 @@ class Page extends AbstractPage
         ), $data);
 
         return new static($data['key'], $data['slug'], $data['updated'],
-            $data['title'], $data['view'], $data['info'], $data['publish']);
+            $data['title'], $data['view'], $data['info'], $data['publish'], $data['url']);
     }
 
 }
