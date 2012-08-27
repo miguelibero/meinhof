@@ -36,6 +36,7 @@ class FilesystemConfiguration implements ConfigurationInterface
                         ->children()
                             ->scalarNode('key')->end()
                             ->arrayNode('info')
+                                ->useAttributeAsKey('key')
                                 ->prototype('variable')->end()
                             ->end()
                             ->scalarNode('view')->end()

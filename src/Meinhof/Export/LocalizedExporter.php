@@ -25,6 +25,7 @@ class LocalizedExporter implements ExporterInterface
     {
         foreach ($this->locales as $locale) {
             $parameters['locale'] = $locale;
+            $parameters['locales'] = $this->locales;
             $this->translator->setLocale($locale);
             $this->exporter->export($model, $template, $parameters);
         }
