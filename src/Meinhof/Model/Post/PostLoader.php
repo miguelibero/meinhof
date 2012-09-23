@@ -9,6 +9,8 @@ use Meinhof\Templating\Finder\FinderInterface;
 
 class PostLoader extends AbstractLoader
 {
+    const FIX_DATE_REGEX = '@(\d+)/(\d+)/(\d+)@';
+
     protected $templating;
     protected $finder;
     protected $posts = array();
@@ -81,7 +83,7 @@ class PostLoader extends AbstractLoader
     protected function createPost($data)
     {
         if (is_array($data)) {
-            if (isset($data['updated']) && $this->fixDate && preg_match('@(\d+)/(\d+)/(\d+)@', $data['updated'], $m)) {
+            if ($this->fixDate && isset($data['updated']) && is_string($data['updated']) && preg_match(self::FIX_DATE_REGEX, $data['updated'], $m)) {
                 // fix date format d/m/Y
                 $data['updated'] = str_replace($m[0], $m[2].'/'.$m[1].'/'.$m[3], $data['updated']);
             }
@@ -106,7 +108,6 @@ class PostLoader extends AbstractLoader
             }
             $ua = $a->getUpdated();
             $ub = $b->getUpdated();
-
             return  $ua === $ub ? 0 : ($ua > $ub ? -1 : 1);
         });
     }

@@ -52,6 +52,7 @@ class FilesystemPostLoader extends PostLoader
         foreach ($finder as $file) {
             $path = $file->getRelativePathname();
             $config = $this->loadMatter($path);
+            $config['path'] = $path;
             if (!isset($config['key'])) {
                 $parts = explode('.', $path);
                 $config['key'] = reset($parts);
@@ -65,24 +66,23 @@ class FilesystemPostLoader extends PostLoader
     protected function createPost($data)
     {
         if (is_array($data)) {
-            if (!isset($data['updated']) && isset($data['key'])) {
-                $data['updated'] = $this->getKeyPathUpdated($data['key']);
+            if (!isset($data['updated']) && isset($data['path'])) {
+                $data['updated'] = $this->getKeyPathUpdated($data['path']);
             }
         }
 
         return parent::createPost($data);
     }
 
-    protected function getKeyPathUpdated($key)
+    protected function getKeyPathUpdated($file)
     {
-        $path = $this->path.'/'.$key;
+        $path = $this->path.'/'.$file;
         if (!is_readable($path)) {
             return null;
         }
         $timestamp = filemtime($path);
         $date = new \DateTime();
         $date->setTimestamp($timestamp);
-
         return $date;
     }
 }
