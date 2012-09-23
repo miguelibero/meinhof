@@ -35,7 +35,7 @@ class UrlExtension extends \Twig_Extension
         );
     }
 
-    public function getUrl($obj, array $params=array())
+    public function getUrl($obj, array $params=array(), $relative=true)
     {
         if (!$obj) {
             return "";
@@ -46,7 +46,7 @@ class UrlExtension extends \Twig_Extension
         if (is_object($obj)) {
             $obj = $this->helper->getUrl($obj, $params);
         }
-        if (is_string($obj)) {
+        if ($relative && is_string($obj)) {
             return $this->webroot.$obj;
         }
         throw new \InvalidArgumentException("Could not get the url.");

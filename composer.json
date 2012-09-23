@@ -27,7 +27,7 @@
     },
     "require-dev": {
         "symfony/yaml":                 "2.1.*",        
-        "twig/twig":                    "1.8.*",
+        "twig/twig":                    "1.9.*",
         "kriswallsmith/assetic":        "1.1.*",
         "dflydev/markdown":             "1.0.*",
         "symfony/translation":          "2.1.*"
