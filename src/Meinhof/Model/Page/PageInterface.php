@@ -12,7 +12,7 @@ interface PageInterface
     /**
      * @return string the url of the page
      */
-    public function getUrl();    
+    public function getUrl();
 
     /**
      * @return string the title of the page

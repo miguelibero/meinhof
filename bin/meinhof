@@ -2,11 +2,14 @@
 <?php
 
 $autoload = "vendor/autoload.php";
-if(is_readable($autoload)){
-    include $autoload;
+if(!is_readable($autoload)){
+    $autoload = __DIR__.'/../src/bootstrap.php';
+}
+if(!is_readable($autoload)){
+    throw new \RuntimeException("Could not find autoload file.");
 }
 
-require __DIR__.'/../src/bootstrap.php';
+include $autoload;
 
 use Meinhof\Console\Application;
 

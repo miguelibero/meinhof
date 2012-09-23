@@ -4,23 +4,23 @@ namespace Meinhof\Tests\Helper;
 
 use Meinhof\Helper\UrlHelper;
 
-class TestModel {
-
+class TestModel
+{
     protected $withUrl;
 
-    function __construct($withUrl)
+    public function __construct($withUrl)
     {
         $this->withUrl = $withUrl;
     }
 
-    function getUrl()
+    public function getUrl()
     {
-        if($this->withUrl) {
+        if ($this->withUrl) {
             return '{info.slug}.html';
         }
     }
 
-    function getInfo()
+    public function getInfo()
     {
         return array('slug'=>'test');
     }
@@ -55,6 +55,6 @@ class UrlHelperTest extends \PHPUnit_Framework_TestCase
         $this->assertEquals('test.html', $url);
 
         $url = $this->helper->getUrl(new TestModel(false), array('locale'=>'en'));
-        $this->assertEquals('../en/test.html', $url);        
+        $this->assertEquals('../en/test.html', $url);
     }
 }

@@ -19,7 +19,7 @@ class SetupSiteAction extends OutputAction
     protected $output;
 
     /**
-     * @param SetupWriterInterface $store the setup store
+     * @param SetupWriterInterface $store  the setup store
      * @param InputInterface       $input  the command line input to read the parameters
      * @param OutputInterface      $output the command line output to write log
      */

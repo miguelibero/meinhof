@@ -6,7 +6,7 @@ class Page extends AbstractPage
 {
     protected $key;
     protected $slug;
-    protected $url;    
+    protected $url;
     protected $updated;
     protected $title;
     protected $view;
@@ -85,7 +85,7 @@ class Page extends AbstractPage
     public function getUrl()
     {
         return $this->url;
-    }    
+    }
 
     public function getViewTemplatingKey()
     {

@@ -43,17 +43,17 @@ class UrlHelper implements UrlHelperInterface
     public function getUrl($model, array $parameters)
     {
         $url = null;
-        if(is_object($model)) {
+        if (is_object($model)) {
             try {
                 $url = $this->getPropertyPath($model, 'url');
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
             }
-        } else if(is_string($model)) {
+        } elseif (is_string($model)) {
             $url = $model;
         }
-        if(!$url || !is_string($url)) {
-            $url = $this->template;    
-        }    
+        if (!$url || !is_string($url)) {
+            $url = $this->template;
+        }
         $parameters = array_merge($parameters, $this->parameters);
         preg_match_all(self::PARAMETER_REGEX, $url, $m);
 
@@ -74,7 +74,7 @@ class UrlHelper implements UrlHelperInterface
             }
             try {
                 $value = $this->getPropertyPath($parameters, $name);
-            } catch(\Exception $e) {
+            } catch (\Exception $e) {
                 $value = $this->getPropertyPath($model, $name);
             }
             $value = $this->stringify($value, $format);

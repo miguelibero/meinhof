@@ -12,7 +12,7 @@ abstract class AbstractLoader implements LoaderInterface
     public function getViewTemplatingKey($model)
     {
         $closure = array($model, 'getViewTemplatingKey');
-        if(is_callable($closure)) {
+        if (is_callable($closure)) {
             return $closure();
         } else {
             return $this->getModelName();
