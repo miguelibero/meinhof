@@ -9,7 +9,7 @@ use Meinhof\Export\ExportEvent;
 class UrlExtension extends \Twig_Extension
 {
     protected $helper;
-    protected $webroot;
+    protected $relativeRoot;
     protected $parameters;
 
     public function __construct(UrlHelperInterface $helper)
@@ -19,7 +19,7 @@ class UrlExtension extends \Twig_Extension
 
     public function onExport(ExportEvent $event)
     {
-        $this->webroot = $event->getRelativeRoot();
+        $this->relativeRoot = $event->getRelativeRoot();
         $this->parameters = $event->getParameters();
     }
 
@@ -35,7 +35,7 @@ class UrlExtension extends \Twig_Extension
         );
     }
 
-    public function getUrl($obj, array $params=array(), $relative=true)
+    public function getUrl($obj, array $params=array(), $absolute=false)
     {
         if (!$obj) {
             return "";
@@ -46,8 +46,8 @@ class UrlExtension extends \Twig_Extension
         if (is_object($obj)) {
             $obj = $this->helper->getUrl($obj, $params);
         }
-        if ($relative && is_string($obj)) {
-            return $this->webroot.$obj;
+        if (is_string($obj)) {
+            return $absolute ? $obj : $this->relativeRoot.$obj ;
         }
         throw new \InvalidArgumentException("Could not get the url.");
     }
