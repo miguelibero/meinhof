@@ -46,12 +46,6 @@ class Meinhof
      */
     public function __construct($dir, InputInterface $input = null, OutputInterface $output = null)
     {
-        // load libraries defined in site configuration
-        $autoload = realpath($dir.'/vendor/autoload.php');
-        if (is_readable($autoload)) {
-            require_once($autoload);
-        }
-
         $this->dir = $dir;
         $this->input = $input;
         $this->output = $output;
