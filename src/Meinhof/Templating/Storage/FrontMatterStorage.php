@@ -7,7 +7,7 @@ use Symfony\Component\Templating\Storage\Storage;
 class FrontMatterStorage extends MatterStorage
 {
     protected $storage;
-    protected $separator = "/(^|\n)-{3,}\n/";
+    protected $separator = "/(^|\n)\s*-{3,}\s*\n/";
     protected $content;
     protected $matter;
 
