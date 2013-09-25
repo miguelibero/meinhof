@@ -24,15 +24,20 @@ class FrontMatterStorage extends MatterStorage
         $this->matter = null;
         $this->content = null;
         $content = $this->storage->getContent();
-        $parts = preg_split($this->separator, $content);
-        $parts = array_map('trim', $parts);
-        $parts = array_values(array_filter($parts));
-        $c = count($parts);
-        if ($c > 1) {
-            $this->matter = $parts[0];
-            $this->content = $parts[1];
-        } elseif ($c > 0) {
-            $this->content = $parts[0];
+        preg_match_all($this->separator, $content, $matches, PREG_OFFSET_CAPTURE);
+        $matches = $matches[0];
+        $c = count($matches);
+        if ($c == 0) {
+            $this->content = $content;
+        } else {
+            $start = $matches[0][1]+mb_strlen($matches[0][0]);
+            if ($c == 1) {
+                $this->content = mb_substr($content, $start);
+            } else {
+                $this->matter = mb_substr($content, $start, $matches[1][1]-$start);
+                $start = $matches[1][1]+mb_strlen($matches[1][0]);
+                $this->content = mb_substr($content, $start);
+            }
         }
     }
 
