@@ -78,16 +78,13 @@ class FilesystemExtension implements ExtensionInterface
         ), $paths);
 
         foreach ($paths as $k=>$path) {
-            if ($path === '.' || substr($path,0,2) !== './') {
-                $path = getcwd().'/'.$path;
+            if (substr($path,0,1) === '.') {
+                $path = $this->base_path.DIRECTORY_SEPARATOR.substr($path,1);
             }
             $paths[$k] = $path;
         }
         foreach ($paths as $k=>$path) {
-            if (substr($path,0,1) !== '/') {
-                $path = $this->base_path.'/'.$path;
-            }
-            $paths[$k] = $path;
+            $paths[$k] = realpath($path);
         }
 
         return $paths;

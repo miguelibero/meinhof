@@ -13,7 +13,7 @@ class FilesystemStore implements StoreInterface
 
     public function store($url, $content)
     {
-        $path = $this->base_path.'/'.trim($url,'/');
+        $path = $this->base_path.DIRECTORY_SEPARATOR .trim($url,DIRECTORY_SEPARATOR );
         @mkdir(dirname($path), 0755, true);
         if (@file_put_contents($path, $content) === false) {
             throw new \RuntimeException("Could not save url '${url}'.");
