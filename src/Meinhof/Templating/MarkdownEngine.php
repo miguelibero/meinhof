@@ -4,8 +4,8 @@ namespace Meinhof\Templating;
 
 use Symfony\Component\Templating\Storage\Storage;
 
-use dflydev\markdown\MarkdownExtraParser;
-use dflydev\markdown\IMarkdownParser;
+use Michelf\MarkdownExtra;
+use Michelf\MarkdownInterface;
 
 /**
  * This engine renders Markdown formatted text.
@@ -21,7 +21,7 @@ class MarkdownEngine extends AbstractEngine
         return 'markdown';
     }
 
-    public function setParser(IMarkdownParser $parser)
+    public function setParser(MarkdownInterface $parser)
     {
         $this->parser = $parser;
     }
@@ -32,7 +32,7 @@ class MarkdownEngine extends AbstractEngine
             return $this->parser;
         }
 
-        return new MarkdownExtraParser();
+        return new MarkdownExtra();
     }
 
     /**
