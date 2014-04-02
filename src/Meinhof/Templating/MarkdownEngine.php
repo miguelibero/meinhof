@@ -42,6 +42,6 @@ class MarkdownEngine extends AbstractEngine
     {
         $parser = $this->getParser();
 
-        return $parser->transformMarkdown($template->getContent());
+        return $parser->transform($template->getContent());
     }
 }

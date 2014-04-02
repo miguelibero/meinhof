@@ -21,7 +21,7 @@ class MarkdownExtension implements ExtensionInterface
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        if (!class_exists('dflydev\\markdown\\MarkdownParser')) {
+        if (!class_exists('Michelf\\Markdown')) {
             throw new \RuntimeException("Markdown library not loaded.");
         }
 
