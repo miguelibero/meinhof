@@ -13,7 +13,7 @@ class TestModel
         $this->withUrl = $withUrl;
     }
 
-    public function getUrl()
+    public function getViewUrl()
     {
         if ($this->withUrl) {
             return '{info.slug}.html';
