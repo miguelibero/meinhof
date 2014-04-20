@@ -64,6 +64,20 @@ class FilesystemExtension implements ExtensionInterface
         }
     }
 
+    protected function fixPath($path, $base)
+    {
+        $path = trim($path);
+        if ($path === '.') {
+            $path = '';
+        } else if (substr($path,0,2) === './') {
+            $path = substr($path,2);
+        }
+        if (substr($path,0,1) !== '/') {
+            $path = $base.'/'.$path;
+        }
+        return rtrim($path,'/');
+    }
+
     protected function fixConfigurationPaths(array $paths)
     {
         $paths = array_merge(array(
@@ -73,19 +87,14 @@ class FilesystemExtension implements ExtensionInterface
             'public'        => 'public',
             'content'       => 'content',
             'config'        => 'config',
-            'translations'  => 'translations',
-            'base'          => $this->base_path
+            'translations'  => 'translations'
         ), $paths);
 
+        $this->base_path = $this->fixPath($this->base_path, getcwd());
         foreach ($paths as $k=>$path) {
-            if (substr($path,0,1) === '.') {
-                $path = $this->base_path.DIRECTORY_SEPARATOR.substr($path,1);
-            }
-            $paths[$k] = $path;
+            $paths[$k] = $this->fixPath($path, $this->base_path);
         }
-        foreach ($paths as $k=>$path) {
-            $paths[$k] = realpath($path);
-        }
+        $paths['base'] = $this->base_path;
 
         return $paths;
     }
