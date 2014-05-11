@@ -98,6 +98,9 @@ class PostLoader extends AbstractLoader
 
     protected function addPost(PostInterface $post)
     {
+        if(!$post->getPublish()) {
+            return;
+        }
         $this->posts[$post->getKey()] = $post;
         usort($this->posts, function($a, $b){
             if (!$a instanceof PostInterface) {
