@@ -45,7 +45,7 @@ class UrlHelper implements UrlHelperInterface
         $url = null;
         if (is_object($model)) {
             try {
-                $url = $this->getPropertyPath($model, 'url');
+                $url = $this->getPropertyPath($model, 'view_url');
             } catch (\Exception $e) {
             }
         } elseif (is_string($model)) {
