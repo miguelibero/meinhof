@@ -6,9 +6,9 @@
 
     <parameters>
         <parameter key="markdown.parser.class"
-            >Michelf\Markdown</parameter>
+            >Parsedown</parameter>
         <parameter key="markdown.templating.class"
-            >Meinhof\Templating\MarkdownEngine</parameter>
+            >Meinhof\Templating\ParsedownEngine</parameter>
     </parameters>
     <services>
         <service id="markdown.parser" class="%markdown.parser.class%">

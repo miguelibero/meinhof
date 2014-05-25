@@ -87,6 +87,11 @@ class Page extends AbstractPage
         return $this->url;
     }
 
+    public function getViewUrl()
+    {
+        return $this->getUrl();
+    }
+
     public function getViewTemplatingKey()
     {
         if ($this->view) {
