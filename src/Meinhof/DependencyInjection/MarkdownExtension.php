@@ -21,10 +21,6 @@ class MarkdownExtension implements ExtensionInterface
      */
     public function load(array $configs, ContainerBuilder $container)
     {
-        if (!class_exists('Michelf\\Markdown')) {
-            throw new \RuntimeException("Markdown library not loaded.");
-        }
-
         // load twig services
         $loader = new XmlFileLoader($container, new FileLocator(__DIR__.'/../Resources/config'));
         $loader->load('markdown.xml');
