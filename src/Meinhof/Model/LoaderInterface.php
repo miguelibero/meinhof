@@ -14,7 +14,7 @@ interface LoaderInterface
     public function getModelName();
 
     /**
-     * Should return the purar name of the model.
+     * Should return the plural name of the model.
      * @return string plural model name
      */
     public function getModelsName();
