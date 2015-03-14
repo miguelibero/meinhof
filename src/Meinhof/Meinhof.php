@@ -87,6 +87,11 @@ class Meinhof
         return $this->container->get($id);
     }
 
+    public function getParameter($id)
+    {
+        return $this->container->getParameter($id);
+    }
+
     /**
      * Builds the dependency injection container
      *

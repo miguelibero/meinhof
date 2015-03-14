@@ -44,16 +44,11 @@ class UpdateModelsAction extends OutputAction
         $plural = $this->loader->getModelsName();
         $singular = $this->loader->getModelName();
 
-        $this->writeOutputLine(sprintf("updating %d %s...", $count, $plural), 2);
-
         foreach ($models as $model) {
             $params = $this->globals;
             $params[$singular] = $model;
             $template = $this->loader->getViewTemplatingKey($model);
             $this->exporter->export($model, $template, $params);
-            $this->writeOutput(".", 1);
         }
-        $this->writeOutputLine("", 1);
-        $this->writeOutputLine("done", 2);
     }
 }
